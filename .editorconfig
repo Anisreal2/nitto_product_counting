@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS0657: Not a valid attribute location for this declaration
+dotnet_diagnostic.CS0657.severity = none

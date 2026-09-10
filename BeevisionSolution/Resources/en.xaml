@@ -1,0 +1,447 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="strStart">START</system:String>
+    <system:String x:Key="strWelcome">WELCOME</system:String>
+    <system:String x:Key="strStop">STOP</system:String>
+    <system:String x:Key="strReset">RESET</system:String>
+    <system:String x:Key="strCancel">CANCEL</system:String>
+    <system:String x:Key="strModelInfo">MODEL INFORMATION</system:String>
+    <system:String x:Key="strSelectedModel">Selected Model:</system:String>
+    <system:String x:Key="strConfirm">Confirm</system:String>
+    <system:String x:Key="strLogin">Login</system:String>
+    <system:String x:Key="strInputPassword">Enter Password</system:String>
+    <system:String x:Key="strPassword">Password</system:String>
+    <system:String x:Key="strLogout">Logout</system:String>
+    <system:String x:Key="strMainView">MAINVIEW</system:String>
+    <system:String x:Key="strWarning">WARNING</system:String>
+    <system:String x:Key="strSuccess">SUCCESS</system:String>
+    <system:String x:Key="strError">ERROR</system:String>
+    <system:String x:Key="msgResetQuantity">Are you sure you want to reset the entire quantity?</system:String>
+    <system:String x:Key="msgAppIsRunning">The software is running, please stop before resetting the output.</system:String>
+    <system:String x:Key="strCoordinates">COORDINATES (x,y):</system:String>
+    <system:String x:Key="strAccountManager">ACCOUNT MANAGER</system:String>
+    <system:String x:Key="strUsername">Username</system:String>
+    <system:String x:Key="strFullname">Full Name</system:String>
+    <system:String x:Key="strRole">Role</system:String>
+    <system:String x:Key="strStatusDisplay">Status Display</system:String>
+    <system:String x:Key="strLastLogin">Last Login</system:String>
+    <system:String x:Key="strSwitchUser">Switch User</system:String>
+    <system:String x:Key="strDetailAccount">Account Details</system:String>
+    <system:String x:Key="strAddNewAccount">Add New Account</system:String>
+    <system:String x:Key="strEditAccount">Edit Account</system:String>
+    <system:String x:Key="strActiveUser">Active User</system:String>
+    <system:String x:Key="strCreateIcon">➕ Add new</system:String>
+    <system:String x:Key="strSaveIcon">💾 Save</system:String>
+    <system:String x:Key="strDeleteIcon">🗑️ Delete</system:String>
+    <system:String x:Key="strCancelIcon">↩️ Cancel</system:String>
+    <system:String x:Key="strRefresh">🔄 Refresh</system:String>
+    <system:String x:Key="msgErrLoadAccounts">Error load account list:</system:String>
+    <system:String x:Key="msgInvalidUsername">Please enter your username!</system:String>
+    <system:String x:Key="msgInvalidFullname">Please enter your full name!</system:String>
+    <system:String x:Key="msgInvalidPassword">Please enter your password!</system:String>
+    <system:String x:Key="msgUserExists">The username already exists! Please choose a different name.</system:String>
+    <system:String x:Key="msgInvalidRole">Please choose role!</system:String>
+    <system:String x:Key="msgAddAccountSuccess">New account added successfully!</system:String>
+    <system:String x:Key="msgAddAccountFail">New account added failed!</system:String>
+    <system:String x:Key="msgEditAccountSuccess">Account editing successful!</system:String>
+    <system:String x:Key="msgEditAccountFail">Account editing failed!</system:String>
+    <system:String x:Key="msgDeleteAccountConfirm">Are you sure you want to delete this account?</system:String>
+    <system:String x:Key="msgDeleteAccountSuccess">Delete account successfully!</system:String>
+    <system:String x:Key="msgDeleteAccountFail">Delete account failed!</system:String>
+    <system:String x:Key="msgCannotDeleteActiveUser">Cannot delete active account!</system:String>
+    <system:String x:Key="msgInvalidLogin">Incorrect username or password!</system:String>
+    <system:String x:Key="msgLoginSuccess">Login successful!</system:String>
+    <system:String x:Key="msgLogoutSuccess">Logout successful!</system:String>
+    <system:String x:Key="msgErrLogin">Login error:</system:String>
+    <system:String x:Key="strUserRoleAdmin">Administrator</system:String>
+    <system:String x:Key="strUserRoleOperator">Operator</system:String>
+    <system:String x:Key="strUserRoleEngineer">Engineer</system:String>
+    <system:String x:Key="strActive">Active</system:String>
+    <system:String x:Key="strInactive">Inactive</system:String>
+    <system:String x:Key="msgErrUsernameOrPassword">Error Username or password or inactive account!</system:String>
+    <system:String x:Key="msgErrInvalidInfo">Please fill in all the information.</system:String>
+    <system:String x:Key="msgUsernameExists">Username already exists!</system:String>
+    <system:String x:Key="msgCannotDeleteCurrentUser">Cannot delete your account</system:String>
+
+    <system:String x:Key="strCreateCopyModel">Create a copy of the imported profile</system:String>
+    <system:String x:Key="strCreateZipBackup">Create a backup zip file</system:String>
+    <system:String x:Key="strCreateModelName">Enter the name of the model you want to copy</system:String>
+    <system:String x:Key="msgErrSameProfile">The model name must be different from the current model name.</system:String>
+    <system:String x:Key="msgErrExistProfile">Model already exists</system:String>
+    <system:String x:Key="msgSuccessCopy">Model copied successfully!</system:String>
+    <system:String x:Key="msgFailedCopy">Error when copying model:</system:String>
+    <!--Top Panel-->
+    <system:String x:Key="strDataLog">DATA LOG</system:String>
+    <system:String x:Key="strAutoRunning">AUTO RUNNING</system:String>
+    <system:String x:Key="strStopAuto">STOP AUTO</system:String>
+    <system:String x:Key="strVisionManual">VISION MANUAL</system:String>
+    <system:String x:Key="strPlcOffline">PLC OFFLINE</system:String>
+    <system:String x:Key="strPlcOnline">PLC ONLINE</system:String>
+    <system:String x:Key="strSendDataA">Data #A</system:String>
+    <system:String x:Key="strSendDataB">Data #B</system:String>
+    <system:String x:Key="strLiveCam">LIVE</system:String>
+    <system:String x:Key="strStopLive">STOP LIVE</system:String>
+    <system:String x:Key="strSetup">SETUP</system:String>
+    <system:String x:Key="strCalib">CALIBRATION</system:String>
+    <system:String x:Key="strExit">EXIT</system:String>
+    <system:String x:Key="strOption">OPTIONS</system:String>
+    <system:String x:Key="strTool">TOOLS</system:String>
+    <system:String x:Key="strTotal">Total</system:String>
+    <system:String x:Key="msgConfirmExit">Are you sure you want to close the application?</system:String>
+    <system:String x:Key="msgLoadingJob"> loading jobs, please wait...</system:String>
+    <system:String x:Key="msgLoading">Loading </system:String>
+
+    <!--Record Display-->
+    <system:String x:Key="strScore">SCORE</system:String>
+    <system:String x:Key="strProductCount">Product Count</system:String>
+    
+    <!--Calib Window-->
+    <system:String x:Key="strStartCalibration">Start Calibration</system:String>
+    <system:String x:Key="strCalibration">Calibration</system:String>
+    <system:String x:Key="strStopCalibration">Stop Calibration</system:String>
+    <system:String x:Key="strStageA">Stage A</system:String>
+    <system:String x:Key="strStageB">Stage B</system:String>
+    <system:String x:Key="strGraphicClear">Clear Graphics</system:String>
+    <system:String x:Key="strIconTextMode">Icon/Text Mode</system:String>
+    <system:String x:Key="msgErrSelectedJob">Please select a calibration job first!</system:String>
+    <system:String x:Key="msgErrPlcUnavailable">PLC Cam is not available!</system:String>
+    <system:String x:Key="titleMotionCheckA">Motion Check A</system:String>
+    <system:String x:Key="titleMotionCheckB">Motion Check B</system:String>
+    <system:String x:Key="msgInvalidNumbers">Invalid position values! Please enter valid numbers.</system:String>
+    <system:String x:Key="msgHEComplete">HandEye test mode completed!</system:String>
+    <system:String x:Key="msgErrNoCam">There are no Camera available!</system:String>
+    <system:String x:Key="msgErrStartAllCam">Failed to start all cameras!</system:String>
+    <system:String x:Key="msgErrParamsIsZero">X and Y Axis must be greater than 0!</system:String>
+
+    <!-- Setup Window -->
+    <system:String x:Key="strMasterImageSave">Master Image Save</system:String>
+    <system:String x:Key="strMasterImageLoad">Master Image Load</system:String>
+    <system:String x:Key="strSearchArea">Search Area</system:String>
+    <system:String x:Key="strPatternArea">Pattern Area</system:String>
+    <system:String x:Key="strPatternRegister">Pattern Register</system:String>
+    <system:String x:Key="strPatternFind">Pattern Find</system:String>
+    <system:String x:Key="strSave">Save</system:String>
+
+    <!-- ===== Camera / Job ===== -->
+    <system:String x:Key="strCameraSelection">Camera selection:</system:String>
+    <system:String x:Key="strAcquire">Acquire</system:String>
+    <system:String x:Key="strLive">Live</system:String>
+    <system:String x:Key="strLiveSingleDisplay">Live for this view only (not all cameras)</system:String>
+    <system:String x:Key="msgLiveFail">Cannot view live from camera.</system:String>
+    <system:String x:Key="msgSoloLiveNoJob">No camera job for this display, or acquire tool missing.</system:String>
+
+    <!-- ===== Mode ===== -->
+    <system:String x:Key="strUsePattern">Use Pattern</system:String>
+    <system:String x:Key="strUseEdge">Use FindLine</system:String>
+
+    <!-- ===== Camera Settings ===== -->
+    <system:String x:Key="strCameraSettings">Camera Settings</system:String>
+    <system:String x:Key="strCheck">Find Mark</system:String>
+    <system:String x:Key="strTakeImage">Trigger</system:String>
+    <system:String x:Key="strRunFindLine">Run Findline</system:String>
+
+    <system:String x:Key="strExposure">Exposure (1~100)</system:String>
+    <system:String x:Key="strBrightness">Brightness (0~1)</system:String>
+    <system:String x:Key="strContrast">Contrast (0~1)</system:String>
+
+    <!-- ===== Pattern Section ===== -->
+    <system:String x:Key="strUsingPattern">Using Pattern</system:String>
+    <system:String x:Key="strCopy">Copy</system:String>
+    <system:String x:Key="strMaskSetting">Mask Setting</system:String>
+    <system:String x:Key="strDeletePattern">Delete Pattern</system:String>
+
+    <!-- ===== Acceptance / Scale / Angle ===== -->
+    <system:String x:Key="strAcceptance">Acceptance (0.5~0.9)</system:String>
+
+    <system:String x:Key="strNominal">Nominal</system:String>
+    <system:String x:Key="strLow">Low</system:String>
+    <system:String x:Key="strHigh">High</system:String>
+
+    <system:String x:Key="strScale">Scale (0.8~1.2)</system:String>
+    <system:String x:Key="strAngle">Angle (-5~5) (deg)</system:String>
+
+    <!-- ===== Pattern Images ===== -->
+    <system:String x:Key="strPatternImages">Pattern Images</system:String>
+    <system:String x:Key="strApply">Apply</system:String>
+
+    <!-- ===== Pattern Find Status ===== -->
+    <system:String x:Key="strPatternFindStatus">Pattern Find Status</system:String>
+    <system:String x:Key="strCenterX">Center X</system:String>
+    <system:String x:Key="strCenterY">Center Y</system:String>
+    <system:String x:Key="strAngleResult">Angle</system:String>
+
+    <!-- ===== Common / General ===== -->
+    <system:String x:Key="msgJobNotLoaded">Job not loaded or no image available.</system:String>
+    <system:String x:Key="msgNoImageAvailable">No image available.</system:String>
+    <system:String x:Key="msgNoToolblock">No ToolBlock to save.</system:String>
+    <system:String x:Key="msgCannotFindVpp">Cannot find VPP file path.</system:String>
+
+    <!-- ===== Master Image ===== -->
+    <system:String x:Key="titleMasterLoad">Load Master Image</system:String>
+    <system:String x:Key="msgFileFormatError">Invalid file format.</system:String>
+    <system:String x:Key="msgCannotLoadImage">Cannot load image from file.</system:String>
+    <system:String x:Key="msgErrorLoadFile">Error loading file:</system:String>
+
+    <!-- ===== Search / Pattern Area ===== -->
+    <system:String x:Key="titleSearchArea">Search Area</system:String>
+    <system:String x:Key="msgErrorSearchArea">Error setting Search Area:</system:String>
+
+    <system:String x:Key="titlePatternArea">Pattern Area</system:String>
+    <system:String x:Key="msgErrorPatternArea">Error setting Pattern Area:</system:String>
+
+    <!-- ===== Pattern Register ===== -->
+    <system:String x:Key="titlePatternRegister">Pattern Register</system:String>
+    <system:String x:Key="msgLoadMasterBeforeRegister">Please load the master image before registering the pattern.</system:String>
+    <system:String x:Key="msgJobNotIdentified">The current job cannot be identified for saving the pattern.</system:String>
+    <system:String x:Key="msgPatternRegisterSuccess">New pattern has been registered successfully.</system:String>
+    <system:String x:Key="msgErrorRegisterPattern">Error registering pattern:</system:String>
+
+    <!-- ===== Pattern Find ===== -->
+    <system:String x:Key="titlePatternFind">Pattern Find</system:String>
+    <system:String x:Key="msgNoImageToFind">No image available to find the pattern.</system:String>
+    <system:String x:Key="msgPatternNotTrained">The pattern has not been trained yet. Please register the pattern first.</system:String>
+    <system:String x:Key="msgErrorFindPattern">Error finding pattern:</system:String>
+    <system:String x:Key="msgPatternNotFound">Cannot find pattern.</system:String>
+    <system:String x:Key="msgPatternFound">Pattern found (Score:</system:String>
+
+    <!-- ===== Save Model ===== -->
+    <system:String x:Key="titleSaveModel">Save Model</system:String>
+    <system:String x:Key="msgSaveSuccess">The model has been saved successfully!</system:String>
+    <system:String x:Key="msgNoChangeDetected">No changes detected. Model not saved.</system:String>
+    <system:String x:Key="msgSaveError">Error saving model:</system:String>
+
+    <!-- ===== Camera ===== -->
+    <system:String x:Key="titleCameraWarning">Camera Warning</system:String>
+    <system:String x:Key="msgErrorSaveCamera">Error saving camera file:</system:String>
+    <system:String x:Key="msgErrorCameraSetting">Error setting camera parameters:</system:String>
+
+    <system:String x:Key="titleRunCamera">Run Camera</system:String>
+    <system:String x:Key="msgNoCameraJob">No camera job found.</system:String>
+    <system:String x:Key="msgInvalidCameraToolblock">Invalid camera ToolBlock.</system:String>
+    <system:String x:Key="msgNoAcqTool">No acquisition tool found.</system:String>
+    <system:String x:Key="msgAcquireSuccess">Camera settings applied and image acquired successfully!</system:String>
+    <system:String x:Key="msgAcquireFail">Failed to acquire image.</system:String>
+
+    <!-- ===== Mask Editor ===== -->
+    <system:String x:Key="titleMaskEditor">Mask Editor</system:String>
+    <system:String x:Key="msgErrorValidJob">Please select a valid job.</system:String>
+    <system:String x:Key="msgPatternNotReadyForMask">
+        The pattern has not been trained yet.
+        Please set the Train Region and train the pattern before editing the mask.
+    </system:String>
+    <system:String x:Key="msgToolblockNotFound">ToolBlock not found in the selected job.</system:String>
+    <system:String x:Key="msgErrorOpenMaskEditor">Error opening Mask Editor:</system:String>
+
+    <!-- ===== Copy Pattern ===== -->
+    <system:String x:Key="titleCopyMask">Copy Mask</system:String>
+    <system:String x:Key="msgPatternNotReadyToCopy">
+        The current pattern has not been trained or has no image.
+        Please train the pattern before copying.
+    </system:String>
+    <system:String x:Key="msgCopySuccess">Pattern copied successfully.</system:String>
+    <system:String x:Key="msgCopyError">Error copying pattern:</system:String>
+
+    <!-- ===== Delete Pattern ===== -->
+    <system:String x:Key="titleDeletePattern">Delete Pattern</system:String>
+    <system:String x:Key="msgSelectPatternToDelete">Please select a pattern to delete.</system:String>
+    <system:String x:Key="msgCannotDeleteCurrentPattern">
+        You cannot delete the current main pattern that is being used.
+        Please register or apply another pattern.
+    </system:String>
+    <system:String x:Key="msgConfirmDeletePattern">
+        Are you sure you want to delete this pattern?
+        The file will be permanently deleted.
+    </system:String>
+    <system:String x:Key="msgDeleteSuccess">Pattern deleted successfully.</system:String>
+    <system:String x:Key="msgDeleteError">Error deleting pattern file:</system:String>
+
+    <!-- ===== Apply Pattern ===== -->
+    <system:String x:Key="msgErrorLoadJob">Error load job:</system:String>
+    <system:String x:Key="titleApplyPattern">Apply Pattern</system:String>
+    <system:String x:Key="msgSelectPatternFirst">Please select a pattern first.</system:String>
+    <system:String x:Key="msgApplyPatternSuccess">
+        The pattern has been successfully applied.
+        ToolBlock has been updated.
+    </system:String>
+    <system:String x:Key="msgApplyPatternError">Error applying pattern:</system:String>
+
+    <!-- ===== Run PMAlign ===== -->
+    <system:String x:Key="titleRunPMAlign">Run PMAlign</system:String>
+    <system:String x:Key="msgImageMustBeGray">Image must be grayscale (CogImage8Grey).</system:String>
+    <system:String x:Key="msgErrorRunPMAlign">Error running PMAlign:</system:String>
+
+    <system:String x:Key="optTitle">System Options</system:String>
+    
+
+    <!-- Left panel -->
+    <system:String x:Key="optHeadDiagram">Head A / B Diagram</system:String>
+    <system:String x:Key="optHeadA">Head A</system:String>
+    <system:String x:Key="optHeadB">Head B</system:String>
+
+    <!-- Motion limit -->
+    <system:String x:Key="optMotionLimit">Motion Limit (mm/deg)</system:String>
+    <system:String x:Key="optAlignHistoryMaxRows">Align history max rows</system:String>
+    <system:String x:Key="optAlignHistoryMaxRowsHint">In-memory table + graph (1–500). Newest on top.</system:String>
+    <system:String x:Key="optInspectionHistorySyncTimeout">Inspection merge timeout (ms)</system:String>
+    <system:String x:Key="optInspectionHistorySyncTimeoutHint">Wait for all jobs the same group before showing (100–30000).</system:String>
+    <system:String x:Key="optEnableResultGraph">Enable Result/Graph panel</system:String>
+    <system:String x:Key="optAxisX">X</system:String>
+    <system:String x:Key="optAxisY">Y</system:String>
+    <system:String x:Key="optAxisTheta">θ</system:String>
+
+    <!-- Retry mode -->
+    <system:String x:Key="optRetryMode">Retry Mode Settings</system:String>
+    <system:String x:Key="optUseRetry">Use Retry Mode</system:String>
+    <system:String x:Key="optRetryX">Retry X</system:String>
+    <system:String x:Key="optRetryY">Retry Y</system:String>
+    <system:String x:Key="optRetryTheta">Retry θ</system:String>
+
+    <!-- Log image -->
+    <system:String x:Key="optLogImage">Log Image Options</system:String>
+    <system:String x:Key="optImageSaving">Image Saving</system:String>
+    <system:String x:Key="optSaveScreenshot">Save Screenshot Image</system:String>
+    <system:String x:Key="optSaveOkRaw">Save OK RAW Image</system:String>
+    <system:String x:Key="optSaveNgRaw">Save NG RAW Image</system:String>
+
+    <!-- Score -->
+    <system:String x:Key="optScoreLimit">Score Limit (Pattern Matching)</system:String>
+    <system:String x:Key="optModifyScore">Modify Score Limit</system:String>
+    <system:String x:Key="optScoreThreshold">Score Threshold</system:String>
+
+    <!-- Inspection timing -->
+    <system:String x:Key="optInspectionTiming">Inspection Timing</system:String>
+    <system:String x:Key="optDelayTime">Delay Time</system:String>
+    <system:String x:Key="optAutoBackup">Auto Backup Time</system:String>
+    <system:String x:Key="optInterval">Interval</system:String>
+
+    <!-- Storage -->
+    <system:String x:Key="optAutoCleanUp">Automatic memory cleanup </system:String>
+    <system:String x:Key="optStorageMgmt">Image Storage Management</system:String>
+    <system:String x:Key="optMaintainFreeSpace">Maintain Free Space</system:String>
+    <system:String x:Key="optDeleteOlderThan">Delete Images Older Than</system:String>
+    <system:String x:Key="optTotalSpace">Total Space</system:String>
+    <system:String x:Key="optFreeSpace">Free Space</system:String>
+    <system:String x:Key="strDate">Day(s)</system:String>
+    <system:String x:Key="optLogfilepath">Log file path</system:String>
+
+    <!-- Size / General -->
+    <system:String x:Key="optSizeLimit">Size Limit</system:String>
+    <system:String x:Key="optMaxSize">Max Size</system:String>
+
+    <system:String x:Key="optGeneral">General Options</system:String>
+    <system:String x:Key="optAutoModelChange">Auto Model Change</system:String>
+    <system:String x:Key="optShowCenterLine">Show Center Line</system:String>
+    <system:String x:Key="optShowCpkCalculatorButton">Show CPK Calculator button</system:String>
+    <system:String x:Key="msgSaveSuccessful">Save successfully!</system:String>
+    <system:String x:Key="msgSaveFailed">Save failed!</system:String>
+
+    <!-- Buttons -->
+    <system:String x:Key="btnSave">Save</system:String>
+    <system:String x:Key="btnExit">Exit</system:String>
+
+    <system:String x:Key="optAutoZipBackup">Auto Zip Backup</system:String>
+    <system:String x:Key="optEnableAutoZipBackup">Enable Auto Zip Backup</system:String>
+    <system:String x:Key="optZipBackupInterval">Backup Interval</system:String>
+    <system:String x:Key="strDays">days</system:String>
+    <system:String x:Key="strCommunication">COMMUNICATION</system:String>
+    <system:String x:Key="strModelsmanager">MODEL MANAGER</system:String>
+    
+    <!-- Measure Distance Tool -->
+    <system:String x:Key="strMeasureDistance">MEASURE DISTANCE</system:String>
+    <system:String x:Key="strNoImageSelected">No image selected...</system:String>
+    <system:String x:Key="strBrowse">Browse</system:String>
+    <system:String x:Key="strPoint1">Point 1</system:String>
+    <system:String x:Key="strPoint2">Point 2</system:String>
+    <system:String x:Key="strDistanceResult">Distance</system:String>
+    <system:String x:Key="strGuideMeasure">Click Browse to select an image, then drag P1 and P2 markers to measure distance.</system:String>
+    <system:String x:Key="msgErrorOpenImage">Error opening image: </system:String>
+
+    <!-- MOTION CONTROL MODULE -->
+    <system:String x:Key="strMotionControlTab">MOTION CONTROL (ETHERCAT)</system:String>
+    <system:String x:Key="strMotionMasterStatus">Master Status:</system:String>
+    <system:String x:Key="strMotionCardId">Card ID:</system:String>
+    <system:String x:Key="strMotionSelectedAxis">Selected Axis:</system:String>
+    <system:String x:Key="strMotionSimulationMode">Simulation Mode</system:String>
+    <system:String x:Key="strMotionScanBus">🔍 Scan Bus</system:String>
+    <system:String x:Key="strMotionReInitCard">🔄 Re-Initialize Card</system:String>
+    <system:String x:Key="strMotionTabMain">1. Main Operation</system:String>
+    <system:String x:Key="strMotionTabTeaching">2. Teaching &amp; Sequence</system:String>
+    <system:String x:Key="strMotionTabIODiag">3. IO Monitor &amp; Diagnostics</system:String>
+    <system:String x:Key="strMotionPosDiagnostics">1. Position &amp; Sensor I/O Diagnostics</system:String>
+    <system:String x:Key="strMotionActualPos">Actual Pos: </system:String>
+    <system:String x:Key="strMotionCommandPos">Command Pos: </system:String>
+    <system:String x:Key="strMotionRawPulses">Raw Pulses: </system:String>
+    <system:String x:Key="strMotionServoOn">⚡ Servo ON</system:String>
+    <system:String x:Key="strMotionServoOff">🔌 Servo OFF</system:String>
+    <system:String x:Key="strMotionResetAlarm">🔔 Reset Alarm</system:String>
+    <system:String x:Key="strMotionSetZero">🎯 Set Zero (0)</system:String>
+    <system:String x:Key="strMotionHomeOrigin">🏠 Home (Origin)</system:String>
+    <system:String x:Key="strMotionEStop">🛑 EMERGENCY STOP</system:String>
+    <system:String x:Key="strMotionManualMotion">2. Manual Control (JOG / PTP Move)</system:String>
+    <system:String x:Key="strMotionVelocity">Velocity (mm/s):</system:String>
+    <system:String x:Key="strMotionTargetPos">Target Pos (mm):</system:String>
+    <system:String x:Key="strMotionJogMode">JOG Mode:</system:String>
+    <system:String x:Key="strMotionJogContinuous">Continuous (Hold)</system:String>
+    <system:String x:Key="strMotionJogStep">Step / Inch</system:String>
+    <system:String x:Key="strMotionMoveAbs">Move Absolute (Abs)</system:String>
+    <system:String x:Key="strMotionMoveRel">Move Relative (Rel)</system:String>
+    <system:String x:Key="strMotionAutoSequence">3. Auto Sequence Runner</system:String>
+    <system:String x:Key="strMotionRun1Cycle">▶ Run 1 Cycle</system:String>
+    <system:String x:Key="strMotionContinuousRun">🔁 Continuous Run</system:String>
+    <system:String x:Key="strMotionStopSequence">⏹ Stop Sequence</system:String>
+    <system:String x:Key="strMotionTeachingPoints">4. Teaching Points Table</system:String>
+    <system:String x:Key="strMotionTeachCurrent">📍 Teach Current</system:String>
+    <system:String x:Key="strMotionMovePoint">🚀 Move Point</system:String>
+    <system:String x:Key="strMotionAddPoint">➕ Add</system:String>
+    <system:String x:Key="strMotionDeletePoint">🗑 Delete</system:String>
+    <system:String x:Key="strMotionSavePoints">💾 Save Points</system:String>
+    <system:String x:Key="strMotionActivityLogs">5. Real-time Motion Logs</system:String>
+    <system:String x:Key="strMotionClearLog">🧹 Clear Log</system:String>
+    <system:String x:Key="strMotionSettingsMechanical">1. Mechanical Parameters &amp; Units</system:String>
+    <system:String x:Key="strMotionPulsesPerUnit">Pulses Per mm (pulse/mm):</system:String>
+    <system:String x:Key="strMotionMaxVelocity">Max Velocity (mm/s):</system:String>
+    <system:String x:Key="strMotionTotalAxes">Total Axes on Bus:</system:String>
+    <system:String x:Key="strMotionSettingsSoftLimits">2. Software Limit Protection</system:String>
+    <system:String x:Key="strMotionEnableSoftLimits">Enable Software Limits</system:String>
+    <system:String x:Key="strMotionSoftLimitPos">Soft Limit Positive (+ mm):</system:String>
+    <system:String x:Key="strMotionSoftLimitNeg">Soft Limit Negative (- mm):</system:String>
+    <system:String x:Key="strMotionSettingsProfile">3. Motion Profile &amp; Acceleration</system:String>
+    <system:String x:Key="strMotionTargetProfileVel">Target Velocity (mm/s):</system:String>
+    <system:String x:Key="strMotionAcceleration">Acceleration (mm/s²):</system:String>
+    <system:String x:Key="strMotionDeceleration">Deceleration (mm/s²):</system:String>
+    <system:String x:Key="strMotionJerk">S-Curve Jerk (mm/s³):</system:String>
+    <system:String x:Key="strMotionEmgDec">Emergency Dec (mm/s²):</system:String>
+    <system:String x:Key="strMotionSettingsHoming">4. Origin / Homing Configuration</system:String>
+    <system:String x:Key="strMotionHomingMethod">Homing Method (DS402):</system:String>
+    <system:String x:Key="strMotionHomeHighVel">High Search Velocity (pulse/s):</system:String>
+    <system:String x:Key="strMotionHomeLowVel">Low Creep Velocity (pulse/s):</system:String>
+    <system:String x:Key="strMotionHomeAcc">Homing Accel (pulse/s²):</system:String>
+    <system:String x:Key="strMotionHomeOffset">Home Offset (pulses):</system:String>
+    <system:String x:Key="strMotionHomeTimeout">Timeout (ms):</system:String>
+    <system:String x:Key="strMotionSaveConfig">💾 Save Configuration</system:String>
+    <system:String x:Key="strMotionReloadConfig">🔄 Reload From File</system:String>
+    <system:String x:Key="strMotionActiveAlarm">1. Active Alarm Status</system:String>
+    <system:String x:Key="strMotionErrorCode">Error Code: </system:String>
+    <system:String x:Key="strMotionErrorDesc">Error Description: </system:String>
+    <system:String x:Key="strMotionTroubleshooting">2. Troubleshooting &amp; Remedy Guide</system:String>
+    <system:String x:Key="strMotionAlarmHistory">3. Alarm History Log</system:String>
+    <system:String x:Key="strMotionClearHistory">🗑 Clear History</system:String>
+    <system:String x:Key="strMotionQuickPneumatics">Quick Pneumatics Control</system:String>
+    <system:String x:Key="strMotionCylinder">Cylinder</system:String>
+    <system:String x:Key="strMotionCylinderToggle">Toggle Cylinder (FWD/BWD)</system:String>
+    <system:String x:Key="strMotionVacuum">Vacuum</system:String>
+    <system:String x:Key="strMotionVacuumToggle">Toggle Vacuum (ON/OFF)</system:String>
+    <system:String x:Key="strMotionQuickLighting">Lighting Control (RS232)</system:String>
+    <system:String x:Key="strMotionBrightness">Brightness:</system:String>
+    <system:String x:Key="strMotionLightConnect">Connect</system:String>
+    <system:String x:Key="strMotionLightDisconnect">Disconnect</system:String>
+    <system:String x:Key="strMotionLightToggle">Toggle Light</system:String>
+    <system:String x:Key="strMotionTestProgram">Test Program &amp; Mock Simulation</system:String>
+    <system:String x:Key="strMotionMockVision">Mock Vision Result:</system:String>
+    <system:String x:Key="strMotionMockRobot">Mock Robot Cmd:</system:String>
+    <system:String x:Key="strMotionIOMonitorTitle">EtherCAT Digital IO Monitor</system:String>
+    <system:String x:Key="strMotionAdvancedSettings">Advanced Machine Parameters</system:String>
+    <system:String x:Key="strMotionIOBitMapping">IO Bit Address Mapping</system:String>
+    <system:String x:Key="strMotionSaveAdvanced">💾 Save Advanced Config</system:String>
+</ResourceDictionary>

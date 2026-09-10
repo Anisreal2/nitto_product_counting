@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Config>
+		<IP46>10.80.1.46</IP46>
+		<IP48>10.80.1.48</IP48> 
+		<IP69>10.80.1.69</IP69>
+  		<RouteId>352</RouteId>
+		<Line>0008</Line>
+		<DeviceID>352000801</DeviceID>
+		<PreNG_Routes>350</PreNG_Routes>
+  </Config>

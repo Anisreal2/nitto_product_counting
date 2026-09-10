@@ -1,0 +1,104 @@
+<UserControl x:Class="BeevisionSolution.Views.ComunicationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="850">
+    <Grid Background="#1E1E1E">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2D2D30" Padding="15,12" Margin="5" CornerRadius="4">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="COMMUNICATION &amp; HARDWARE STATUS" FontSize="16" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                <TextBlock Text=" | EtherCAT Motion Controller &amp; I/O System" FontSize="13" Foreground="#858585" VerticalAlignment="Center" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="380"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Motion Controller Status Panel -->
+            <Border Grid.Column="0" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="0,0,5,0" Padding="15">
+                <StackPanel>
+                    <TextBlock Text="EtherCAT Motion Controller" FontSize="14" FontWeight="SemiBold" Foreground="#007ACC" Margin="0,0,0,15"/>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Card Type:" Foreground="#CCCCCC"/>
+                        <TextBlock Grid.Column="1" Text="Inovance IMC EtherCAT (x64)" Foreground="White" FontWeight="Bold"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Connection State:" Foreground="#CCCCCC"/>
+                        <TextBlock x:Name="txtMotionStatus" Grid.Column="1" Text="Connected (EtherCAT OP)" Foreground="#4EC9B0" FontWeight="Bold"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Active Axes:" Foreground="#CCCCCC"/>
+                        <TextBlock x:Name="txtAxisCount" Grid.Column="1" Text="Axis X, Axis Y, Axis Z" Foreground="White"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Cycle Interval:" Foreground="#CCCCCC"/>
+                        <TextBlock Text="1.0 ms (Distributed Clock)" Foreground="White" Grid.Column="1"/>
+                    </Grid>
+
+                    <Separator Background="#3F3F46" Margin="0,15,0,15"/>
+
+                    <TextBlock Text="Sequence Mode" FontSize="13" FontWeight="SemiBold" Foreground="#DCDCAA" Margin="0,0,0,10"/>
+                    <TextBlock Text="MotionSequenceManager: Ready" Foreground="#9CDCFE" Margin="0,0,0,5"/>
+                    <TextBlock Text="PTP Positioning &amp; Multi-point Capture Active" Foreground="#858585" FontSize="11" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+
+            <!-- IO & Bus Devices Table -->
+            <Border Grid.Column="1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="15">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Hardware &amp; Bus Communication Nodes" FontSize="14" FontWeight="SemiBold" Foreground="#4EC9B0" Margin="0,0,0,10"/>
+
+                    <DataGrid Grid.Row="1" x:Name="dgrNodes" Background="#1E1E1E" Foreground="White"
+                              RowBackground="#252526" AlternatingRowBackground="#2D2D30" BorderBrush="#3F3F46"
+                              AutoGenerateColumns="False" HeadersVisibility="Column" IsReadOnly="True" GridLinesVisibility="Horizontal">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Node ID" Binding="{Binding NodeId}" Width="70"/>
+                            <DataGridTextColumn Header="Device Name" Binding="{Binding DeviceName}" Width="150"/>
+                            <DataGridTextColumn Header="Protocol" Binding="{Binding Protocol}" Width="110"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                            <DataGridTextColumn Header="Details" Binding="{Binding Details}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
+

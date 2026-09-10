@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="BeevisionSolution.ViewComponents.PcHealthy"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BeevisionSolution.ViewComponents"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             x:Name="ucPcHealthy"
+             d:DesignHeight="40" d:DesignWidth="600">
+    
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+
+        <!-- Version -->
+        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="3,0" 
+                Background="{StaticResource PanelBrush}">
+            <TextBlock Foreground="White" FontSize="12" VerticalAlignment="Center">
+                <Run Text="Ver: " Foreground="{StaticResource TextSecondaryBrush}"/>
+                <Run Text="{Binding AppVersion}" FontWeight="Bold"/>
+            </TextBlock>
+        </Border>
+
+        <!-- CPU -->
+        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="3,0"
+                Background="{StaticResource PanelBrush}">
+            <TextBlock Foreground="White" FontSize="12" VerticalAlignment="Center">
+                <Run Text="CPU: " Foreground="{StaticResource TextSecondaryBrush}"/>
+                <Run Text="{Binding CpuUsage, StringFormat={}{0}%}" FontWeight="Bold"/>
+            </TextBlock>
+        </Border>
+
+        <!-- Memory -->
+        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="3,0"
+                Background="{StaticResource PanelBrush}">
+            <TextBlock Foreground="White" FontSize="12" VerticalAlignment="Center">
+                <Run Text="RAM: " Foreground="{StaticResource TextSecondaryBrush}"/>
+                <Run Text="{Binding RamUsage, StringFormat={}{0}%}" FontWeight="Bold"/>
+            </TextBlock>
+        </Border>
+
+        <!-- C Drive -->
+        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="3,0"
+                Background="{StaticResource PanelBrush}">
+            <TextBlock Foreground="White" FontSize="12" VerticalAlignment="Center">
+                <Run Text="drive C: " Foreground="{StaticResource TextSecondaryBrush}"/>
+                <Run Text="{Binding HardDriveC, StringFormat={}{0}%}" FontWeight="Bold"/>
+            </TextBlock>
+        </Border>
+
+        <!-- D Drive -->
+        <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="3" Padding="10,6" Margin="3,0"
+                Background="{StaticResource PanelBrush}">
+            <TextBlock Foreground="White" FontSize="12" VerticalAlignment="Center">
+                <Run Text="drive D: " Foreground="{StaticResource TextSecondaryBrush}"/>
+                <Run Text="{Binding HardDriveD, StringFormat={}{0}%}" FontWeight="Bold"/>
+            </TextBlock>
+        </Border>
+
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,193 @@
+﻿<Application x:Class="BeevisionSolution.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:sys1="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+             xmlns:converters="clr-namespace:BeevisionSolution.Converters"
+             StartupUri="Views/MainWindow2.xaml">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/MetroWindow.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/VS/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary Source="Resources/Styles/DarkTheme.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/ControlStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Global Converters -->
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:ResultToColorConverter x:Key="ResultToColorConverter"/>
+            <converters:StatusToBackgroundConverter x:Key="StatusToBackgroundConverter"/>
+            <converters:ZoomToScaleConverter x:Key="ZoomToScaleConverter"/>
+            <FontFamily x:Key="ControlFont">pack://application:,,,/Resources/#Roboto Light</FontFamily>
+            <sys:Double x:Key="ControlFontSize">15.0</sys:Double>
+            <sys:Double x:Key="BiggerControlFontSize">24.0</sys:Double>
+            <sys1:GridLength x:Key="FooterSize">40</sys1:GridLength>
+            <sys1:Brush x:Key="ControlColor">#2a2a2a</sys1:Brush>
+            <sys1:Brush x:Key="DarkerControlColor">#202020</sys1:Brush>
+            <sys1:Brush x:Key="GlowColor">#ff6060ff</sys1:Brush>
+            <sys1:Brush x:Key="TitleInactiveColor">#2a2a2a</sys1:Brush>
+            <sys1:Brush x:Key="TitleActiveColor">#2a2a2a</sys1:Brush>
+            <sys1:Brush x:Key="InsiderBorder">#ff0000dd</sys1:Brush>
+            <sys:TimeSpan x:Key="TS_InputOutputPeriod">0:00:00.050</sys:TimeSpan>
+
+            <Style TargetType="DatePicker" BasedOn="{StaticResource MahApps.Styles.DatePicker}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="TabItem" BasedOn="{StaticResource MahApps.Styles.TabItem}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.VisualStudio}">
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="ComboBox" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="Label" BasedOn="{StaticResource MahApps.Styles.Label}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="TextBox" x:Key="TextBoxStyle" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="RichTextBox" BasedOn="{StaticResource MahApps.Styles.RichTextBox}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="mah:NumericUpDown" BasedOn="{StaticResource MahApps.Styles.NumericUpDown.DataGrid.Editing}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="mah:ToggleSwitch" BasedOn="{StaticResource MahApps.Styles.ToggleSwitch}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="DataGrid" BasedOn="{StaticResource MahApps.Styles.DataGrid}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="GridViewColumnHeader" BasedOn="{StaticResource MahApps.Styles.GridViewColumnHeader}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="ListViewItem" BasedOn="{StaticResource MahApps.Styles.ListViewItem}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="ListView" BasedOn="{StaticResource MahApps.Styles.ListView}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="CheckBox" BasedOn="{StaticResource MahApps.Styles.CheckBox}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Style TargetType="DataGridCell" BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
+                <Setter Property="Height" Value="auto" />
+                <Setter Property="FontSize" Value="{StaticResource ResourceKey=ControlFontSize}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ControlFont}" />
+            </Style>
+
+            <Geometry x:Key="Run">
+                M211,-99L62,-128 70,-171 175,-150 209,-323 170,-308 170,-235 128,-235 128,-335 239,-382 243.34375,-382.3125 247.5,-383 251.65625,-383.6875 256,-384 261.484375,-383.630859375 266.6875,-382.546875 271.609375,-380.783203125 276.25,-378.375 280.609375,-375.357421875 284.6875,-371.765625 288.484375,-367.634765625 292,-363 313,-329 316.38427734375,-323.4833984375 320.15234375,-318.1953125 328.78125,-308.375 338.76953125,-299.6796875 350,-292.25 356.04443359375,-289.0537109375 362.35546875,-286.2265625 368.91845703125,-283.7861328125 375.71875,-281.75 382.74169921875,-280.1357421875 389.97265625,-278.9609375 397.39697265625,-278.2431640625 405,-278 405,-235 396.248291015625,-235.24365234375 387.626953125,-235.96484375 379.149169921875,-237.14892578125 370.828125,-238.78125 362.677001953125,-240.84716796875 354.708984375,-243.33203125 346.937255859375,-246.22119140625 339.375,-249.5 324.931640625,-257.16796875 311.484375,-266.21875 299.138671875,-276.53515625 288,-288 275,-224 320,-182 320,-22 277,-22 277,-150 232,-192 211,-99z M288,-395L283.726806640625,-395.230224609375 279.548828125,-395.904296875 275.490966796875,-396.997314453125 271.578125,-398.484375 264.287109375,-402.541015625 257.875,-407.875 252.541015625,-414.287109375 248.484375,-421.578125 246.997314453125,-425.490966796875 245.904296875,-429.548828125 245.230224609375,-433.726806640625 245,-438 245.230224609375,-442.261962890625 245.904296875,-446.408203125 246.997314453125,-450.416748046875 248.484375,-454.265625 252.541015625,-461.396484375 257.875,-467.625 264.287109375,-472.775390625 271.578125,-476.671875 275.490966796875,-478.094970703125 279.548828125,-479.138671875 283.726806640625,-479.781005859375 288,-480 292.261962890625,-479.781005859375 296.408203125,-479.138671875 300.416748046875,-478.094970703125 304.265625,-476.671875 311.396484375,-472.775390625 317.625,-467.625 322.775390625,-461.396484375 326.671875,-454.265625 328.094970703125,-450.416748046875 329.138671875,-446.408203125 329.781005859375,-442.261962890625 330,-438 329.781005859375,-433.726806640625 329.138671875,-429.548828125 328.094970703125,-425.490966796875 326.671875,-421.578125 322.775390625,-414.287109375 317.625,-407.875 311.396484375,-402.541015625 304.265625,-398.484375 300.416748046875,-396.997314453125 296.408203125,-395.904296875 292.261962890625,-395.230224609375 288,-395z
+            </Geometry>
+
+            <Geometry x:Key="Save">
+                M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z
+            </Geometry>
+
+            <Geometry x:Key="Reload">
+                M2 12C2 16.97 6.03 21 11 21C13.39 21 15.68 20.06 17.4 18.4L15.9 16.9C14.63 18.25 12.86 19 11 19C4.76 19 1.64 11.46 6.05 7.05C10.46 2.64 18 5.77 18 12H15L19 16H19.1L23 12H20C20 7.03 15.97 3 11 3C6.03 3 2 7.03 2 12Z
+            </Geometry>
+
+            <Geometry x:Key="Live">
+                M192 299l149 -86l-149 -85v171zM448 85v256h-384v-256h384zM448 384c23 0 43 -19 43 -43v-256c0 -23 -20 -42 -43 -42h-384c-23 0 -43 19 -43 42v256c0 24 20 43 43 43h162l-70 70l15 15l85 -85l85 85l15 -15l-70 -70h162z
+            </Geometry>
+
+            <Geometry x:Key="Editor">
+                M373 256c18 0 32 14 32 32s-14 32 -32 32s-32 -14 -32 -32s14 -32 32 -32zM309 341c18 0 32 14 32 32s-14 32 -32 32s-32 -14 -32 -32s14 -32 32 -32zM203 341c18 0 32 14 32 32s-14 32 -32 32s-32 -14 -32 -32s14 -32 32 -32zM139 256c18 0 32 14 32 32s-14 32 -32 32 s-32 -14 -32 -32s14 -32 32 -32zM256 448c106 0 192 -77 192 -171c0 -59 -48 -106 -107 -106h-37c-18 0 -32 -14 -32 -32c0 -8 3 -15 8 -21s8 -14 8 -22c0 -18 -14 -32 -32 -32c-106 0 -192 86 -192 192s86 192 192 192z
+            </Geometry>
+
+            <Geometry x:Key="Setting">
+                M256 181c41 0 75 34 75 75s-34 75 -75 75s-75 -34 -75 -75s34 -75 75 -75zM415 235l45 -35c4 -3 5 -9 2 -14l-43 -74c-3 -5 -8 -6 -13 -4l-53 21c-11 -8 -23 -16 -36 -21l-8 -56c-1 -5 -5 -9 -10 -9h-86c-5 0 -9 4 -10 9l-8 56c-13 5 -25 12 -36 21l-53 -21 c-5 -2 -10 -1 -13 4l-43 74c-3 5 -2 11 2 14l45 35c-1 7 -1 14 -1 21s0 14 1 21l-45 35c-4 3 -5 9 -2 14l43 74c3 5 8 6 13 4l53 -21c11 8 23 16 36 21l8 56c1 5 5 9 10 9h86c5 0 9 -4 10 -9l8 -56c13 -5 25 -12 36 -21l53 21c5 2 10 1 13 -4l43 -74c3 -5 2 -11 -2 -14 l-45 -35c1 -7 1 -14 1 -21s0 -14 -1 -21z
+            </Geometry>
+
+            <Geometry x:Key="UserAccount">
+                M16 17V19H2V17S2 13 9 13 16 17 16 17M12.5 7.5A3.5 3.5 0 1 0 9 11A3.5 3.5 0 0 0 12.5 7.5M15.94 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13M15 4A3.39 3.39 0 0 0 13.07 4.59A5 5 0 0 1 13.07 10.41A3.39 3.39 0 0 0 15 11A3.5 3.5 0 0 0 15 4Z
+            </Geometry>
+
+            <Geometry x:Key="LoadFromFile">
+                M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z
+            </Geometry>
+
+            <Geometry x:Key="Apply">
+                M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z
+            </Geometry>
+
+            <Geometry x:Key="Copy">
+                M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z
+            </Geometry>
+
+            <Geometry x:Key="Archive">
+                M377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zM128.4 336c-17.9 0-32.4 12.1-32.4 27 0 15 14.6 27 32.5 27s32.4-12.1 32.4-27-14.6-27-32.5-27zM224 136V0h-63.6v32h-32V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zM95.9 32h32v32h-32zm32.3 384c-33.2 0-58-30.4-51.4-62.9L96.4 256v-32h32v-32h-32v-32h32v-32h-32V96h32V64h32v32h-32v32h32v32h-32v32h32v32h-32v32h22.1c5.7 0 10.7 4.1 11.8 9.7l17.3 87.7c6.4 32.4-18.4 62.6-51.4 62.6z
+            </Geometry>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+

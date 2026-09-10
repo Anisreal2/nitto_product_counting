@@ -1,0 +1,448 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="strStart">BẮT ĐẦU</system:String>
+    <system:String x:Key="strWelcome">CHÀO MỪNG QUAY TRỞ LẠI</system:String>
+    <system:String x:Key="strStop">DỪNG</system:String>
+    <system:String x:Key="strReset">ĐẶT LẠI</system:String>
+    <system:String x:Key="strCancel">HỦY</system:String>
+    <system:String x:Key="strModelInfo">THÔNG TIN MẪU</system:String>
+    <system:String x:Key="strSelectedModel">Lựa chọn mẫu: </system:String>
+    <system:String x:Key="strConfirm">Xác nhận</system:String>
+    <system:String x:Key="strLogin">Đăng nhập</system:String>
+    <system:String x:Key="strSwitchUser">Đổi tài khoản</system:String>
+    <system:String x:Key="strInputPassword">Nhập mật khẩu</system:String>
+    <system:String x:Key="strPassword">Mật khẩu</system:String>
+    <system:String x:Key="strLogout">Đăng xuất</system:String>
+    <system:String x:Key="strMainView">GIAO DIỆN CHÍNH</system:String>
+    <system:String x:Key="strWarning">CẢNH BÁO</system:String>
+    <system:String x:Key="strSuccess">THÀNH CÔNG</system:String>
+    <system:String x:Key="strError">LỖI</system:String>
+    <system:String x:Key="msgResetQuantity">Bạn có chắc chắn muốn reset lại toàn bộ sản lượng?</system:String>
+    <system:String x:Key="msgAppIsRunning">Phần mềm đang chạy, vui lòng dừng trước khi đặt lại sản lượng.</system:String>
+    <system:String x:Key="strCoordinates">TỌA ĐỘ (x,y):</system:String>
+    <system:String x:Key="strAccountManager">QUẢN LÝ NGƯỜI DÙNG</system:String>
+    <system:String x:Key="strUsername">Tên người dùng</system:String>
+    <system:String x:Key="strFullname">Họ và tên</system:String>
+    <system:String x:Key="strRole">Vai trò</system:String>
+    <system:String x:Key="strStatusDisplay">Trạng thái hiển thị</system:String>
+    <system:String x:Key="strLastLogin">Lần đăng nhập cuối</system:String>
+    <system:String x:Key="strDetailAccount">Chi tiết tài khoản</system:String>
+    <system:String x:Key="strAddNewAccount">Thêm tài khoản mới</system:String>
+    <system:String x:Key="strEditAccount">Chỉnh sửa tài khoản</system:String>
+    <system:String x:Key="strActiveUser">Người dùng đang hoạt động</system:String>
+    <system:String x:Key="strSaveIcon">💾 Lưu</system:String>
+    <system:String x:Key="strCreateIcon">➕ Thêm mới</system:String>
+    <system:String x:Key="strDeleteIcon">🗑️ Xóa</system:String>
+    <system:String x:Key="strCancelIcon">↩️ Hủy</system:String>
+    <system:String x:Key="strRefresh">🔄 Làm mới</system:String>
+    <system:String x:Key="msgErrLoadAccounts">Lỗi tải danh sách tài khoản: </system:String>
+    <system:String x:Key="msgInvalidUsername">Vui lòng nhập tên đăng nhập!</system:String>
+    <system:String x:Key="msgInvalidFullname">Vui lòng nhập họ và tên!</system:String>
+    <system:String x:Key="msgInvalidPassword">Vui lòng nhập mật khẩu!</system:String>
+    <system:String x:Key="msgInvalidRole">Vui lòng chọn vai trò người dùng!</system:String>
+    <system:String x:Key="msgUserExists">Tên người dùng đã tồn tại! Vui lòng chọn tên khác.</system:String>
+    <system:String x:Key="msgAddAccountSuccess">Thêm tài khoản mới thành công!</system:String>
+    <system:String x:Key="msgAddAccountFail">Thêm tài khoản mới thất bại!</system:String>
+    <system:String x:Key="msgEditAccountSuccess">Chỉnh sửa tài khoản thành công!</system:String>
+    <system:String x:Key="msgEditAccountFail">Chỉnh sửa tài khoản thất bại!</system:String>
+    <system:String x:Key="msgInvalidSelectAccount">Vui lòng chọn tài khoản!</system:String>
+    <system:String x:Key="msgDeleteAccountConfirm">Bạn có chắc chắn muốn xóa tài khoản này không?</system:String>
+    <system:String x:Key="msgDeleteAccountSuccess">Xóa tài khoản thành công!</system:String>
+    <system:String x:Key="msgDeleteAccountFail">Xóa tài khoản thất bại!</system:String>
+    <system:String x:Key="msgCannotDeleteActiveUser">Không thể xóa tài khoản đang hoạt động!</system:String>
+    <system:String x:Key="msgInvalidLogin">Tên đăng nhập hoặc mật khẩu không đúng!</system:String>
+    <system:String x:Key="msgLoginSuccess">Đăng nhập thành công!</system:String>
+    <system:String x:Key="msgLogoutSuccess">Đăng xuất thành công!</system:String>
+    <system:String x:Key="msgErrLogin">Lỗi đăng nhập:</system:String>
+    <system:String x:Key="strUserRoleAdmin">Quản trị viên</system:String>
+    <system:String x:Key="strUserRoleOperator">Vận hành</system:String>
+    <system:String x:Key="strUserRoleEngineer">Kỹ sư</system:String>
+    <system:String x:Key="strActive">Hoạt động</system:String>
+    <system:String x:Key="strInactive">Ngừng hoạt động</system:String>
+    <system:String x:Key="msgErrUsernameOrPassword">Tên người dùng hoặc mật khẩu không chính xác hoặc tài khoản không hoạt động!</system:String>
+    <system:String x:Key="msgErrInvalidInfo">Vui lòng điền đầy đủ thông tin.</system:String>
+    <system:String x:Key="msgUsernameExists">Tên người dùng đã tồn tại. Vui lòng chọn tên khác.</system:String>
+    <system:String x:Key="msgCannotDeleteCurrentUser">Không thể xóa tài khoản của chính mình.</system:String>
+
+    <system:String x:Key="strCreateCopyModel">Tạo một bản sao của profile được nhập vào</system:String>
+    <system:String x:Key="strCreateZipBackup">Tạo file zip backup</system:String>
+    <system:String x:Key="strCreateModelName">Nhập tên model muốn sao chép thành</system:String>
+    <system:String x:Key="msgErrSameProfile">Tên model phải khác với tên model hiện tại.</system:String>
+    <system:String x:Key="msgErrExistProfile">Model đã tồn tại</system:String>
+    <system:String x:Key="msgSuccessCopy">Sao chép model thành công!</system:String>
+    <system:String x:Key="msgFailedCopy">Lỗi khi sao chép model: </system:String>
+    <!--Top Panel-->
+    <system:String x:Key="strDataLog">DỮ LIỆU LOG</system:String>
+    <system:String x:Key="strAutoRunning">CHẠY TỰ ĐỘNG</system:String>
+    <system:String x:Key="strStopAuto">DỪNG TỰ ĐỘNG</system:String>
+    <system:String x:Key="strVisionManual">CHẠY THỦ CÔNG</system:String>
+    <system:String x:Key="strPlcOffline">PLC NGOẠI TUYẾN</system:String>
+    <system:String x:Key="strPlcOnline">KẾT NỐI PLC</system:String>
+    <system:String x:Key="strSendDataA">Gửi dữ liệu #A</system:String>
+    <system:String x:Key="strSendDataB">Gửi dữ liệu #B</system:String>
+    <system:String x:Key="strLiveCam">CAMERA TRỰC TIẾP</system:String>
+    <system:String x:Key="strStopLive">DỪNG CAMERA</system:String>
+    <system:String x:Key="strSetup">THIẾT LẬP</system:String>
+    <system:String x:Key="strCalib">HIỆU CHUẨN</system:String>
+    <system:String x:Key="strExit">THOÁT</system:String>
+    <system:String x:Key="strOption">TÙY CHỌN</system:String>
+    <system:String x:Key="strTool">CÔNG CỤ</system:String>
+    <system:String x:Key="strTotal">TỔNG</system:String>
+    <system:String x:Key="msgConfirmExit">Bạn có chắc chắn muốn đóng ứng dụng không?</system:String>
+    <system:String x:Key="msgLoadingJob"> đang tải chương trình, vui lòng đợi...</system:String>
+    <system:String x:Key="msgLoading">Đang tải </system:String>
+
+    <!--Record Display-->
+    <system:String x:Key="strScore">ĐIỂM </system:String>
+    <system:String x:Key="strProductCount">Số lượng sản phẩm</system:String>
+    <!-- Calib Window -->
+    <system:String x:Key="strCalibration">Hiệu chuẩn</system:String>
+    <system:String x:Key="strStartCalibration">Bắt đầu hiệu chuẩn</system:String>
+    <system:String x:Key="strStopCalibration">Dừng hiệu chuẩn</system:String>
+    <system:String x:Key="strStageA">Trạm A</system:String>
+    <system:String x:Key="strStageB">Trạm B</system:String>
+    <system:String x:Key="strGraphicClear">Xóa đồ họa</system:String>
+    <system:String x:Key="strIconTextMode">Chế độ Biểu tượng/Văn bản</system:String>
+
+    <system:String x:Key="msgErrSelectedJob">Vui lòng chọn job hiệu chuẩn trước!</system:String>
+    <system:String x:Key="msgErrPlcUnavailable">PLC Cam không khả dụng!</system:String>
+
+    <system:String x:Key="titleMotionCheckA">Kiểm tra chuyển động A</system:String>
+    <system:String x:Key="titleMotionCheckB">Kiểm tra chuyển động B</system:String>
+
+    <system:String x:Key="msgInvalidNumbers">Giá trị vị trí không hợp lệ! Vui lòng nhập số hợp lệ.</system:String>
+    <system:String x:Key="msgHEComplete">Chế độ kiểm tra Hand-Eye đã hoàn tất!</system:String>
+    <system:String x:Key="msgErrNoCam">Không có camera nào khả dụng!</system:String>
+    <system:String x:Key="msgErrStartAllCam">Không thể trực tuyến toàn bộ camera</system:String>
+
+    <!--Setup Window-->
+    <system:String x:Key="strMasterImageSave">Lưu ảnh chuẩn</system:String>
+    <system:String x:Key="strMasterImageLoad">Tải ảnh chuẩn</system:String>
+    <system:String x:Key="strSearchArea">Vùng tìm kiếm</system:String>
+    <system:String x:Key="strPatternArea">Vùng mẫu</system:String>
+    <system:String x:Key="strPatternRegister">Đăng ký mẫu</system:String>
+    <system:String x:Key="strPatternFind">Tìm mẫu</system:String>
+    <system:String x:Key="strSave">Lưu</system:String>
+
+    <!-- ===== Camera / Job ===== -->
+    <system:String x:Key="strCameraSelection">Chọn camera:</system:String>
+    <system:String x:Key="strAcquire">Chụp ảnh</system:String>
+    <system:String x:Key="strLive">Xem trực tiếp</system:String>
+    <system:String x:Key="strLiveSingleDisplay">Live chỉ cho ô này (không bật tất cả camera)</system:String>
+    <system:String x:Key="msgLiveFail">Không thể xem trực tiếp từ camera.</system:String>
+    <system:String x:Key="msgSoloLiveNoJob">Không có job camera cho ô này hoặc thiếu tool acquire.</system:String>
+
+    <!-- ===== Mode ===== -->
+    <system:String x:Key="strUsePattern">Dùng mẫu</system:String>
+    <system:String x:Key="strUseEdge">Dùng tìm Line </system:String>
+
+    <!-- ===== Camera Settings ===== -->
+    <system:String x:Key="strCameraSettings">Cài đặt camera</system:String>
+    <system:String x:Key="strCheck">Tìm Mark</system:String>
+    <system:String x:Key="strTakeImage">Chụp ảnh</system:String>
+    <system:String x:Key="strRunFindLine">Tìm Line</system:String>
+
+    <system:String x:Key="strExposure">Thời gian phơi sáng (1~100)</system:String>
+    <system:String x:Key="strBrightness">Độ sáng (0~1)</system:String>
+    <system:String x:Key="strContrast">Độ tương phản (0~1)</system:String>
+
+    <!-- ===== Pattern Section ===== -->
+    <system:String x:Key="strUsingPattern">Sử dụng mẫu</system:String>
+    <system:String x:Key="strCopy">Sao chép</system:String>
+    <system:String x:Key="strMaskSetting">Cài đặt mặt nạ</system:String>
+    <system:String x:Key="strDeletePattern">Xóa mẫu</system:String>
+
+    <!-- ===== Acceptance / Scale / Angle ===== -->
+    <system:String x:Key="strAcceptance">Ngưỡng chấp nhận (0.5~0.9)</system:String>
+
+    <system:String x:Key="strNominal">Danh định</system:String>
+    <system:String x:Key="strLow">Thấp</system:String>
+    <system:String x:Key="strHigh">Cao</system:String>
+
+    <system:String x:Key="strScale">Tỷ lệ (0.8~1.2)</system:String>
+    <system:String x:Key="strAngle">Góc (-5~5) (độ)</system:String>
+
+    <!-- ===== Pattern Images ===== -->
+    <system:String x:Key="strPatternImages">Danh sách mẫu</system:String>
+    <system:String x:Key="strApply">Áp dụng</system:String>
+
+    <!-- ===== Pattern Find Status ===== -->
+    <system:String x:Key="strPatternFindStatus">Trạng thái tìm mẫu</system:String>
+    <system:String x:Key="strCenterX">Tâm X</system:String>
+    <system:String x:Key="strCenterY">Tâm Y</system:String>
+    <system:String x:Key="strAngleResult">Góc</system:String>
+
+    <!-- ===== Common / General ===== -->
+    <system:String x:Key="msgJobNotLoaded">Job chưa được load hoặc không có ảnh.</system:String>
+    <system:String x:Key="msgNoImageAvailable">Không có ảnh khả dụng.</system:String>
+    <system:String x:Key="msgNoToolblock">Không có ToolBlock để lưu.</system:String>
+    <system:String x:Key="msgCannotFindVpp">Không tìm thấy đường dẫn file VPP.</system:String>
+
+    <!-- ===== Master Image ===== -->
+    <system:String x:Key="titleMasterLoad">Tải ảnh chuẩn</system:String>
+    <system:String x:Key="msgFileFormatError">Lỗi định dạng file.</system:String>
+    <system:String x:Key="msgCannotLoadImage">Không thể load ảnh từ file.</system:String>
+    <system:String x:Key="msgErrorLoadFile">Lỗi load file:</system:String>
+
+    <!-- ===== Search / Pattern Area ===== -->
+    <system:String x:Key="titleSearchArea">Vùng tìm kiếm</system:String>
+    <system:String x:Key="msgErrorSearchArea">Lỗi thiết lập vùng tìm kiếm:</system:String>
+
+    <system:String x:Key="titlePatternArea">Vùng mẫu</system:String>
+    <system:String x:Key="msgErrorPatternArea">Lỗi thiết lập vùng mẫu:</system:String>
+
+    <!-- ===== Pattern Register ===== -->
+    <system:String x:Key="titlePatternRegister">Đăng ký mẫu</system:String>
+    <system:String x:Key="msgLoadMasterBeforeRegister">Vui lòng load ảnh chuẩn trước khi đăng ký mẫu.</system:String>
+    <system:String x:Key="msgJobNotIdentified">Không xác định được job hiện tại để lưu mẫu.</system:String>
+    <system:String x:Key="msgPatternRegisterSuccess">Đăng ký mẫu mới thành công.</system:String>
+    <system:String x:Key="msgErrorRegisterPattern">Lỗi đăng ký mẫu:</system:String>
+
+    <!-- ===== Pattern Find ===== -->
+    <system:String x:Key="titlePatternFind">Tìm mẫu</system:String>
+    <system:String x:Key="msgNoImageToFind">Không có ảnh để tìm mẫu.</system:String>
+    <system:String x:Key="msgPatternNotTrained">Mẫu chưa được train. Vui lòng đăng ký mẫu trước.</system:String>
+    <system:String x:Key="msgErrorFindPattern">Lỗi tìm mẫu:</system:String>
+    <system:String x:Key="msgPatternNotFound">Không tìm thấy mẫu.</system:String>
+    <system:String x:Key="msgPatternFound">Tìm thấy mẫu (Điểm:</system:String>
+
+    <!-- ===== Save Model ===== -->
+    <system:String x:Key="titleSaveModel">Lưu Model</system:String>
+    <system:String x:Key="msgSaveSuccess">Model đã được lưu thành công!</system:String>
+    <system:String x:Key="msgNoChangeDetected">Không có thay đổi. Model không được lưu.</system:String>
+    <system:String x:Key="msgSaveError">Lỗi lưu Model:</system:String>
+
+    <!-- ===== Camera ===== -->
+    <system:String x:Key="titleCameraWarning">Cảnh báo camera</system:String>
+    <system:String x:Key="msgErrorSaveCamera">Lỗi lưu file camera:</system:String>
+    <system:String x:Key="msgErrorCameraSetting">Lỗi cài đặt camera:</system:String>
+
+    <system:String x:Key="titleRunCamera">Chạy camera</system:String>
+    <system:String x:Key="msgNoCameraJob">Không tìm thấy chương trình camera.</system:String>
+    <system:String x:Key="msgInvalidCameraToolblock">Tool camera không hợp lệ.</system:String>
+    <system:String x:Key="msgNoAcqTool">Không tìm thấy tool chụp ảnh.</system:String>
+    <system:String x:Key="msgAcquireSuccess">Áp dụng cài đặt camera và chụp ảnh thành công!</system:String>
+    <system:String x:Key="msgAcquireFail">Chụp ảnh thất bại.</system:String>
+
+    <!-- ===== Mask Editor ===== -->
+    <system:String x:Key="msgErrorLoadJob">Lỗi khi tải chương trình:</system:String>
+    <system:String x:Key="titleMaskEditor">Chỉnh sửa Mask</system:String>
+    <system:String x:Key="msgErrorValidJob">Vui lòng chọn một chương trình hợp lệ.</system:String>
+    <system:String x:Key="msgPatternNotReadyForMask">
+        Mẫu chưa được train.
+        Vui lòng thiết lập vùng train và train mẫu trước khi chỉnh sửa mask.
+    </system:String>
+    <system:String x:Key="msgToolblockNotFound">Không tìm thấy ToolBlock trong job đã chọn.</system:String>
+    <system:String x:Key="msgErrorOpenMaskEditor">Lỗi mở Mask Editor:</system:String>
+
+    <!-- ===== Copy Pattern ===== -->
+    <system:String x:Key="titleCopyMask">Sao chép Mask</system:String>
+    <system:String x:Key="msgPatternNotReadyToCopy">
+        Mẫu hiện tại chưa được train hoặc không có ảnh.
+        Vui lòng train mẫu trước khi sao chép.
+    </system:String>
+    <system:String x:Key="msgCopySuccess">Sao chép mẫu thành công.</system:String>
+    <system:String x:Key="msgCopyError">Lỗi sao chép mẫu:</system:String>
+
+    <!-- ===== Delete Pattern ===== -->
+    <system:String x:Key="titleDeletePattern">Xóa mẫu</system:String>
+    <system:String x:Key="msgSelectPatternToDelete">Vui lòng chọn mẫu cần xóa.</system:String>
+    <system:String x:Key="msgCannotDeleteCurrentPattern">
+        Không thể xóa mẫu chính đang được sử dụng.
+        Vui lòng đăng ký hoặc áp dụng mẫu khác.
+    </system:String>
+    <system:String x:Key="msgConfirmDeletePattern">
+        Bạn có chắc chắn muốn xóa mẫu này?
+        File sẽ bị xóa vĩnh viễn.
+    </system:String>
+    <system:String x:Key="msgDeleteSuccess">Xóa mẫu thành công.</system:String>
+    <system:String x:Key="msgDeleteError">Lỗi xóa file mẫu:</system:String>
+
+    <!-- ===== Apply Pattern ===== -->
+    <system:String x:Key="titleApplyPattern">Áp dụng mẫu</system:String>
+    <system:String x:Key="msgSelectPatternFirst">Vui lòng chọn mẫu trước.</system:String>
+    <system:String x:Key="msgApplyPatternSuccess">
+        Áp dụng mẫu thành công.
+        ToolBlock đã được cập nhật.
+    </system:String>
+    <system:String x:Key="msgApplyPatternError">Lỗi áp dụng mẫu:</system:String>
+
+    <!-- ===== Run PMAlign ===== -->
+    <system:String x:Key="titleRunPMAlign">Chạy PMAlign</system:String>
+    <system:String x:Key="msgImageMustBeGray">Ảnh phải là ảnh xám (CogImage8Grey).</system:String>
+    <system:String x:Key="msgErrorRunPMAlign">Lỗi chạy PMAlign:</system:String>
+
+    <system:String x:Key="optTitle">Tùy chọn hệ thống</system:String>
+
+    <!-- Left panel -->
+    <system:String x:Key="optHeadDiagram">Sơ đồ đầu A / B</system:String>
+    <system:String x:Key="optHeadA">Đầu A</system:String>
+    <system:String x:Key="optHeadB">Đầu B</system:String>
+
+    <!-- Motion limit -->
+    <system:String x:Key="optMotionLimit">Giới hạn chuyển động (mm/độ)</system:String>
+    <system:String x:Key="optAlignHistoryMaxRows">Số hàng tối đa Align History</system:String>
+    <system:String x:Key="optAlignHistoryMaxRowsHint">Bảng + đồ thị chỉ trong phiên (1–500). Mới nhất ở trên.</system:String>
+    <system:String x:Key="optInspectionHistorySyncTimeout">Thời gian chờ gộp Inspection (ms)</system:String>
+    <system:String x:Key="optInspectionHistorySyncTimeoutHint">Chờ đủ job cùng nhóm trước khi hiển thị hàng (100–30000).</system:String>
+    <system:String x:Key="optEnableResultGraph">Bật panel Result/Graph</system:String>
+    <system:String x:Key="optAxisX">X</system:String>
+    <system:String x:Key="optAxisY">Y</system:String>
+    <system:String x:Key="optAxisTheta">θ</system:String>
+
+    <!-- Retry mode -->
+    <system:String x:Key="optRetryMode">Cấu hình Retry</system:String>
+    <system:String x:Key="optUseRetry">Sử dụng Retry</system:String>
+    <system:String x:Key="optRetryX">Retry X</system:String>
+    <system:String x:Key="optRetryY">Retry Y</system:String>
+    <system:String x:Key="optRetryTheta">Retry θ</system:String>
+
+    <!-- Log image -->
+    <system:String x:Key="optLogImage">Lưu ảnh kiểm tra</system:String>
+    <system:String x:Key="optImageSaving">Lưu hình ảnh</system:String>
+    <system:String x:Key="optSaveScreenshot">Lưu ảnh màn hình</system:String>
+    <system:String x:Key="optSaveOkRaw">Lưu ảnh RAW OK</system:String>
+    <system:String x:Key="optSaveNgRaw">Lưu ảnh RAW NG</system:String>
+
+    <!-- Score -->
+    <system:String x:Key="optScoreLimit">Giới hạn điểm (Pattern Matching)</system:String>
+    <system:String x:Key="optModifyScore">Cho phép chỉnh điểm</system:String>
+    <system:String x:Key="optScoreThreshold">Ngưỡng điểm</system:String>
+    <system:String x:Key="optAutoCleanUp">Tự động dọn dẹp bộ nhớ</system:String>
+    <system:String x:Key="optLogfilepath">Đường dẫn lưu log</system:String>
+
+    <!-- Inspection timing -->
+    <system:String x:Key="optInspectionTiming">Thời điểm kiểm tra</system:String>
+    <system:String x:Key="optDelayTime">Thời gian trễ</system:String>
+    <system:String x:Key="optAutoBackup">Thời gian sao lưu tự động</system:String>
+    <system:String x:Key="optInterval">Chu kỳ</system:String>
+
+    <!-- Storage -->
+    <system:String x:Key="optStorageMgmt">Quản lý lưu trữ ảnh</system:String>
+    <system:String x:Key="optMaintainFreeSpace">Duy trì dung lượng trống</system:String>
+    <system:String x:Key="optDeleteOlderThan">Xóa ảnh cũ hơn</system:String>
+    <system:String x:Key="optTotalSpace">Tổng dung lượng</system:String>
+    <system:String x:Key="optFreeSpace">Dung lượng trống</system:String>
+    <system:String x:Key="strDate">Ngày(s)</system:String>
+
+    <!-- Size / General -->
+    <system:String x:Key="optSizeLimit">Giới hạn kích thước</system:String>
+    <system:String x:Key="optMaxSize">Kích thước tối đa</system:String>
+
+    <system:String x:Key="optGeneral">Tùy chọn chung</system:String>
+    <system:String x:Key="optAutoModelChange">Tự động đổi Model</system:String>
+    <system:String x:Key="optShowCenterLine">Hiển thị đường tâm</system:String>
+    <system:String x:Key="optShowCpkCalculatorButton">Hiển thị nút CPK Calculator</system:String>
+    <system:String x:Key="msgSaveSuccessful">Lưu thành công!</system:String>
+    <system:String x:Key="msgSaveFailed">Lưu thất bại!</system:String>
+
+    <!-- Buttons -->
+    <system:String x:Key="btnSave">Lưu</system:String>
+    <system:String x:Key="btnExit">Thoát</system:String>
+
+    <system:String x:Key="optAutoZipBackup">Tự động tạo Zip Backup</system:String>
+    <system:String x:Key="optEnableAutoZipBackup">Bật tự động tạo Zip Backup</system:String>
+    <system:String x:Key="optZipBackupInterval">Khoảng thời gian backup</system:String>
+    <system:String x:Key="strDays">ngày</system:String>
+    <system:String x:Key="strCommunication">TRUYỀN THÔNG</system:String>
+    <system:String x:Key="strModelsmanager">QUẢN LÝ MODEL</system:String>
+
+    <!-- Measure Distance Tool -->
+    <system:String x:Key="strMeasureDistance">ĐO KHOẢNG CÁCH</system:String>
+    <system:String x:Key="strNoImageSelected">Chưa chọn ảnh...</system:String>
+    <system:String x:Key="strBrowse">Chọn ảnh</system:String>
+    <system:String x:Key="strPoint1">Điểm 1</system:String>
+    <system:String x:Key="strPoint2">Điểm 2</system:String>
+    <system:String x:Key="strDistanceResult">Khoảng cách</system:String>
+    <system:String x:Key="strGuideMeasure">Nhấn Chọn ảnh để mở hình, sau đó kéo các điểm P1 và P2 để đo.</system:String>
+    <system:String x:Key="msgErrorOpenImage">Lỗi mở ảnh: </system:String>
+
+    <!-- MOTION CONTROL MODULE -->
+    <system:String x:Key="strMotionControlTab">ĐIỀU KHIỂN MOTION (ETHERCAT)</system:String>
+    <system:String x:Key="strMotionMasterStatus">Trạng Thái Master:</system:String>
+    <system:String x:Key="strMotionCardId">Mã Card:</system:String>
+    <system:String x:Key="strMotionSelectedAxis">Trục Chọn:</system:String>
+    <system:String x:Key="strMotionSimulationMode">Chế Độ Mô Phỏng</system:String>
+    <system:String x:Key="strMotionScanBus">🔍 Quét Bus</system:String>
+    <system:String x:Key="strMotionReInitCard">🔄 Khởi Tạo Lại Card</system:String>
+    <system:String x:Key="strMotionTabMain">1. Vận Hành Chính</system:String>
+    <system:String x:Key="strMotionTabTeaching">2. Dạy Điểm &amp; Chu Trình</system:String>
+    <system:String x:Key="strMotionTabIODiag">3. Giám Sát IO &amp; Chẩn Đoán</system:String>
+    <system:String x:Key="strMotionPosDiagnostics">1. Giám Sát Vị Trí &amp; Cảm Biến I/O</system:String>
+    <system:String x:Key="strMotionActualPos">Vị Trí Thực: </system:String>
+    <system:String x:Key="strMotionCommandPos">Vị Trí Lệnh: </system:String>
+    <system:String x:Key="strMotionRawPulses">Xung Mã Hoá: </system:String>
+    <system:String x:Key="strMotionServoOn">⚡ Bật Servo</system:String>
+    <system:String x:Key="strMotionServoOff">🔌 Tắt Servo</system:String>
+    <system:String x:Key="strMotionResetAlarm">🔔 Reset Alarm</system:String>
+    <system:String x:Key="strMotionSetZero">🎯 Đặt Gốc (0)</system:String>
+    <system:String x:Key="strMotionHomeOrigin">🏠 Về Gốc (Home)</system:String>
+    <system:String x:Key="strMotionEStop">🛑 DỪNG KHẨN CẤP</system:String>
+    <system:String x:Key="strMotionManualMotion">2. Điều Khiển Thủ Công (JOG / PTP)</system:String>
+    <system:String x:Key="strMotionVelocity">Vận Tốc (mm/s):</system:String>
+    <system:String x:Key="strMotionTargetPos">Toạ Độ Đích (mm):</system:String>
+    <system:String x:Key="strMotionJogMode">Chế Độ JOG:</system:String>
+    <system:String x:Key="strMotionJogContinuous">Liên Tục (Giữ Chuột)</system:String>
+    <system:String x:Key="strMotionJogStep">Từng Bước (Vi Chỉnh)</system:String>
+    <system:String x:Key="strMotionMoveAbs">Chạy Tuyệt Đối (Abs)</system:String>
+    <system:String x:Key="strMotionMoveRel">Chạy Tương Đối (Rel)</system:String>
+    <system:String x:Key="strMotionAutoSequence">3. Chạy Tự Động (Auto Sequence)</system:String>
+    <system:String x:Key="strMotionRun1Cycle">▶ Chạy 1 Chu Trình</system:String>
+    <system:String x:Key="strMotionContinuousRun">🔁 Chạy Liên Tục</system:String>
+    <system:String x:Key="strMotionStopSequence">⏹ Dừng Chu Trình</system:String>
+    <system:String x:Key="strMotionTeachingPoints">4. Bảng Điểm Dạy &amp; Quản Lý Vị Trí</system:String>
+    <system:String x:Key="strMotionTeachCurrent">📍 Dạy Vị Trí Hiện Tại</system:String>
+    <system:String x:Key="strMotionMovePoint">🚀 Di Chuyển Tới Điểm</system:String>
+    <system:String x:Key="strMotionAddPoint">➕ Thêm</system:String>
+    <system:String x:Key="strMotionDeletePoint">🗑 Xoá</system:String>
+    <system:String x:Key="strMotionSavePoints">💾 Lưu Điểm</system:String>
+    <system:String x:Key="strMotionActivityLogs">5. Nhật Ký Chuyển Động Thời Gian Thực</system:String>
+    <system:String x:Key="strMotionClearLog">🧹 Xoá Nhật Ký</system:String>
+    <system:String x:Key="strMotionSettingsMechanical">1. Thông Số Cơ Khí &amp; Đơn Vị</system:String>
+    <system:String x:Key="strMotionPulsesPerUnit">Số Xung Trên 1 mm (xung/mm):</system:String>
+    <system:String x:Key="strMotionMaxVelocity">Vận Tốc Tối Đa (mm/s):</system:String>
+    <system:String x:Key="strMotionTotalAxes">Tổng Số Trục Trên Bus:</system:String>
+    <system:String x:Key="strMotionSettingsSoftLimits">2. Giới Hạn Hành Trình Phần Mềm</system:String>
+    <system:String x:Key="strMotionEnableSoftLimits">Kích Hoạt Giới Hạn Mềm</system:String>
+    <system:String x:Key="strMotionSoftLimitPos">Giới Hạn Chiều Dương (+ mm):</system:String>
+    <system:String x:Key="strMotionSoftLimitNeg">Giới Hạn Chiều Âm (- mm):</system:String>
+    <system:String x:Key="strMotionSettingsProfile">3. Động Học Chuyển Động &amp; Gia Tốc</system:String>
+    <system:String x:Key="strMotionTargetProfileVel">Vận Tốc Đích (mm/s):</system:String>
+    <system:String x:Key="strMotionAcceleration">Gia Tốc (mm/s²):</system:String>
+    <system:String x:Key="strMotionDeceleration">Giảm Tốc (mm/s²):</system:String>
+    <system:String x:Key="strMotionJerk">Độ Giật S-Curve (mm/s³):</system:String>
+    <system:String x:Key="strMotionEmgDec">Giảm Tốc Khẩn Cấp (mm/s²):</system:String>
+    <system:String x:Key="strMotionSettingsHoming">4. Tham Số Tìm Gốc Máy (Homing)</system:String>
+    <system:String x:Key="strMotionHomingMethod">Phương Pháp Tìm Gốc (DS402):</system:String>
+    <system:String x:Key="strMotionHomeHighVel">Tốc Độ Tìm Thô (pulse/s):</system:String>
+    <system:String x:Key="strMotionHomeLowVel">Tốc Độ Tìm Tinh (pulse/s):</system:String>
+    <system:String x:Key="strMotionHomeAcc">Gia Tốc Tìm Gốc (pulse/s²):</system:String>
+    <system:String x:Key="strMotionHomeOffset">Toạ Độ Bù Gốc (pulse):</system:String>
+    <system:String x:Key="strMotionHomeTimeout">Thời Gian Quá Hạn (ms):</system:String>
+    <system:String x:Key="strMotionSaveConfig">💾 Lưu Cấu Hình</system:String>
+    <system:String x:Key="strMotionReloadConfig">🔄 Tải Lại Từ File</system:String>
+    <system:String x:Key="strMotionActiveAlarm">1. Trạng Thái Cảnh Báo Hiện Tại</system:String>
+    <system:String x:Key="strMotionErrorCode">Mã Lỗi: </system:String>
+    <system:String x:Key="strMotionErrorDesc">Nội Dung Lỗi: </system:String>
+    <system:String x:Key="strMotionTroubleshooting">2. Hướng Dẫn Khắc Phục Sự Cố Nhanh</system:String>
+    <system:String x:Key="strMotionAlarmHistory">3. Lịch Sử Cảnh Báo &amp; Sự Cố</system:String>
+    <system:String x:Key="strMotionClearHistory">🗑 Xoá Lịch Sử</system:String>
+    <system:String x:Key="strMotionQuickPneumatics">Thao Tác Nhanh Khí Nén</system:String>
+    <system:String x:Key="strMotionCylinder">Xy lanh</system:String>
+    <system:String x:Key="strMotionCylinderToggle">Đảo Chiều Xy lanh (Tiến/Lùi)</system:String>
+    <system:String x:Key="strMotionVacuum">Giác hút</system:String>
+    <system:String x:Key="strMotionVacuumToggle">Bật/Tắt Giác Hút (Hút/Nhả)</system:String>
+    <system:String x:Key="strMotionQuickLighting">Điều Khiển Đèn Chiếu Sáng (RS232)</system:String>
+    <system:String x:Key="strMotionBrightness">Độ Sáng:</system:String>
+    <system:String x:Key="strMotionLightConnect">Kết Nối</system:String>
+    <system:String x:Key="strMotionLightDisconnect">Ngắt Kết Nối</system:String>
+    <system:String x:Key="strMotionLightToggle">Bật/Tắt Đèn</system:String>
+    <system:String x:Key="strMotionTestProgram">Chế Độ Chạy Thử &amp; Giả Lập</system:String>
+    <system:String x:Key="strMotionMockVision">Giả Lập Kết Quả Vision:</system:String>
+    <system:String x:Key="strMotionMockRobot">Giả Lập Lệnh Robot:</system:String>
+    <system:String x:Key="strMotionIOMonitorTitle">Bảng Giám Sát EtherCAT Digital IO</system:String>
+    <system:String x:Key="strMotionAdvancedSettings">Cài Đặt Thông Số Nâng Cao</system:String>
+    <system:String x:Key="strMotionIOBitMapping">Gán Địa Chỉ Bit IO</system:String>
+    <system:String x:Key="strMotionSaveAdvanced">💾 Lưu Cấu Hình Nâng Cao</system:String>
+</ResourceDictionary>

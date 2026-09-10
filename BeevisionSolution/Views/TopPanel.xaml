@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="BeevisionSolution.Views.TopPanel"
+             x:Name="TopPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:BeevisionSolution.Views"
+             xmlns:beeView="clr-namespace:BeevisionSolution.ViewComponents"
+             xmlns:wm="clr-namespace:BeevisionSolution.ViewModels"
+             xmlns:converters="clr-namespace:BeevisionSolution.Converters"
+             mc:Ignorable="d"
+             >
+    <UserControl.Resources>
+        <converters:StatusToBackgroundConverter x:Key="StatusToBackgroundConverter"/>
+        <Style x:Key="LangButtonStyle" TargetType="Button">
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Opacity" Value="0.5"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="BorderBrush" Value="#FF2D89EF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <!-- Header Bar -->
+    <Border BorderBrush="Silver" BorderThickness="1" >
+        <Grid Background="{StaticResource PanelBrush}"  x:Name="mainContainer">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Logo -->
+            <TextBlock Grid.Column="0" x:Name="txtAppName" Grid.ColumnSpan="2"  Foreground="White" FontWeight="Bold" FontSize="20" VerticalAlignment="Center" Margin="10,0,20,0"/>
+
+            <!-- Status -->
+            <Border Height="40" Grid.Column="2" Background="{Binding ApplicationStatus, Converter={StaticResource StatusToBackgroundConverter}}"
+                 CornerRadius="3" Padding="15,5" Margin="5,0">
+                <TextBlock Text="{Binding StatusText}" Foreground="White" FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel Grid.Column="3"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="5,0">
+
+                <!-- Status circle -->
+                <Border Width="20"
+                        Height="20"
+                        CornerRadius="10"
+                        Background="{Binding PlcStatus, Converter={StaticResource StatusToBackgroundConverter}}"
+                        VerticalAlignment="Center"/>
+
+                <!-- Status text -->
+                <TextBlock Text="{Binding PlcStatusText}"
+                           Margin="8,0,0,0"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           FontSize="16"
+                           VerticalAlignment="Center"/>
+
+                <!-- PC Survival Status circle -->
+                <Border Width="20"
+                        Height="20"
+                        CornerRadius="10"
+                        Margin="15,0,0,0"
+                        Background="{Binding PcSurvival, Converter={StaticResource StatusToBackgroundConverter}}"
+                        VerticalAlignment="Center"/>
+
+                <!-- PC Survival Status text -->
+                <TextBlock Text="{Binding PcSurvivalText}"
+                           Margin="8,0,0,0"
+                           Foreground="White"
+                           FontWeight="Bold"
+                           FontSize="16"
+                           VerticalAlignment="Center"/>
+            </StackPanel> 
+
+            <!-- PLC Model No -->
+            <!--<TextBlock Visibility="Hidden" Grid.Column="4" Foreground="{StaticResource TextSecondaryBrush}" FontSize="14" VerticalAlignment="Center" Margin="10,0">
+             <Run Text="PLC Model No: "/>
+             <Run Text="{Binding PLCModelNo}"/>
+            </TextBlock>-->
+            
+            <!-- Model -->
+            <TextBlock Grid.Column="4" Text="Model: " Foreground="{StaticResource TextSecondaryBrush}" FontSize="14" VerticalAlignment="Center" Margin="10,0" Visibility="Collapsed">
+            </TextBlock>
+            <StackPanel Grid.Column="5" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" 
+                           VerticalAlignment="Center" 
+                           HorizontalAlignment="Center"
+                           
+                           >
+                    <!--<Ellipse Width="12" 
+                            Height="12" 
+                            Fill="#E0E0E0" 
+                            VerticalAlignment="Center" 
+                            Margin="0,0,10,0"/>-->
+                    <!-- Text Model -->
+                    <TextBlock x:Name="lblModel"
+                                 VerticalAlignment="Center"
+                                 Foreground="#E0E0E0"
+                                 FontSize="27"
+                                 FontWeight="Bold"
+                                 FontFamily="Segoe UI"
+                               Padding="15,0,0,5">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Red" BlurRadius="15" ShadowDepth="0" Opacity="0.9"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </StackPanel>
+                <Button Grid.Column="2" x:Name="EditButton" 
+                    Width="30" Height="30" Margin="10, 0, 0, 0" Background="#ff6060ff" BorderThickness="0" Foreground="Black">
+                    <iconPacks:PackIconMaterial Width="24" Kind="AccountEdit"/>
+                </Button>
+            </StackPanel>
+
+            <!--PC healthy status-->
+            <beeView:PcHealthy Grid.Column="6" Padding="50,0,0,0"/>
+            <!-- Data Log Button -->
+            <Button Visibility="Collapsed" Grid.Column="8" Content="{DynamicResource strDataLog}" Style="{StaticResource HeaderButton}" Command="{Binding DataLogCommand}" Margin="5,0"/>
+            
+
+            <!-- Send Data / Tact Time -->
+            <StackPanel  Grid.Column="9" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                <StackPanel Margin="5,0">
+                    <TextBlock Text="{DynamicResource strSendDataA}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Name="txtDataA" Foreground="Cyan" FontSize="14" FontFamily="Consolas"/>
+                </StackPanel>
+                <StackPanel Margin="5,0">
+                    <TextBlock Text="{DynamicResource strSendDataB}" Foreground="{StaticResource TextSecondaryBrush}" FontSize="12"/>
+                    <TextBlock Name="txtDataB" Foreground="Cyan" FontSize="14" FontFamily="Consolas"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Language Flags -->
+            <StackPanel Grid.Column="10" Orientation="Horizontal" Margin="10,0">
+                <Button Cursor="Hand" Style="{StaticResource LangButtonStyle}" Background="Transparent" BorderBrush="Transparent" HorizontalContentAlignment="Right" x:Name="brdVNLang" Click="brdVNLang_Click" Width="60" Height="40" >
+                    <Image Source="../Resources/Images/flag_vn.png" Height="30" />
+                </Button>
+                <Button Cursor="Hand" Style="{StaticResource LangButtonStyle}" Background="Transparent" Width="60" HorizontalContentAlignment="Left" Height="40" x:Name="brdENLang" Click="brdENLang_Click"  BorderBrush="Transparent">
+                    <Image Source="../Resources/Images/flag_us.png"  />
+                </Button>
+            </StackPanel>
+
+            <!-- DateTime -->
+            <TextBlock Grid.Column="11" Text="{Binding CurrentDateTime}" Foreground="Lime" FontSize="16"
+                    FontFamily="Consolas" VerticalAlignment="Center" Margin="10,0"/>
+            <!-- Screenshot Button -->
+            <Button Grid.Column="12" x:Name="btnScreenshot" 
+                    Width="40" Height="40" 
+                    Margin="10,0" 
+                    Background="#4CAF50" 
+                    BorderThickness="0" 
+                    Foreground="White"
+                    ToolTip="Screen shot"
+                    Click="BtnScreenshot_Click">
+                <iconPacks:PackIconMaterial Width="24" Height="24" Kind="Camera"/>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>

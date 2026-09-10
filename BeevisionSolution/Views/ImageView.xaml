@@ -1,0 +1,521 @@
+<UserControl x:Class="BeevisionSolution.Views.ImageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BeevisionSolution.Views"
+             xmlns:utils="clr-namespace:BeevisionSolution.Utils"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d"
+             xmlns:asf="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
+             xmlns:converters="clr-namespace:BeevisionSolution.Converters"
+             Loaded="UserControl_Loaded"
+             Background="{StaticResource PanelBrush}">
+    <UserControl.Resources>
+        <converters:StatusToBackgroundConverter x:Key="StatusToBackgroundConverter"/>
+        <converters:ResultToColorConverter x:Key="ResultToColorConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <!-- Main Content Area -->
+    <Grid>
+        <asf:AirspaceDecorator x:Name="Airspacer"
+                               AirspaceMode="None"
+                               IsInputRedirectionEnabled="True"
+                               IsOutputRedirectionEnabled="True">
+
+            <Grid>
+                <!-- Camera Views Area -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="240"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+                    <ContentControl x:Name="mainContentArea"
+                                    Grid.Column="0"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Margin="0,0,0,5">
+                        <local:MainGrid x:Name="dspGrid"
+                                        IsShowToolButtons="False"/>
+                    </ContentControl>
+                    <!-- Status Bar between cameras -->
+                    <Border Visibility="Collapsed"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="2,0,2,0"
+                            BorderBrush="Silver"
+                            BorderThickness="1"
+                            Background="{StaticResource PanelBrush}"
+                            Padding="10,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Foreground="Yellow"
+                                       FontSize="12"
+                                       FontFamily="Consolas">
+                    <Run Text="#A Retry: "/>
+                    <Run Text="{Binding RetryA}"/>
+                            </TextBlock>
+                            <TextBlock Foreground="Yellow"
+                                       FontSize="12"
+                                       FontFamily="Consolas"
+                                       Margin="30,0,0,0">
+                    <Run Text="#B Retry: "/>
+                    <Run Text="{Binding RetryB}"/>
+                            </TextBlock>
+                            <TextBlock Foreground="Lime"
+                                       FontSize="12"
+                                       FontFamily="Consolas"
+                                       Margin="30,0,0,0">
+                    <Run Text="Backup State: "/>
+                    <Run Text="{Binding BackupState}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1"
+                            Grid.Row="0"
+                            BorderBrush="Silver"
+                            BorderThickness="1"
+                            Background="{StaticResource PanelBrush}"
+                            Margin="2,2,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Margin="8,0"
+                                  Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label x:Name="lblStatus"
+                                       Grid.Column="0"
+                                       Foreground="White"
+                                       Content="Operator"
+                                       Padding="6,0"
+                                       FontWeight="SemiBold"
+                                       Height="36"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                                <Label x:Name="lblUsername"
+                                       Grid.Column="1"
+                                       Foreground="wheat"
+                                       Content="Operator"
+                                       Padding="6,0"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                            </Grid>
+                            <Grid Margin="8 0"
+                                  Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="btnUserAccount"
+                                        Background="LightSkyBlue"
+                                        Foreground="Black"
+                                        FontWeight="Bold"
+                                        Click="btnUserAccount_Click"
+                                        Height="40"
+                                        Style="{StaticResource UserButton}">
+                                    <TextBlock Text="{DynamicResource strLogin}"/>
+                                </Button>
+                            </Grid>
+                            <Separator Grid.Row="2"
+                                       Background="{StaticResource ButtonBrush}"
+                                       Margin="10 0"/>
+
+                            <!-- Exit - X icon -->
+                            <Button Margin="10 ,4"
+                                    Grid.Row="3"
+                                    Height="40"
+                                    Style="{StaticResource UserButton}"
+                                    Background="Gray"
+                                    Foreground="White"
+                                    Command="{Binding ExitCommand}">
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,10,0">
+                                    <TextBlock Text="{DynamicResource strExit}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="✕"
+                                               VerticalAlignment="Center"
+                                               Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Border Grid.Row="4"
+                                    Margin="8,6,8,8"
+                                    Padding="6,5"
+                                    Background="#383838"
+                                    BorderBrush="#6B6B6B"
+                                    BorderThickness="1"
+                                    CornerRadius="3"
+                                    ToolTip="Time remaining before automatic logout"
+                                    Visibility="{Binding IsAdminSessionVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="AUTO LOGOUT"
+                                               Foreground="#BDBDBD"
+                                               FontSize="10"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding AdminSessionCountdownText, Mode=OneWay}"
+                                               FontFamily="Consolas"
+                                               FontSize="24"
+                                               FontWeight="SemiBold"
+                                               Foreground="White"
+                                               HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1"
+                            Grid.Row="1"
+                            BorderBrush="Silver"
+                            BorderThickness="1"
+                            Background="{StaticResource PanelBrush}"
+                            Margin="2,2,0,7">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="10">
+                                <!-- Position Display #A -->
+                                <!--<Border Background="#C8003C" CornerRadius="3" Padding="2" Margin="0,0,0,5">
+                                    <TextBlock Text="#A" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                </Border>-->
+                                <!--<Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    -->
+                                <!-- Header Row -->
+                                <!--
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="X" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Y" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="θ" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+
+                                    -->
+                                <!-- Value Row -->
+                                <!--
+                                    <TextBox Grid.Row="1" Grid.Column="0" x:Name="txtXA" Text="{Binding XA, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtYA" Text="{Binding YA, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                    <TextBox Grid.Row="1" Grid.Column="2" x:Name="txtThetaA"  Text="{Binding ThetaA, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                </Grid>-->
+
+                                <!-- Position Display #B -->
+                                <!--<Border Background="#C8003C" CornerRadius="3" Padding="2" Margin="0,0,0,5">
+                                    <TextBlock Text="#B" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                </Border>-->
+                                <!--<Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    -->
+                                <!-- Header Row -->
+                                <!--
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="X" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Y" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="θ" Foreground="White" 
+                        HorizontalAlignment="Center" FontWeight="Bold" Margin="0,2"/>
+
+                                    -->
+                                <!-- Value Row -->
+                                <!--
+                                    <TextBox Grid.Row="1" Grid.Column="0" Name="txtXB" Text="{Binding XB, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtYB" Text="{Binding YB, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                    <TextBox Grid.Row="1" Grid.Column="2" x:Name="txtThetaB" Text="{Binding ThetaB, StringFormat={}{0:F3}}"
+                        Style="{StaticResource DarkTextBox}" IsReadOnly="True" 
+                        TextAlignment="Center" Margin="2"/>
+                                </Grid>-->
+
+                                <!-- Product Count -->
+                                <!--<Border Background="#C8003C" CornerRadius="3" Padding="2" Margin="0,0,0,5">
+                                    <TextBlock Text="{DynamicResource strProductCount}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                </Border>-->
+                                <!--<Grid Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    -->
+                                <!-- Headers -->
+                                <!--
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="" Foreground="White" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Text="#A" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="#B" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                                    -->
+                                <!-- Total -->
+                                <!--
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource strTotal}" Foreground="White" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Name="txtTotalA" Grid.Column="1" Text="{Binding TotalA}" Foreground="White"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Name="txtTotalB" Grid.Column="2" Text="{Binding TotalB}" Foreground="White"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+
+                                    -->
+                                <!-- OK -->
+                                <!--
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="OK" Foreground="Cyan" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Row="2" Name="txtOKA" Grid.Column="1" Text="{Binding OKA}" Foreground="Green"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="2" Name="txtOKB" Grid.Column="2" Text="{Binding OKB}" Foreground="Green"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+                                </Grid>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    -->
+                                <!-- NG -->
+                                <!--
+                                    <TextBlock Grid.Column="0" Text="NG" Foreground="Red" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Name="txtNGA" Text="{Binding NGA}" Foreground="Red"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" Name="txtNGB" Text="{Binding NGB}" Foreground="Red"
+                               FontFamily="Consolas" HorizontalAlignment="Center"/>
+                                </Grid>-->
+
+                                <!--<Button Content="{DynamicResource strReset}" Style="{StaticResource UserButton}" Command="{Binding ResetCountCommand}" Margin="0,0,0,10"/>-->
+
+                                <!-- Action Buttons -->
+                                <Button Visibility="Collapsed"
+                                        Content="Distance Inspect"
+                                        Style="{StaticResource DarkButton}"
+                                        Command="{Binding DistanceInspectCommand}"
+                                        Margin="0,0,0,5"/>
+
+                                <Separator Background="{StaticResource ButtonBrush}"
+                                           Margin="0,10"/>
+
+                                <!-- Auto Run - Play icon -->
+                                <Button Style="{StaticResource ActionButton}"
+                                        Background="#FF6600"
+                                        Foreground="White"
+                                        Command="{Binding AutoRunCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strAutoRunning}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="▶"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,5,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- Stop Auto - Stop icon -->
+                                <Button Style="{StaticResource ActionButton}"
+                                        Background="#C00000"
+                                        Foreground="White"
+                                        Command="{Binding StopAutoCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel  Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strStopAuto}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="⏹"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- Live - Video icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Name="btnLiveView"
+                                        Foreground="White"
+                                        Command="{Binding LiveCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="txtLive"
+                                                   Text="{DynamicResource strLiveCam}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="📹"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <Separator Background="{StaticResource ButtonBrush}"
+                                           Margin="0,10"/>
+                                <Button Style="{StaticResource DarkButton}"
+                                        Name="btnMainView"
+                                        Foreground="White"
+                                        Command="{Binding OpenImageViewCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strMainView}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="🏠"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+
+                                <!-- Option - Sliders icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Foreground="White"
+                                        Command="{Binding OpenOptionCommand}"
+                                        Name="btnOption"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strOption}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="☰"
+                                                   VerticalAlignment="Center"
+                                                   Margin="15,0,3,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <!-- Light Manager - Light bulb icon -->
+                                <!--<Button Style="{StaticResource DarkButton}" 
+                                        Foreground="White"
+                                        Command="{Binding OpenLightManagerCommand}" 
+                                        Name="btnLightManager"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="LIGHT MANAGER" VerticalAlignment="Center"/>
+                                        <TextBlock Text="💡" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>-->
+                                <!-- Light Manager - Light bulb icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Foreground="White"
+                                        Command="{Binding OpenlogManagerCommand}"
+                                        Name="btnlogManager"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="LOG MANAGER"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="📁"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <!-- Communication - Connection icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Foreground="White"
+                                        Command="{Binding OpenCommunicationCommand}"
+                                        Name="btnCommunication"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strCommunication}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="📡"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- Motion Control - Motor/Motion icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Foreground="White"
+                                        Command="{Binding OpenMotionControlCommand}"
+                                        Name="btnMotionControl"
+                                        Visibility="Visible"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strMotionControlTab}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="🚀"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <!-- Models Manager - Database icon -->
+                                <Button Style="{StaticResource DarkButton}"
+                                        Foreground="White"
+                                        Command="{Binding OpenModelsManagerCommand}"
+                                        Name="btnModelsManager"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strModelsmanager}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="🗄"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource DarkButton}"
+                                        Name="btnOpenTool"
+                                        Foreground="White"
+                                        Command="{Binding OpenToolBlockCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strTool}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="🛠"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource DarkButton}"
+                                        Name="btnAccountManager"
+                                        Foreground="White"
+                                        Command="{Binding AccountManagerCommand}"
+                                        Margin="0,0,0,5">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{DynamicResource strAccountManager}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="👥"
+                                                   VerticalAlignment="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                </Grid>
+
+
+            </Grid>
+        </asf:AirspaceDecorator>
+    </Grid>
+</UserControl>
