@@ -213,25 +213,35 @@ namespace BeevisionSolution.Views
                 switch (state)
                 {
                     case SequenceState.CheckingReady:
-                    case SequenceState.TrayIn:
                         if (cardStep1 != null) cardStep1.BorderBrush = activeBrush;
-                        if (txtStep1Status != null) txtStep1Status.Text = "RUNNING";
+                        if (txtStep1Status != null) txtStep1Status.Text = "READY";
                         break;
-                    case SequenceState.MovingToCapture:
+                    case SequenceState.WaitingTrigger:
+                        if (cardStep1 != null) cardStep1.BorderBrush = activeBrush;
+                        if (txtStep1Status != null) txtStep1Status.Text = "WAITING";
+                        break;
+                    case SequenceState.ClampingDown:
+                        if (cardStep1 != null) txtStep1Status.Text = "OK";
                         if (cardStep2 != null) cardStep2.BorderBrush = activeBrush;
-                        if (txtStep2Status != null) txtStep2Status.Text = "MOVING";
+                        if (txtStep2Status != null) txtStep2Status.Text = "CLAMPING";
                         break;
                     case SequenceState.TriggeringVision:
-                    case SequenceState.ProcessingVision:
-                    case SequenceState.CompensatingAndAction:
+                        if (cardStep2 != null) txtStep2Status.Text = "FORCE HELD";
                         if (cardStep3 != null) cardStep3.BorderBrush = activeBrush;
-                        if (txtStep3Status != null) txtStep3Status.Text = "INSPECT";
+                        if (txtStep3Status != null) txtStep3Status.Text = "STROBE";
                         break;
-                    case SequenceState.MovingToEnd:
-                    case SequenceState.TrayOut:
+                    case SequenceState.ProcessingVision:
+                        if (cardStep3 != null) cardStep3.BorderBrush = activeBrush;
+                        if (txtStep3Status != null) txtStep3Status.Text = "COUNTING";
+                        break;
+                    case SequenceState.UnclampingUp:
+                        if (cardStep3 != null) txtStep3Status.Text = "DONE";
+                        if (cardStep4 != null) cardStep4.BorderBrush = activeBrush;
+                        if (txtStep4Status != null) txtStep4Status.Text = "RETRACTING";
+                        break;
                     case SequenceState.FinishingCycle:
                         if (cardStep4 != null) cardStep4.BorderBrush = activeBrush;
-                        if (txtStep4Status != null) txtStep4Status.Text = "EJECT";
+                        if (txtStep4Status != null) txtStep4Status.Text = "FINISHED";
                         break;
                     case SequenceState.Idle:
                         if (txtStep1Status != null) txtStep1Status.Text = "READY";
@@ -257,33 +267,54 @@ namespace BeevisionSolution.Views
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
 
-            bool cylFwd = motion.GetCylinderForwardSensor();
-            bool vacSen = motion.GetVacuumSensor();
+            bool trigL = motion.IsTriggerLeftPressed();
+            bool trigR = motion.IsTriggerRightPressed();
+            bool forceReached = motion.IsForceTargetReached();
+            bool homeUp = motion.IsHomeUpSensorActive();
+            bool downLimit = motion.IsDownLimitSensorActive();
+            bool partPresent = motion.IsPartPresent();
 
-            // Status tiles
-            if (tileCylinder != null) tileCylinder.Background = cylFwd ? TileGreenBrush : TileOffBrush;
-            if (tileVacuum != null) tileVacuum.Background = vacSen ? TileBlueBrush : TileOffBrush;
+            // Status matrix tiles
+            if (tileForce != null) tileForce.Background = forceReached ? TileGreenBrush : TileOffBrush;
+            if (tilePart != null) tilePart.Background = partPresent ? TileBlueBrush : TileOffBrush;
             if (tileLight != null) tileLight.Background = _isLightOn ? TileGreenBrush : TileOffBrush;
 
-            // Dashboard Pneumatics text
-            if (txtCylSensorStatus != null)
+            // Two-Hand Trigger IDEC indicators
+            if (ledTriggerLeft != null) ledTriggerLeft.Fill = trigL ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (txtTriggerLeftStatus != null)
             {
-                txtCylSensorStatus.Text = cylFwd ? "Sensor: FORWARD (EXTENDED)" : "Sensor: RETRACTED";
-                txtCylSensorStatus.Foreground = cylFwd ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
+                txtTriggerLeftStatus.Text = trigL ? "PRESSED (ACTIVE)" : "RELEASED (DI 0)";
+                txtTriggerLeftStatus.Foreground = trigL ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
             }
-            if (txtVacSensorStatus != null)
+
+            if (ledTriggerRight != null) ledTriggerRight.Fill = trigR ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (txtTriggerRightStatus != null)
             {
-                txtVacSensorStatus.Text = vacSen ? "Sensor: VACUUM HOLD OK" : "Sensor: NO SUCTION";
-                txtVacSensorStatus.Foreground = vacSen ? TileBlueBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
+                txtTriggerRightStatus.Text = trigR ? "PRESSED (ACTIVE)" : "RELEASED (DI 1)";
+                txtTriggerRightStatus.Foreground = trigR ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
             }
-            if (btnQuickCylinder != null)
+
+            // Force Sensor Loadcell Bongshin feedback
+            if (ledForceReached != null) ledForceReached.Fill = forceReached ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (txtForceStatus != null)
             {
-                btnQuickCylinder.Content = motion.IsCylinderForward ? "Toggle RETRACT" : "Toggle FWD";
+                txtForceStatus.Text = forceReached ? "Force Status: TARGET FORCE HELD (DI 2)" : "Force Status: STANDBY (DI 2)";
+                txtForceStatus.Foreground = forceReached ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
             }
-            if (btnQuickVacuum != null)
-            {
-                btnQuickVacuum.Content = motion.IsVacuumOn ? "Release VACUUM" : "Hold VACUUM";
-            }
+
+            // Misumi Optical Sensors
+            if (ledHomeUpSensor != null) ledHomeUpSensor.Fill = homeUp ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (ledDownLimitSensor != null) ledDownLimitSensor.Fill = downLimit ? TileRedBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (ledPartPresentSensor != null) ledPartPresentSensor.Fill = partPresent ? TileBlueBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+
+            // Tower Light & Backlight DO status
+            bool greenDO = motion.GetDigitalOutput((short)(motion.Config?.IO?.TowerLightGreenDOBit ?? 0));
+            bool redDO = motion.GetDigitalOutput((short)(motion.Config?.IO?.TowerLightRedDOBit ?? 1));
+            bool bLightDO = motion.GetDigitalOutput((short)(motion.Config?.IO?.BacklightDOBit ?? 4));
+
+            if (ledTowerGreen != null) ledTowerGreen.Fill = greenDO ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (ledTowerRed != null) ledTowerRed.Fill = redDO ? TileRedBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+            if (ledBacklight != null) ledBacklight.Fill = (_isLightOn || bLightDO) ? TileYellowBrush : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
         }
         #endregion
 
@@ -443,18 +474,46 @@ namespace BeevisionSolution.Views
             }
         }
 
-        private void BtnToggleCylinder_Click(object sender, RoutedEventArgs e)
+        private async void BtnClampDown_Click(object sender, RoutedEventArgs e)
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
-            motion.SetCylinder(!motion.IsCylinderForward);
+            btnClampDown.IsEnabled = false;
+            if (btnQuickClamp != null) btnQuickClamp.IsEnabled = false;
+            try
+            {
+                Motion_OnLogMessage("[Manual] Hạ cơ cấu tỳ kẹp sản phẩm (Kiểm soát lực Loadcell Bongshin)...");
+                await motion.ClampDownAsync();
+            }
+            finally
+            {
+                btnClampDown.IsEnabled = true;
+                if (btnQuickClamp != null) btnQuickClamp.IsEnabled = true;
+            }
         }
 
-        private void BtnToggleVacuum_Click(object sender, RoutedEventArgs e)
+        private async void BtnRetractUp_Click(object sender, RoutedEventArgs e)
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
-            motion.SetVacuum(!motion.IsVacuumOn);
+            btnRetractUp.IsEnabled = false;
+            if (btnQuickRetract != null) btnQuickRetract.IsEnabled = false;
+            try
+            {
+                Motion_OnLogMessage("[Manual] Nâng cơ cấu tỳ về vị trí chờ mở kẹp (0 mm)...");
+                await motion.RetractUpAsync();
+            }
+            finally
+            {
+                btnRetractUp.IsEnabled = true;
+                if (btnQuickRetract != null) btnQuickRetract.IsEnabled = true;
+            }
+        }
+
+        private async void BtnSimulateTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            Motion_OnLogMessage("[Simulate] Giả lập bấm 2 nút an toàn IDEC YW1L...");
+            await MotionSequenceManager.Instance.SimulateTriggerAsync();
         }
 
         private void BtnLightToggle_Click(object sender, RoutedEventArgs e)
@@ -506,9 +565,8 @@ namespace BeevisionSolution.Views
 
             if (_teachingPoints.Count == 0)
             {
-                _teachingPoints.Add(new TeachingPoint { Id = 1, Name = "Tray In Pick", AxisIndex = 0, Position = 0.0, Speed = 100, StepType = "TrayIn", StepOrder = 1, TriggerVision = false });
-                _teachingPoints.Add(new TeachingPoint { Id = 2, Name = "Capture View 1", AxisIndex = 0, Position = 50.0, Speed = 200, StepType = "CheckVision", StepOrder = 2, TriggerVision = true, JobId = 0 });
-                _teachingPoints.Add(new TeachingPoint { Id = 3, Name = "Tray Out Place", AxisIndex = 0, Position = 200.0, Speed = 200, StepType = "TrayOut", StepOrder = 3, TriggerVision = false });
+                _teachingPoints.Add(new TeachingPoint { Id = 1, Name = "1. Standby / Retract", AxisIndex = 0, Position = 0.0, Speed = 80.0, StepType = "Standby", StepOrder = 1, TriggerVision = false });
+                _teachingPoints.Add(new TeachingPoint { Id = 2, Name = "2. Clamping / Press", AxisIndex = 0, Position = 80.0, Speed = 50.0, StepType = "CheckVision", StepOrder = 2, TriggerVision = true, JobId = 0 });
             }
         }
 
@@ -600,14 +658,6 @@ namespace BeevisionSolution.Views
             }
         }
 
-        private void CbMockRobotCmd_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cbMockRobotCmd?.SelectedItem is ComboBoxItem item)
-            {
-                MotionSequenceManager.Instance.MockRobotCommand = item.Content?.ToString() ?? "Start";
-            }
-        }
-
         private void BtnClearAlarm_Click(object sender, RoutedEventArgs e)
         {
             var motion = MotionSequenceManager.Instance.Motion;
@@ -623,6 +673,37 @@ namespace BeevisionSolution.Views
         private void BtnClearHistory_Click(object sender, RoutedEventArgs e)
         {
             _alarmHistory.Clear();
+        }
+
+        private void BtnForceServoOn_Click(object sender, RoutedEventArgs e)
+        {
+            var motion = MotionSequenceManager.Instance.Motion;
+            if (motion == null) return;
+
+            Motion_OnLogMessage($"[Diag] Executing CiA 402 Force Servo ON on Axis {_currentAxis}...");
+            bool ok = motion.ForceServoOn(_currentAxis);
+            Motion_OnLogMessage($"[Diag] Force Servo ON Axis {_currentAxis} result: {(ok ? "SUCCESS" : "FAILED")}");
+        }
+
+        private void BtnToggleEmg_Click(object sender, RoutedEventArgs e)
+        {
+            var motion = MotionSequenceManager.Instance.Motion;
+            if (motion == null) return;
+
+            bool ok = motion.ToggleEmgInversion();
+            short currentInv = motion.GetEmgInversion();
+            Motion_OnLogMessage($"[Diag] Toggled EMG Trigger Level Inversion: current = {currentInv} (Result: {(ok ? "OK" : "FAILED")})");
+        }
+
+        private void BtnScanBus_Click(object sender, RoutedEventArgs e)
+        {
+            var motion = MotionSequenceManager.Instance.Motion;
+            if (motion == null) return;
+
+            Motion_OnLogMessage("[Diag] Initiating EtherCAT Bus Scan & XML reload...");
+            bool ok = motion.ScanBus();
+            UpdateMasterStatusUI();
+            Motion_OnLogMessage($"[Diag] EtherCAT Bus Scan result: {(ok ? "SUCCESS" : "FAILED")}, Master Status = {motion.MasterStatus}");
         }
         #endregion
 
@@ -656,15 +737,21 @@ namespace BeevisionSolution.Views
                     txtHomeLowSpeed.Text = axisCfg.Homing.LowVelocity.ToString(CultureInfo.InvariantCulture);
                     txtHomeOffset.Text = axisCfg.Homing.OffsetPulses.ToString(CultureInfo.InvariantCulture);
 
-                    // IO bit mapping
+                    // Nitto IO bit mapping
                     if (cfg.IO != null)
                     {
-                        txtIoBitCylFwd.Text = cfg.IO.SensorForwardDIBit.ToString();
-                        txtIoBitCylBwd.Text = cfg.IO.SensorBackwardDIBit.ToString();
-                        txtIoBitCylDO.Text = cfg.IO.CylinderDOBit.ToString();
-                        txtIoBitVacDO.Text = cfg.IO.VacuumDOBit.ToString();
-                        txtIoBitVacSensor.Text = cfg.IO.VacuumSensorDIBit.ToString();
+                        txtIoBitTriggerLeft.Text = cfg.IO.TriggerBtnLeftDIBit.ToString();
+                        txtIoBitTriggerRight.Text = cfg.IO.TriggerBtnRightDIBit.ToString();
+                        txtIoBitForceReached.Text = cfg.IO.ForceReachedDIBit.ToString();
+                        txtIoBitSensorHomeUp.Text = cfg.IO.SensorHomeUpDIBit.ToString();
+                        txtIoBitSensorDownLimit.Text = cfg.IO.SensorDownLimitDIBit.ToString();
+                        txtIoBitSensorPartPresent.Text = cfg.IO.SensorPartPresentDIBit.ToString();
                         txtIoBitSystemStop.Text = cfg.IO.SystemStopDIBit.ToString();
+                        txtIoBitCamTrigger.Text = cfg.IO.CameraTriggerDOBit.ToString();
+                        txtIoBitTowerGreen.Text = cfg.IO.TowerLightGreenDOBit.ToString();
+                        txtIoBitTowerRed.Text = cfg.IO.TowerLightRedDOBit.ToString();
+                        txtIoBitTowerBuzzer.Text = cfg.IO.TowerBuzzerDOBit.ToString();
+                        txtIoBitBacklight.Text = cfg.IO.BacklightDOBit.ToString();
                     }
                 }
             }
@@ -712,14 +799,20 @@ namespace BeevisionSolution.Views
                 int.TryParse(txtHomeOffset.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out int hOff);
                 axisCfg.Homing.OffsetPulses = hOff;
 
-                // IO bit mapping
+                // Nitto IO bit mapping
                 if (cfg.IO == null) cfg.IO = new IOConfig();
-                int.TryParse(txtIoBitCylFwd.Text, out int cylFwdDi); cfg.IO.SensorForwardDIBit = cylFwdDi;
-                int.TryParse(txtIoBitCylBwd.Text, out int cylBwdDi); cfg.IO.SensorBackwardDIBit = cylBwdDi;
-                int.TryParse(txtIoBitCylDO.Text, out int cylDo); cfg.IO.CylinderDOBit = cylDo;
-                int.TryParse(txtIoBitVacDO.Text, out int vacDo); cfg.IO.VacuumDOBit = vacDo;
-                int.TryParse(txtIoBitVacSensor.Text, out int vacDi); cfg.IO.VacuumSensorDIBit = vacDi;
+                int.TryParse(txtIoBitTriggerLeft.Text, out int trigL); cfg.IO.TriggerBtnLeftDIBit = trigL;
+                int.TryParse(txtIoBitTriggerRight.Text, out int trigR); cfg.IO.TriggerBtnRightDIBit = trigR;
+                int.TryParse(txtIoBitForceReached.Text, out int forceDi); cfg.IO.ForceReachedDIBit = forceDi;
+                int.TryParse(txtIoBitSensorHomeUp.Text, out int homeDi); cfg.IO.SensorHomeUpDIBit = homeDi;
+                int.TryParse(txtIoBitSensorDownLimit.Text, out int downDi); cfg.IO.SensorDownLimitDIBit = downDi;
+                int.TryParse(txtIoBitSensorPartPresent.Text, out int partDi); cfg.IO.SensorPartPresentDIBit = partDi;
                 int.TryParse(txtIoBitSystemStop.Text, out int stopDi); cfg.IO.SystemStopDIBit = stopDi;
+                int.TryParse(txtIoBitCamTrigger.Text, out int camDo); cfg.IO.CameraTriggerDOBit = camDo;
+                int.TryParse(txtIoBitTowerGreen.Text, out int grnDo); cfg.IO.TowerLightGreenDOBit = grnDo;
+                int.TryParse(txtIoBitTowerRed.Text, out int redDo); cfg.IO.TowerLightRedDOBit = redDo;
+                int.TryParse(txtIoBitTowerBuzzer.Text, out int buzDo); cfg.IO.TowerBuzzerDOBit = buzDo;
+                int.TryParse(txtIoBitBacklight.Text, out int bLightDo); cfg.IO.BacklightDOBit = bLightDo;
 
                 SaveConfigToFile(cfg);
                 MessageBox.Show("Advanced Machine Configuration saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
