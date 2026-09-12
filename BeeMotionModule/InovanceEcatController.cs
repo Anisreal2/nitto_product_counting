@@ -128,8 +128,15 @@ namespace BeeMotionModule
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string sysPath = Path.Combine(baseDir, _config.ConfigFileSys);
-                string drvPath = Path.Combine(baseDir, _config.ConfigFileDrv);
+                // Ưu tiên tìm trong thư mục Profile, nếu không có thì lấy ở thư mục chạy bin Debug
+                string sysPath = (!string.IsNullOrEmpty(_config.ConfigDirectory) && File.Exists(Path.Combine(_config.ConfigDirectory, _config.ConfigFileSys)))
+                    ? Path.Combine(_config.ConfigDirectory, _config.ConfigFileSys)
+                    : Path.Combine(baseDir, _config.ConfigFileSys);
+                string drvPath = (!string.IsNullOrEmpty(_config.ConfigDirectory) && File.Exists(Path.Combine(_config.ConfigDirectory, _config.ConfigFileDrv)))
+                    ? Path.Combine(_config.ConfigDirectory, _config.ConfigFileDrv)
+                    : Path.Combine(baseDir, _config.ConfigFileDrv);
+                Log($"[Motion] Sử dụng SysCfg: '{sysPath}'");
+                Log($"[Motion] Sử dụng DrvCfg: '{drvPath}'");
 
                 if (!File.Exists(sysPath)) sysPath = Path.GetFullPath(_config.ConfigFileSys);
                 if (!File.Exists(drvPath)) drvPath = Path.GetFullPath(_config.ConfigFileDrv);
@@ -275,6 +282,7 @@ namespace BeeMotionModule
                 {
                     st.IsError = false;
                     st.ErrorCode = 0;
+                    st.EmergencyStop = false;
                 }
                 Log($"[Motion Simulate] Clear Alarm Axis {axis}");
                 return true;
@@ -284,11 +292,21 @@ namespace BeeMotionModule
 
             try
             {
+                // 1. Đảo mức kích hoạt chân Emergency để ngắt cờ EMG phần cứng trên card
+                ImcApi.IMC_SetEmgTrigLevelInv(_cardHandle, 0);
+
+                // 2. Xóa trạng thái trục trên card (gỡ cờ EMG và ALARM)
                 ImcApi.IMC_ClrAxSts(_cardHandle, axis, 1);
+
                 uint abortCode = 0;
-                // CiA 402 Fault Reset: 0x6040 bit 7 = 1 (0x80)
+                // 3. Reset Fault Driver theo chuẩn CiA 402 (0x6040 bit 7 = 1)
                 ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6040, 0, new byte[] { 0x80, 0x00 }, 2, ref abortCode);
-                Log($"[Motion] Reset Alarm command sent for Axis {axis}.");
+                Thread.Sleep(50);
+
+                // 4. Đưa Driver về trạng thái Ready to Switch On (Controlword = 0x06)
+                ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6040, 0, new byte[] { 0x06, 0x00 }, 2, ref abortCode);
+
+                Log($"[Motion] Reset Alarm & Emergency cleared successfully for Axis {axis}.");
                 return true;
             }
             catch (Exception ex)
@@ -297,6 +315,7 @@ namespace BeeMotionModule
                 return false;
             }
         }
+
 
         public bool SetZero(short axis)
         {

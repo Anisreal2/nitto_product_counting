@@ -1,9 +1,12 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BeeMotionModule;
 using BeeMotionModule.Models;
+using BeevisionSolution.Jobs;
+using log4net;
 
 namespace BeevisionSolution.Controller
 {
@@ -47,7 +50,7 @@ namespace BeevisionSolution.Controller
         public bool IsTestProgramMode { get; set; } = false;
         public string MockVisionResult { get; set; } = "OK"; // "OK", "NG1", "NG2", "NG3"
         public int WatchdogTimeoutMs { get; set; } = 30000;
-
+        public short BrakeDOPin { get; set; } = 1;
         public event Action<SequenceState> OnStateChanged;
         public event Action<string> OnLog;
         public event Action<int, double, bool> OnCycleCompleted; // cycleCount, cycleTimeMs, isOk
@@ -59,6 +62,26 @@ namespace BeevisionSolution.Controller
         {
             Motion = new InovanceEcatController();
             Motion.OnLogMessage += (msg) => OnLog?.Invoke(msg);
+        }
+        /// <summary>
+        /// Reads Digital Input state from PCIe IO Card (via IoJobCtrl) or fallback to Motion Card.
+        /// </summary>
+        public bool GetDigitalInput(int pinNo)
+        {
+            // Ưu tiên đọc từ Card PCIe IO rời (PCIE-E2I12O16)
+            var pcieIo = IoJobCtrl.GetIOcardCtrl();
+            if (pcieIo != null && pcieIo.IsInit)
+            {
+                return pcieIo.GetInputState(pinNo);
+            }
+
+            // Nếu không có card PCIe thì đọc từ Card Motion Inovance
+            if (Motion != null)
+            {
+                return Motion.GetDigitalInput((short)pinNo);
+            }
+
+            return false;
         }
 
         public bool Initialize(MotionConfig config)
@@ -76,6 +99,51 @@ namespace BeevisionSolution.Controller
                 Log("[Sequence Error] Motion initialization failed.");
             }
             return ok;
+        }
+        /// <summary>
+        /// Standard Sequence: Release Brake (PCIe DO) -> Clear Emergency/Alarm -> Servo ON
+        /// </summary>
+        public async Task<bool> EnableServoSequenceAsync(short axis = 0, CancellationToken ct = default)
+        {
+            if (Motion == null) return false;
+
+            try
+            {
+                Log($"[Servo Sequence] Step 1: Releasing motor brake via PCIe DO {BrakeDOPin}...");
+                var pcieIo = IoJobCtrl.GetIOcardCtrl();
+                if (pcieIo != null && pcieIo.IsInit)
+                {
+                    pcieIo.SetPinOutput(BrakeDOPin, true); // ON chân nhả phanh
+                }
+                else
+                {
+                    // Fallback sang motion nếu dùng onboard
+                    Motion.SetDigitalOutput(BrakeDOPin, true);
+                }
+                await Task.Delay(150, ct); // Chờ rơle mở phanh vật lý
+
+                Log($"[Servo Sequence] Step 2: Clearing Emergency & Resetting Driver Alarm for Axis {axis}...");
+                Motion.ClearAlarm(axis);
+                await Task.Delay(100, ct); // Chờ driver xóa lỗi
+
+                Log($"[Servo Sequence] Step 3: Turning Servo ON for Axis {axis}...");
+                bool svOk = Motion.ServoOn(axis);
+                if (svOk)
+                {
+                    Log($"[Servo Sequence] >>> Axis {axis}: Servo ON successfully!");
+                    return true;
+                }
+                else
+                {
+                    Log($"[Servo Sequence Error] Axis {axis}: Servo ON failed!");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"[Servo Sequence Exception] Axis {axis}: {ex.Message}");
+                return false;
+            }
         }
 
         public async Task<bool> StartCycleAsync(bool continuous = false, Func<int, Task<bool>> onVisionJobTrigger = null)
@@ -137,6 +205,10 @@ namespace BeevisionSolution.Controller
         {
             return StartCycleAsync(continuous, onVisionProcessTrigger != null ? new Func<int, Task<bool>>(jobId => onVisionProcessTrigger()) : null);
         }
+        // Default DI pin definitions for two-hand start buttons and Loadcell sensor
+        public short StartBtn1DIPin { get; set; } = 4; // DI 4: Left Start button
+        public short StartBtn2DIPin { get; set; } = 5; // DI 5: Right Start button
+        public short LoadcellDIPin { get; set; } = 6;  // DI 6: Loadcell sensor
 
         public async Task<bool> SimulateTriggerAsync()
         {
@@ -149,75 +221,82 @@ namespace BeevisionSolution.Controller
             short axis = 0;
             var cfg = Motion.Config;
 
-            // STEP 1: Safety & Servo Check
+           
+            // STEP 1: Safety & Servo Status Check
             SetState(SequenceState.CheckingReady);
             if (!Motion.IsMasterOp && !cfg.Simulate)
             {
-                Log("[Sequence Error] Leadshine EtherCAT Master not in OP state. Please check network cable and driver.");
+                Log("[Sequence Error] EtherCAT Master is not in OP state (State 6). Please check network cable and driver.");
                 SetState(SequenceState.Error);
                 return false;
             }
 
-            var axisSts = Motion.GetAxisState(axis);
-            if (!axisSts.IsServoOn)
+            if (!Motion.GetAxisState(axis).IsServoOn)
             {
-                Log("[Sequence] Automatically turning Servo ON...");
-                if (!Motion.ServoOn(axis))
+                bool svOk = await EnableServoSequenceAsync(axis, ct);
+                if (!svOk)
                 {
-                    Log("[Sequence Error] Cannot turn Servo ON.");
+                    Log("[Cycle Error] Failed to enable Servo. Cycle aborted.");
                     SetState(SequenceState.Error);
                     return false;
                 }
                 await Task.Delay(150, ct);
             }
 
-            // STEP 2: Waiting for Two-Hand Trigger IDEC buttons (if in Auto Mode and not simulation)
+            // STEP 2: Waiting for Two-Hand Trigger buttons (if in Auto / Continuous Mode and not simulation)
             if (IsContinuousMode && !IsTestProgramMode && !cfg.Simulate)
             {
                 SetState(SequenceState.WaitingTrigger);
-                Log("[Sequence] Waiting for operator to press both IDEC trigger buttons simultaneously...");
+                Log($"[Sequence] Waiting for operator to press both safety trigger buttons simultaneously (DI {StartBtn1DIPin} & DI {StartBtn2DIPin})...");
 
-                var triggerWaitStart = DateTime.Now;
                 bool triggered = false;
-
                 while (!ct.IsCancellationRequested && IsRunning)
                 {
-                    bool left = Motion.IsTriggerLeftPressed();
-                    bool right = Motion.IsTriggerRightPressed();
+                    bool left = Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin);
+                    bool right = Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin);
 
                     if (left && right)
                     {
-                        Log("[Sequence Trigger] Both IDEC safety buttons pressed -> Starting clamping cycle!");
-                        triggered = true;
-                        break;
+                        await Task.Delay(30, ct); // Debounce 30ms
+                        bool leftDebounce = Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin);
+                        bool rightDebounce = Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin);
+
+                        if (leftDebounce && rightDebounce)
+                        {
+                            Log("[Sequence Trigger] Both safety trigger buttons pressed and confirmed -> Starting clamping cycle!");
+                            triggered = true;
+                            break;
+                        }
                     }
 
-                    await Task.Delay(20, ct);
+                    await Task.Delay(10, ct);
                 }
 
                 if (!triggered) return false;
             }
 
-            // STEP 3: Clamp Down (Hạ cơ cấu tỳ kẹp phẳng tệp sản phẩm, kiểm soát lực qua Loadcell Bongshin)
+            // STEP 3: Clamp Down (Hạ cơ cấu tỳ kẹp phẳng tệp sản phẩm, kiểm soát lực qua Loadcell Bongshin hoặc vị trí Teaching Point)
             SetState(SequenceState.ClampingDown);
-            double clampPos = cfg?.ClampingPosition ?? 80.0;
-            double clampSpeed = cfg?.ClampingVelocity ?? 50.0;
-            Log($"[Sequence] Clamping down to {clampPos:F2} mm (Monitoring Bongshin loadcell force)...");
+            var teachPt = cfg?.TeachingPoints?.Find(p => p.TriggerVision || p.StepType == "CheckVision");
+            double clampPos = teachPt != null && teachPt.Position > 0 ? teachPt.Position : (cfg?.ClampingPosition ?? (cfg != null && cfg.CapturePosition > 0 ? cfg.CapturePosition : 80.0));
+            double clampSpeed = teachPt != null && teachPt.Speed > 0 ? teachPt.Speed : (cfg?.ClampingVelocity ?? 50.0);
+            int dwellTime = teachPt != null && teachPt.DwellTimeMs > 0 ? teachPt.DwellTimeMs : (cfg?.ForceDwellTimeMs > 0 ? cfg.ForceDwellTimeMs : 150);
+            int visionJobId = teachPt != null ? teachPt.JobId : 0;
 
+            Log($"[Sequence] Clamping down to {clampPos:F2} mm (Speed {clampSpeed:F1} mm/s, monitoring Bongshin loadcell force)...");
             bool clampOk = await Motion.ClampDownAsync(clampPos, clampSpeed, ct);
             if (!clampOk)
             {
-                Log("[Sequence Error] Clamping down command failed.");
+                Log("[Sequence Error] Clamping down command failed or timed out.");
                 SetState(SequenceState.Error);
                 return false;
             }
 
-            // STEP 4: Force Dwell & Trigger Vision Backlight
+            // STEP 4: Force Dwell & Turn ON Backlight
             SetState(SequenceState.TriggeringVision);
-            int forceDwell = cfg?.ForceDwellTimeMs > 0 ? cfg.ForceDwellTimeMs : 150;
-            await Task.Delay(forceDwell, ct);
+            await Task.Delay(dwellTime, ct);
 
-            // Turn ON Backlight
+            // Turn ON Backlight for inspection
             if (cfg?.IO != null)
             {
                 Motion.SetDigitalOutput((short)cfg.IO.BacklightDOBit, true);
@@ -225,25 +304,33 @@ namespace BeevisionSolution.Controller
 
             // STEP 5: Vision Processing (Đếm số lượng 100 pcs & Kiểm tra ngược mặt)
             SetState(SequenceState.ProcessingVision);
-            Log("[Sequence Vision] Triggering 65MP Camera & Cognex VisionPro processing...");
+            Log($"[Sequence Vision] Triggering camera & Cognex VisionPro processing (Job ID {visionJobId})...");
 
             bool visionOk = true;
-            if (IsTestProgramMode)
+            try
             {
-                await Task.Delay(200, ct);
-                visionOk = string.Equals(MockVisionResult, "OK", StringComparison.OrdinalIgnoreCase);
-                Log($"[Sequence Test Program] Mock Vision Result = {MockVisionResult} (Success: {visionOk})");
+                if (IsTestProgramMode)
+                {
+                    await Task.Delay(200, ct);
+                    visionOk = string.Equals(MockVisionResult, "OK", StringComparison.OrdinalIgnoreCase);
+                    Log($"[Sequence Test Program] Mock Vision Result = {MockVisionResult} (Success: {visionOk})");
+                }
+                else if (onVisionJobTrigger != null)
+                {
+                    visionOk = await onVisionJobTrigger(visionJobId);
+                }
+                else
+                {
+                    visionOk = await JobController.RunJobByIdAsync(visionJobId);
+                }
             }
-            else if (onVisionJobTrigger != null)
+            catch (Exception ex)
             {
-                visionOk = await onVisionJobTrigger.Invoke(0);
-            }
-            else
-            {
-                visionOk = await JobController.RunJobByIdAsync(0);
+                Log($"[Vision Error] Job {visionJobId} execution failed: {ex.Message}");
+                visionOk = false;
             }
 
-            Log($"[Sequence Vision] Result: {(visionOk ? "OK (Count 100 & Correct Orientation)" : "NG (Quantity Mismatch or Inverted)")}");
+            Log($"[Sequence Vision] Result: {(visionOk ? "PASS (OK - Count 100 & Correct Orientation)" : "FAIL (NG - Quantity Mismatch or Inverted)")}");
 
             // STEP 6: Unclamp & Retract Up (Nâng trục tỳ mở kẹp về vị trí chờ)
             SetState(SequenceState.UnclampingUp);
@@ -261,7 +348,15 @@ namespace BeevisionSolution.Controller
                 Log("[Sequence Warning] Retract press axis warning or timeout.");
             }
 
-            // STEP 7: Report & Tower Light Indication
+            // STEP 7: Anti-tie-down protection: Ensure operator releases both buttons before allowing next cycle
+            while (!ct.IsCancellationRequested &&
+                   ((Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin)) ||
+                    (Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin))))
+            {
+                await Task.Delay(30, ct);
+            }
+
+            // STEP 8: Report & Tower Light Indication
             SetState(SequenceState.FinishingCycle);
             if (cfg?.IO != null)
             {
@@ -310,7 +405,7 @@ namespace BeevisionSolution.Controller
             var sts = Motion.GetAxisState(axis);
             pt.Position = Math.Round(sts.ActualPosition, 3);
             pt.AxisIndex = axis;
-            Log($"[Teaching] Đã cập nhật tọa độ điểm '{pt.Name}' = {pt.Position:F3} mm");
+            Log($"[Teaching] Updated Position '{pt.Name}' = {pt.Position:F3} mm");
             return true;
         }
 

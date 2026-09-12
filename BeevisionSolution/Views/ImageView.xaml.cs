@@ -7,6 +7,7 @@ using BeevisionSolution.Utils;
 using BeevisionSolution.ViewComponents;
 using Cognex.VisionPro;
 using Cognex.VisionPro.ToolBlock;
+using CsvHelper;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,7 @@ namespace BeevisionSolution.Views
         public ImageView()
         {
             InitializeComponent();
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this)) return;
             CurrentInstance = this;
             _autoLockTimer = new DispatcherTimer();
             _autoLockTimer.Interval = TimeSpan.FromSeconds(1);
