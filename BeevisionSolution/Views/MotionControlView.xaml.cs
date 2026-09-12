@@ -66,6 +66,7 @@ namespace BeevisionSolution.Views
 
         private void MotionControlView_Loaded(object sender, RoutedEventArgs e)
         {
+            MotionSequenceManager.Instance.AttachPCIeIO();
             InitIoList();
             icDigitalInputs.ItemsSource = DiItems;
             icDigitalOutputs.ItemsSource = DoItems;

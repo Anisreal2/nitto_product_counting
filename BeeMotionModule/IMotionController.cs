@@ -47,6 +47,11 @@ namespace BeeMotionModule
         bool GetDigitalInput(short diPin);
         bool GetDigitalOutput(short doPin);
 
+        // External IO delegation (for PCIe IO Card routing)
+        Func<short, bool> ExternalDiReader { get; set; }
+        Action<short, bool> ExternalDoWriter { get; set; }
+        Func<short, bool> ExternalDoReader { get; set; }
+
         // Nitto Machine Specific Helpers
         bool IsTriggerLeftPressed();
         bool IsTriggerRightPressed();

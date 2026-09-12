@@ -1,4 +1,4 @@
-﻿using BeevisionSolution.Utils;
+using BeevisionSolution.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -272,6 +272,33 @@ namespace BeevisionSolution.Jobs
                 return false;
 
             return _ioCard.GetOutputState(pinNo);
+        }
+
+        public bool GetChannelInput(int channel)
+        {
+            if (_ioCard is PcieE2I12O16IOControl pcie)
+            {
+                return pcie.GetChannelInput(channel);
+            }
+            return GetInputState(channel + 1);
+        }
+
+        public bool SetChannelOutput(int channel, bool value)
+        {
+            if (_ioCard is PcieE2I12O16IOControl pcie)
+            {
+                return pcie.SetChannelOutput(channel, value);
+            }
+            return SetPinOutput(channel + 1, value);
+        }
+
+        public bool GetChannelOutput(int channel)
+        {
+            if (_ioCard is PcieE2I12O16IOControl pcie)
+            {
+                return pcie.GetChannelOutput(channel);
+            }
+            return GetOutputState(channel + 1);
         }
 
         public void RefreshIOState()

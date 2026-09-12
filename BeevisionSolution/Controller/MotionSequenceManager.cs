@@ -62,7 +62,44 @@ namespace BeevisionSolution.Controller
         {
             Motion = new InovanceEcatController();
             Motion.OnLogMessage += (msg) => OnLog?.Invoke(msg);
+            AttachPCIeIO();
         }
+
+        /// <summary>
+        /// Links PCIe IO Card (PCIE-E2I12O16) to Motion Controller so machine cycle and UI use PCIe IO channels.
+        /// </summary>
+        public void AttachPCIeIO()
+        {
+            try
+            {
+                var pcieIo = IoJobCtrl.GetIOcardCtrl();
+                if (pcieIo != null)
+                {
+                    if (!pcieIo.IsInit)
+                    {
+                        pcieIo.InitGPIO();
+                        if (pcieIo.IsInit)
+                        {
+                            var ioThread = new Thread(pcieIo.DoSync) { IsBackground = true };
+                            ioThread.Start();
+                        }
+                    }
+
+                    if (pcieIo.IsInit && Motion != null)
+                    {
+                        Motion.ExternalDiReader = pin => pcieIo.GetChannelInput((int)pin);
+                        Motion.ExternalDoWriter = (pin, val) => pcieIo.SetChannelOutput((int)pin, val);
+                        Motion.ExternalDoReader = pin => pcieIo.GetChannelOutput((int)pin);
+                        Log("[Sequence] Linked PCIe IO Card (PCIE-E2I12O16) to Motion & Sequence subsystem.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"[Sequence Exception] AttachPCIeIO error: {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// Reads Digital Input state from PCIe IO Card (via IoJobCtrl) or fallback to Motion Card.
         /// </summary>
@@ -72,7 +109,7 @@ namespace BeevisionSolution.Controller
             var pcieIo = IoJobCtrl.GetIOcardCtrl();
             if (pcieIo != null && pcieIo.IsInit)
             {
-                return pcieIo.GetInputState(pinNo);
+                return pcieIo.GetChannelInput(pinNo);
             }
 
             // Nếu không có card PCIe thì đọc từ Card Motion Inovance
@@ -84,9 +121,29 @@ namespace BeevisionSolution.Controller
             return false;
         }
 
+        /// <summary>
+        /// Sets Digital Output state on PCIe IO Card or fallback to Motion Card.
+        /// </summary>
+        public bool SetDigitalOutput(int pinNo, bool state)
+        {
+            var pcieIo = IoJobCtrl.GetIOcardCtrl();
+            if (pcieIo != null && pcieIo.IsInit)
+            {
+                return pcieIo.SetChannelOutput(pinNo, state);
+            }
+
+            if (Motion != null)
+            {
+                return Motion.SetDigitalOutput((short)pinNo, state);
+            }
+
+            return false;
+        }
+
         public bool Initialize(MotionConfig config)
         {
             Log("[Sequence] Initializing Nitto Motion Control subsystem...");
+            AttachPCIeIO();
             bool ok = Motion.Init(config);
             if (ok)
             {

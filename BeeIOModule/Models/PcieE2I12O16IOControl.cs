@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -99,6 +99,7 @@ namespace BeeIOModule.Models
 
         public override bool SetPinOutput(int pinNo, bool value)
         {
+            if (pinNo == 0) pinNo = 1; // Hỗ trợ fallback nếu truyền 0-based bit index
             if (!ValidatePinNumber(pinNo, false))
                 return false;
 
@@ -139,6 +140,7 @@ namespace BeeIOModule.Models
 
         public override bool GetInputState(int pinNo)
         {
+            if (pinNo == 0) pinNo = 1; // Hỗ trợ fallback nếu truyền 0-based bit index
             if (!ValidatePinNumber(pinNo, true))
                 return false;
 
@@ -174,6 +176,7 @@ namespace BeeIOModule.Models
 
         public override bool GetOutputState(int pinNo)
         {
+            if (pinNo == 0) pinNo = 1; // Hỗ trợ fallback nếu truyền 0-based bit index
             if (!ValidatePinNumber(pinNo, false))
                 return false;
 
@@ -197,6 +200,24 @@ namespace BeeIOModule.Models
             {
                 return ArrOutput[pinNo - 1]; // Return cached value on error
             }
+        }
+
+        public bool GetChannelInput(int channel)
+        {
+            if (channel < 0 || channel >= InputChannels) return false;
+            return GetInputState(channel + 1);
+        }
+
+        public bool SetChannelOutput(int channel, bool value)
+        {
+            if (channel < 0 || channel >= OutputChannels) return false;
+            return SetPinOutput(channel + 1, value);
+        }
+
+        public bool GetChannelOutput(int channel)
+        {
+            if (channel < 0 || channel >= OutputChannels) return false;
+            return GetOutputState(channel + 1);
         }
 
         public override void SetAllOutputsLow()

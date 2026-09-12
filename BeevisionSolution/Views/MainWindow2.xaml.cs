@@ -509,24 +509,24 @@ namespace BeevisionSolution.Views
             Bug("Init IO cards...");
             IoJobCtrl.LoadIoConfig();
             ioCard = IoJobCtrl.GetIOcardCtrl();
-            if (Settings.EnableIOController)
+            if (ioCard != null)
             {
-                if (ioCard != null)
+                if (!ioCard.IsInit)
                 {
                     ioCard.InitGPIO();
-                    ioCard.OnPinTriggered += OnIOTriggered;
-                    var ioThread = new Thread(ioCard.DoSync);
-                    ioThread.IsBackground = true;
-                    Bug("Before start");
-                    ioThread.Start();
-                    Bug("IO controller inits successfully!");
                 }
-                else
-                {
-                    Bug("IO card controller is null");
-                }
-                IoJobCtrl.LoadIoJobs();
+                ioCard.OnPinTriggered += OnIOTriggered;
+                var ioThread = new Thread(ioCard.DoSync);
+                ioThread.IsBackground = true;
+                Bug("Before start");
+                ioThread.Start();
+                Bug("IO controller inits successfully!");
             }
+            else
+            {
+                Bug("IO card controller is null");
+            }
+            IoJobCtrl.LoadIoJobs();
         }
 
         private async void OnIOTriggered(int pinNo, bool isOn, IpcIOControl ioCard)

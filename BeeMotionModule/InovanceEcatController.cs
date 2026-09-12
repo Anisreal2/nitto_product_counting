@@ -696,8 +696,18 @@ namespace BeeMotionModule
             OnLogMessage?.Invoke($"[{DateTime.Now:HH:mm:ss.fff}] {message}");
         }
 
+        public Func<short, bool> ExternalDiReader { get; set; }
+        public Action<short, bool> ExternalDoWriter { get; set; }
+        public Func<short, bool> ExternalDoReader { get; set; }
+
         public bool SetDigitalOutput(short doPin, bool state)
         {
+            if (ExternalDoWriter != null)
+            {
+                ExternalDoWriter(doPin, state);
+                return true;
+            }
+
             if (_config.Simulate)
             {
                 Log($"[Motion Sim] Set DO Pin {doPin} = {(state ? "ON" : "OFF")}");
@@ -724,6 +734,11 @@ namespace BeeMotionModule
 
         public bool GetDigitalInput(short diPin)
         {
+            if (ExternalDiReader != null)
+            {
+                return ExternalDiReader(diPin);
+            }
+
             if (_config.Simulate) return false;
             if (_cardHandle == 0) return false;
 
@@ -903,6 +918,11 @@ namespace BeeMotionModule
 
         public bool GetDigitalOutput(short doPin)
         {
+            if (ExternalDoReader != null)
+            {
+                return ExternalDoReader(doPin);
+            }
+
             if (_config.Simulate)
             {
                 if (doPin == (_config?.IO?.CylinderDOBit ?? 0)) return _isCylinderForward;

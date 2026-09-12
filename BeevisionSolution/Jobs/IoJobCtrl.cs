@@ -1,4 +1,4 @@
-﻿using BeevisionSolution.Utils;
+using BeevisionSolution.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,13 +46,25 @@ namespace BeevisionSolution.Jobs
             return null;
         }
 
+        private static IpcIOControl _defaultPcieCard;
         public static IpcIOControl GetIOcardCtrl()
         {
             if (_lstIOCards != null && _lstIOCards.Count > 0)
             {
                 return _lstIOCards[0];
             }
-            return null;
+            if (_defaultPcieCard == null)
+            {
+                _defaultPcieCard = new IpcIOControl
+                {
+                    Name = "PCIE-E2I12O16",
+                    CardType = "PcieE2I12O16",
+                    CardId = 0,
+                    InputChannels = 12,
+                    OutputChannels = 16
+                };
+            }
+            return _defaultPcieCard;
         }
 
     }
