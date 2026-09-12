@@ -9,6 +9,7 @@
              mc:Ignorable="d"
              xmlns:asf="clr-namespace:Microsoft.DwayneNeed.Interop;assembly=Microsoft.DwayneNeed"
              xmlns:converters="clr-namespace:BeevisionSolution.Converters"
+             xmlns:viewComp="clr-namespace:BeevisionSolution.ViewComponents"
              Loaded="UserControl_Loaded"
              Background="{StaticResource PanelBrush}">
     <UserControl.Resources>
@@ -40,8 +41,30 @@
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Margin="0,0,0,5">
-                        <local:MainGrid x:Name="dspGrid"
-                                        IsShowToolButtons="False"/>
+                        <Grid x:Name="mainSplitGrid">
+                            <Grid.ColumnDefinitions>
+                                <!-- Camera View (~58%) -->
+                                <ColumnDefinition Width="58*" MinWidth="350"/>
+                                <!-- Splitter -->
+                                <ColumnDefinition Width="4"/>
+                                <!-- Motion Main Dashboard (~42%) -->
+                                <ColumnDefinition Width="42*" MinWidth="360"/>
+                            </Grid.ColumnDefinitions>
+
+                            <local:MainGrid x:Name="dspGrid"
+                                            Grid.Column="0"
+                                            IsShowToolButtons="False"/>
+
+                            <GridSplitter Grid.Column="1"
+                                          Width="4"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch"
+                                          Background="#3F3F46"
+                                          ShowsPreview="False"/>
+
+                            <viewComp:MotionMainDashboardView x:Name="motionDashboardView"
+                                                              Grid.Column="2"/>
+                        </Grid>
                     </ContentControl>
                     <!-- Status Bar between cameras -->
                     <Border Visibility="Collapsed"

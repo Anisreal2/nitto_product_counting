@@ -57,6 +57,58 @@ namespace BeevisionSolution.Views
         private bool _isAutoMode = false;
         private bool _isLightOn = false;
 
+        #region Fallback Controls (Migrated to MotionMainDashboardView)
+        private readonly Border tileSvOn = null;
+        private readonly Border tileInp = null;
+        private readonly Border tileHome = null;
+        private readonly Border tileLmPos = null;
+        private readonly Border tileLmNeg = null;
+        private readonly Border tileAlm = null;
+        private readonly Border tileEmg = null;
+        private readonly Border tileBusy = null;
+
+        private readonly TextBlock txtSeqStateBadge = null;
+        private readonly TextBlock txtSeqCycleCount = null;
+        private readonly TextBlock txtSeqCycleTime = null;
+
+        private readonly Border cardStep1 = null;
+        private readonly Border cardStep2 = null;
+        private readonly Border cardStep3 = null;
+        private readonly Border cardStep4 = null;
+
+        private readonly TextBlock txtStep1Status = null;
+        private readonly TextBlock txtStep2Status = null;
+        private readonly TextBlock txtStep3Status = null;
+        private readonly TextBlock txtStep4Status = null;
+
+        private readonly Border tileForce = null;
+        private readonly Border tilePart = null;
+        private readonly Border tileLight = null;
+
+        private readonly System.Windows.Shapes.Ellipse ledTriggerLeft = null;
+        private readonly TextBlock txtTriggerLeftStatus = null;
+        private readonly System.Windows.Shapes.Ellipse ledTriggerRight = null;
+        private readonly TextBlock txtTriggerRightStatus = null;
+        private readonly System.Windows.Shapes.Ellipse ledForceReached = null;
+        private readonly TextBlock txtForceStatus = null;
+        private readonly System.Windows.Shapes.Ellipse ledHomeUpSensor = null;
+        private readonly System.Windows.Shapes.Ellipse ledDownLimitSensor = null;
+        private readonly System.Windows.Shapes.Ellipse ledPartPresentSensor = null;
+
+        private readonly System.Windows.Shapes.Ellipse ledTowerGreen = null;
+        private readonly System.Windows.Shapes.Ellipse ledTowerRed = null;
+        private readonly System.Windows.Shapes.Ellipse ledBacklight = null;
+
+        private readonly Button btnAutoMode = null;
+        private readonly Button btnManualMode = null;
+        private readonly TextBlock txtModeStatus = null;
+        private readonly Button btnHome = null;
+        private readonly Button btnClampDown = null;
+        private readonly Button btnRetractUp = null;
+
+        private readonly TextBox txtMotionLogs = null;
+        #endregion
+
         public MotionControlView()
         {
             InitializeComponent();
@@ -157,25 +209,31 @@ namespace BeevisionSolution.Views
                 txtActualVel.Text = $"{state.ActualVelocity:F1} mm/s";
 
                 // Update Status Matrix Tiles
-                tileSvOn.Background = state.IsServoOn ? TileGreenBrush : TileOffBrush;
-                tileInp.Background = state.IsInPosition ? TileBlueBrush : TileOffBrush;
-                tileHome.Background = state.IsHomed ? TileGreenBrush : TileOffBrush;
-                tileLmPos.Background = state.LimitPositive ? TileRedBrush : TileOffBrush;
-                tileLmNeg.Background = state.LimitNegative ? TileRedBrush : TileOffBrush;
-                tileAlm.Background = state.IsError ? TileRedBrush : TileOffBrush;
-                tileEmg.Background = state.EmergencyStop ? TileRedBrush : TileOffBrush;
-                tileBusy.Background = state.IsBusy ? TileYellowBrush : TileOffBrush;
+                if (tileSvOn != null) tileSvOn.Background = state.IsServoOn ? TileGreenBrush : TileOffBrush;
+                if (tileInp != null) tileInp.Background = state.IsInPosition ? TileBlueBrush : TileOffBrush;
+                if (tileHome != null) tileHome.Background = state.IsHomed ? TileGreenBrush : TileOffBrush;
+                if (tileLmPos != null) tileLmPos.Background = state.LimitPositive ? TileRedBrush : TileOffBrush;
+                if (tileLmNeg != null) tileLmNeg.Background = state.LimitNegative ? TileRedBrush : TileOffBrush;
+                if (tileAlm != null) tileAlm.Background = state.IsError ? TileRedBrush : TileOffBrush;
+                if (tileEmg != null) tileEmg.Background = state.EmergencyStop ? TileRedBrush : TileOffBrush;
+                if (tileBusy != null) tileBusy.Background = state.IsBusy ? TileYellowBrush : TileOffBrush;
 
                 // Update Servo Button Text
-                btnServoToggle.Content = state.IsServoOn ? "Servo OFF" : "Servo ON";
-                btnServoToggle.Background = state.IsServoOn ? TileRedBrush : TileGreenBrush;
+                if (btnServoToggle != null)
+                {
+                    btnServoToggle.Content = state.IsServoOn ? "Servo OFF" : "Servo ON";
+                    btnServoToggle.Background = state.IsServoOn ? TileRedBrush : TileGreenBrush;
+                }
 
                 // Alarm detection
                 uint currentErr = (uint)state.RawStatus;
                 if (state.IsError)
                 {
-                    txtAlarmCode.Text = $"0x{currentErr:X4} (Axis Error)";
-                    txtAlarmCode.Foreground = TileRedBrush;
+                    if (txtAlarmCode != null)
+                    {
+                        txtAlarmCode.Text = $"0x{currentErr:X4} (Axis Error)";
+                        txtAlarmCode.Foreground = TileRedBrush;
+                    }
 
                     if (!_wasInError || currentErr != _lastErrorCode)
                     {
@@ -198,8 +256,11 @@ namespace BeevisionSolution.Views
                 }
                 else
                 {
-                    txtAlarmCode.Text = "0x0000 (Normal / No Error)";
-                    txtAlarmCode.Foreground = TileGreenBrush;
+                    if (txtAlarmCode != null)
+                    {
+                        txtAlarmCode.Text = "0x0000 (Normal / No Error)";
+                        txtAlarmCode.Foreground = TileGreenBrush;
+                    }
                     _wasInError = false;
                 }
             });
@@ -372,10 +433,13 @@ namespace BeevisionSolution.Views
         private void BtnAutoMode_Click(object sender, RoutedEventArgs e)
         {
             _isAutoMode = true;
-            btnAutoMode.Background = TileGreenBrush;
-            btnManualMode.Background = TileOffBrush;
-            txtModeStatus.Text = "AUTO";
-            txtModeStatus.Foreground = TileGreenBrush;
+            if (btnAutoMode != null) btnAutoMode.Background = TileGreenBrush;
+            if (btnManualMode != null) btnManualMode.Background = TileOffBrush;
+            if (txtModeStatus != null)
+            {
+                txtModeStatus.Text = "AUTO";
+                txtModeStatus.Foreground = TileGreenBrush;
+            }
 
             // Start Cycle in Auto Mode
             MotionSequenceManager.Instance.StartCycleAsync(true);
@@ -384,10 +448,13 @@ namespace BeevisionSolution.Views
         private void BtnManualMode_Click(object sender, RoutedEventArgs e)
         {
             _isAutoMode = false;
-            btnManualMode.Background = TileGreenBrush;
-            btnAutoMode.Background = TileOffBrush;
-            txtModeStatus.Text = "MANUAL";
-            txtModeStatus.Foreground = TileGreenBrush;
+            if (btnManualMode != null) btnManualMode.Background = TileGreenBrush;
+            if (btnAutoMode != null) btnAutoMode.Background = TileOffBrush;
+            if (txtModeStatus != null)
+            {
+                txtModeStatus.Text = "MANUAL";
+                txtModeStatus.Foreground = TileGreenBrush;
+            }
 
             MotionSequenceManager.Instance.StopCycle();
         }
@@ -397,14 +464,14 @@ namespace BeevisionSolution.Views
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
 
-            btnHome.IsEnabled = false;
+            if (btnHome != null) btnHome.IsEnabled = false;
             try
             {
                 await motion.HomeAsync(_currentAxis);
             }
             finally
             {
-                btnHome.IsEnabled = true;
+                if (btnHome != null) btnHome.IsEnabled = true;
             }
         }
 
@@ -417,8 +484,11 @@ namespace BeevisionSolution.Views
                 motion.ClearAlarm(_currentAxis);
                 motion.Stop(_currentAxis);
             }
-            txtAlarmCode.Text = "0x0000 (Reset)";
-            txtAlarmCode.Foreground = TileGreenBrush;
+            if (txtAlarmCode != null)
+            {
+                txtAlarmCode.Text = "0x0000 (Reset)";
+                txtAlarmCode.Foreground = TileGreenBrush;
+            }
             Motion_OnLogMessage("[System] Reset command executed.");
         }
 
@@ -565,16 +635,16 @@ namespace BeevisionSolution.Views
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
-            btnClampDown.IsEnabled = false;
+            if (btnClampDown != null) btnClampDown.IsEnabled = false;
             if (btnQuickClamp != null) btnQuickClamp.IsEnabled = false;
             try
             {
-                Motion_OnLogMessage("[Manual] Hạ cơ cấu tỳ kẹp sản phẩm (Kiểm soát lực Loadcell Bongshin)...");
+                Motion_OnLogMessage("[Manual] Clamping down product (Monitoring Bongshin loadcell force)...");
                 await motion.ClampDownAsync();
             }
             finally
             {
-                btnClampDown.IsEnabled = true;
+                if (btnClampDown != null) btnClampDown.IsEnabled = true;
                 if (btnQuickClamp != null) btnQuickClamp.IsEnabled = true;
             }
         }
@@ -583,23 +653,23 @@ namespace BeevisionSolution.Views
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
-            btnRetractUp.IsEnabled = false;
+            if (btnRetractUp != null) btnRetractUp.IsEnabled = false;
             if (btnQuickRetract != null) btnQuickRetract.IsEnabled = false;
             try
             {
-                Motion_OnLogMessage("[Manual] Nâng cơ cấu tỳ về vị trí chờ mở kẹp (0 mm)...");
+                Motion_OnLogMessage("[Manual] Retracting press axis to standby open position (0 mm)...");
                 await motion.RetractUpAsync();
             }
             finally
             {
-                btnRetractUp.IsEnabled = true;
+                if (btnRetractUp != null) btnRetractUp.IsEnabled = true;
                 if (btnQuickRetract != null) btnQuickRetract.IsEnabled = true;
             }
         }
 
         private async void BtnSimulateTrigger_Click(object sender, RoutedEventArgs e)
         {
-            Motion_OnLogMessage("[Simulate] Giả lập bấm 2 nút an toàn IDEC YW1L...");
+            Motion_OnLogMessage("[Simulate] Simulating IDEC YW1L two-hand safety trigger buttons...");
             await MotionSequenceManager.Instance.SimulateTriggerAsync();
         }
 
@@ -968,14 +1038,14 @@ namespace BeevisionSolution.Views
         private void BtnClearLog_Click(object sender, RoutedEventArgs e)
         {
             _logLines.Clear();
-            txtMotionLogs.Clear();
+            if (txtMotionLogs != null) txtMotionLogs.Clear();
         }
 
         private void BtnCopyLog_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Clipboard.SetText(txtMotionLogs.Text);
+                if (txtMotionLogs != null) Clipboard.SetText(txtMotionLogs.Text);
             }
             catch
             {
@@ -1094,7 +1164,7 @@ namespace BeevisionSolution.Views
                     pt.Position = Math.Round(sts.ActualPosition, 3);
                     pt.AxisIndex = _currentAxis;
                     dgTeachingPoints.Items.Refresh();
-                    Motion_OnLogMessage($"[Teaching] Đã cập nhật tọa độ cho điểm '{pt.Name}': {pt.Position:F3} mm");
+                    Motion_OnLogMessage($"[Teaching] Updated position for point '{pt.Name}': {pt.Position:F3} mm");
                 }
             }
         }

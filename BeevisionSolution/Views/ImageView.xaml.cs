@@ -283,9 +283,8 @@ namespace BeevisionSolution.Views
 
         private void ExcuteOpenMainView()
         {
-            ShowView(mainGridView);
+            ShowView(mainSplitGrid ?? (FrameworkElement)mainGridView);
             btnLiveView.IsEnabled = true;
-            
         }
 
         private void ExecuteResetCount()
@@ -342,11 +341,11 @@ namespace BeevisionSolution.Views
             }
         }
 
-        private void ShowView(UserControl view)
+        private void ShowView(FrameworkElement view)
         {
             mainContentArea.Content = view;
-            currentView = view;
-            btnLiveView.IsEnabled = false;
+            currentView = view as UserControl;
+            btnLiveView.IsEnabled = (view == mainSplitGrid || view == mainGridView);
         }
 
 
@@ -1165,7 +1164,7 @@ namespace BeevisionSolution.Views
 
             if (restricted)
             {
-                ShowView(mainGridView);
+                ShowView(mainSplitGrid ?? (FrameworkElement)mainGridView);
                 btnLiveView.IsEnabled = true;
                 Common.Info("Redirected to main view due to insufficient permissions");
             }

@@ -69,6 +69,13 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
 
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#E1E1E1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
         <!-- Motion Navigation Tab Item Style -->
         <Style x:Key="MotionNavTabItemStyle" TargetType="TabItem">
             <Setter Property="Foreground" Value="#CCCCCC"/>
@@ -129,511 +136,59 @@
     </UserControl.Resources>
 
     <Grid Margin="4">
-        <!-- ================= MAIN TAB INTERFACE ================= -->
-        <TabControl Background="Transparent" BorderThickness="0">
-
-            <!-- ================= TAB 1: MAIN (Overview, Status Matrix, Motion Log, Bottom Action Bar) ================= -->
-            <TabItem Header="MAIN" Style="{StaticResource MotionNavTabItemStyle}">
-                <Grid Margin="0,4,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <!-- 3-Column Body (Overview | Status Matrix | Motion Log) -->
-                        <RowDefinition Height="56"/>
-                        <!-- Bottom Action Bar -->
-                    </Grid.RowDefinitions>
-
-                    <!-- Middle 2-Column Body (Overview on Left, Status Matrix & Log on Right) -->
-                    <Grid Grid.Row="0" Margin="0,0,0,6">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <!-- Column 0: Sequence Pipeline & Actuators -->
-                            <ColumnDefinition Width="400"/>
-                            <!-- Column 1: Status Matrix (Top) & Motion Log (Bottom) -->
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Column 0: Sequence Pipeline & Actuators Dashboard -->
-                        <Grid Grid.Column="0" Margin="0,0,4,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <!-- Top: Sequence Pipeline -->
-                                <RowDefinition Height="*"/>
-                                <!-- Bottom: Two-Hand Safety & Sensors Dashboard -->
-                            </Grid.RowDefinitions>
-
-                            <!-- 1. Sequence Pipeline -->
-                            <GroupBox Grid.Row="0" Header="Sequence Process Pipeline" Margin="0,0,0,3">
-                                <Grid Margin="4">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <!-- Top Controls & Cycle Stats -->
-                                        <RowDefinition Height="Auto"/>
-                                        <!-- Process Step Cards Timeline -->
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Top Controls & Cycle Stats -->
-                                    <Border Grid.Row="0" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="8,5" Margin="0,0,0,4">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <!-- Axis Selector & Simulation -->
-                                            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                                                <iconPacks:PackIconMaterial Kind="AxisArrow" Width="18" Height="18" Foreground="#007ACC" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="Axis:" Foreground="#888888" FontSize="13" Margin="0,0,4,0"/>
-                                                <ComboBox x:Name="cboAxisSelect" Width="200" SelectedIndex="0" FontSize="13" FontWeight="Bold" SelectionChanged="CboAxisSelect_SelectionChanged">
-                                                    <ComboBoxItem Content="{DynamicResource strMotionPressAxis}"/>
-                                                </ComboBox>
-                                                <CheckBox x:Name="chkSimulate" Content="Simulate" FontSize="13" FontWeight="Bold" Margin="10,0,0,0" Checked="ChkSimulate_Changed" Unchecked="ChkSimulate_Changed"/>
-                                            </StackPanel>
-
-                                            <!-- Live Cycle Info Badges -->
-                                            <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
-                                                <Border Background="#1E2A38" BorderBrush="#007ACC" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Margin="3,0">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <iconPacks:PackIconMaterial Kind="Counter" Width="16" Height="16" Foreground="#00BFFF" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Cycles: " Foreground="#888888" FontSize="13"/>
-                                                        <TextBlock x:Name="txtSeqCycleCount" Text="0" FontWeight="Bold" Foreground="#00BFFF" FontSize="14"/>
-                                                    </StackPanel>
-                                                </Border>
-                                                <Border Background="#1E2A38" BorderBrush="#2E8B57" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Margin="3,0">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <iconPacks:PackIconMaterial Kind="TimerOutline" Width="16" Height="16" Foreground="#00FF7F" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Time: " Foreground="#888888" FontSize="13"/>
-                                                        <TextBlock x:Name="txtSeqCycleTime" Text="0.00 s" FontWeight="Bold" Foreground="#00FF7F" FontSize="14"/>
-                                                    </StackPanel>
-                                                </Border>
-                                                <Border Background="#2D2D30" BorderBrush="#3F3F46" BorderThickness="1.5" CornerRadius="4" Padding="8,4" Margin="3,0">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <iconPacks:PackIconMaterial Kind="MotionSensor" Width="16" Height="16" Foreground="#CCCCCC" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="State: " Foreground="#888888" FontSize="13"/>
-                                                        <TextBlock x:Name="txtSeqStateBadge" Text="IDLE" FontWeight="Bold" Foreground="#CCCCCC" FontSize="14"/>
-                                                    </StackPanel>
-                                                </Border>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-
-                                    <!-- Process Step Cards Timeline (4-Node Pipeline) -->
-                                    <UniformGrid Grid.Row="1" Columns="4" Margin="0,2">
-                                        <!-- Step 1 Card: Two-Hand Safety Trigger -->
-                                        <Border x:Name="cardStep1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="2" CornerRadius="6" Margin="3" Padding="6">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="STEP 1" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4">
-                                                    <iconPacks:PackIconMaterial Kind="GestureTap" Width="36" Height="36" Foreground="#00BFFF" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="2-Hand Trigger" FontWeight="Bold" FontSize="15" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,4,0,0"/>
-                                                    <TextBlock Text="IDEC YW1L Dual-Btn" Foreground="#AAAAAA" FontSize="12" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                                <Border Background="#1E2A38" BorderBrush="#007ACC" BorderThickness="1" CornerRadius="10" Padding="12,3" HorizontalAlignment="Center" Grid.Row="2">
-                                                    <TextBlock x:Name="txtStep1Status" Text="READY" FontWeight="Bold" Foreground="#00BFFF" FontSize="12"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-
-                                        <!-- Step 2 Card: Clamping & Force Control -->
-                                        <Border x:Name="cardStep2" Background="#252526" BorderBrush="#3F3F46" BorderThickness="2" CornerRadius="6" Margin="3" Padding="6">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="STEP 2" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4">
-                                                    <iconPacks:PackIconMaterial Kind="ArrowCollapseDown" Width="36" Height="36" Foreground="#00FF7F" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="Clamp &amp; Force" FontWeight="Bold" FontSize="15" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,4,0,0"/>
-                                                    <TextBlock Text="Bongshin CBFSB-10" Foreground="#00FF7F" FontSize="12" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                                <Border Background="#1E2A38" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="10" Padding="12,3" HorizontalAlignment="Center" Grid.Row="2">
-                                                    <TextBlock x:Name="txtStep2Status" Text="WAIT" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-
-                                        <!-- Step 3 Card: Trigger Vision 65MP & Count 100 -->
-                                        <Border x:Name="cardStep3" Background="#252526" BorderBrush="#3F3F46" BorderThickness="2" CornerRadius="6" Margin="3" Padding="6">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="STEP 3" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4">
-                                                    <iconPacks:PackIconMaterial Kind="CameraIris" Width="36" Height="36" Foreground="#FFD700" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="Count &amp; Reverse" FontWeight="Bold" FontSize="15" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,4,0,0"/>
-                                                    <TextBlock Text="65MP &amp; Backlight" Foreground="#FFD700" FontSize="12" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                                <Border Background="#1E2A38" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="10" Padding="12,3" HorizontalAlignment="Center" Grid.Row="2">
-                                                    <TextBlock x:Name="txtStep3Status" Text="WAIT" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-
-                                        <!-- Step 4 Card: Unclamp & Tower Signals -->
-                                        <Border x:Name="cardStep4" Background="#252526" BorderBrush="#3F3F46" BorderThickness="2" CornerRadius="6" Margin="3" Padding="6">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="*"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Text="STEP 4" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4">
-                                                    <iconPacks:PackIconMaterial Kind="ArrowExpandVertical" Width="36" Height="36" Foreground="#FF8C00" HorizontalAlignment="Center"/>
-                                                    <TextBlock Text="Unclamp &amp; Signal" FontWeight="Bold" FontSize="15" Foreground="#FFFFFF" HorizontalAlignment="Center" Margin="0,4,0,0"/>
-                                                    <TextBlock Text="Retract 0mm / Tower" Foreground="#FF8C00" FontSize="12" HorizontalAlignment="Center"/>
-                                                </StackPanel>
-                                                <Border Background="#1E2A38" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="10" Padding="12,3" HorizontalAlignment="Center" Grid.Row="2">
-                                                    <TextBlock x:Name="txtStep4Status" Text="WAIT" FontWeight="Bold" Foreground="#888888" FontSize="12"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-                                    </UniformGrid>
-                                </Grid>
-                            </GroupBox>
-
-                            <!-- 2. Nitto Two-Hand Safety Trigger & Sensors / Tower Signals -->
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/> <!-- Two-Hand Safety & Force Control -->
-                                    <ColumnDefinition Width="*"/> <!-- Optical Sensors & Tower Signals -->
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Left: Two-Hand Safety & Loadcell Force Control -->
-                                <GroupBox Grid.Column="0" Header="{DynamicResource strMotionTwoHandSafety}" Margin="0,0,2,0">
-                                    <Grid Margin="4">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <!-- IDEC Two-Hand Pushbutton Indicators -->
-                                        <Border Grid.Row="0" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,3">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <Ellipse x:Name="ledTriggerLeft" Width="18" Height="18" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionLeftTrigger}" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
-                                                        <TextBlock x:Name="txtTriggerLeftStatus" Text="RELEASED (DI 0)" FontSize="11" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                                    <Ellipse x:Name="ledTriggerRight" Width="18" Height="18" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionRightTrigger}" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
-                                                        <TextBlock x:Name="txtTriggerRightStatus" Text="RELEASED (DI 1)" FontSize="11" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-
-                                        <!-- Bongshin Loadcell Force Feedback -->
-                                        <Border Grid.Row="1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,3,0,3">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Ellipse x:Name="ledForceReached" Width="20" Height="20" Fill="#3F3F46" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                    <TextBlock Text="{DynamicResource strMotionForceControl}" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
-                                                    <TextBlock x:Name="txtForceStatus" Text="Force Status: STANDBY (DI 2)" FontSize="11" Foreground="#888888" Margin="0,2,0,0"/>
-                                                </StackPanel>
-                                                <Border Grid.Column="2" Background="#1E2A38" BorderBrush="#007ACC" BorderThickness="1" CornerRadius="4" Padding="6,3" VerticalAlignment="Center">
-                                                    <TextBlock x:Name="txtForceBadge" Text="BS-205-35" FontSize="11" FontWeight="Bold" Foreground="#00BFFF"/>
-                                                </Border>
-                                            </Grid>
-                                        </Border>
-
-                                        <!-- Quick Clamping & Unclamping Action Buttons -->
-                                        <Border Grid.Row="2" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="6" Margin="0,3,0,0">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button x:Name="btnClampDown" Grid.Column="0" Content="{DynamicResource strMotionClampDown}" Height="38" Margin="2" Background="#007ACC" FontSize="12" FontWeight="Bold" Click="BtnClampDown_Click"/>
-                                                <Button x:Name="btnRetractUp" Grid.Column="1" Content="{DynamicResource strMotionRetractUp}" Height="38" Margin="2" Background="#2D2D30" FontSize="12" FontWeight="Bold" Click="BtnRetractUp_Click"/>
-                                            </Grid>
-                                        </Border>
-                                    </Grid>
-                                </GroupBox>
-
-                                <!-- Right: Optical Sensors (Misumi) & Tower Signals (Qlight) -->
-                                <GroupBox Grid.Column="1" Header="{DynamicResource strMotionSensorsTower}" Margin="2,0,0,0">
-                                    <Grid Margin="4">
-                                        <UniformGrid Columns="2">
-                                            <!-- Misumi Home/Upper Standby Sensor -->
-                                            <Border x:Name="borderHomeUp" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledHomeUpSensor" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionHomeUpSensor}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Misumi MSX674N (DI 3)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <!-- Misumi Down Limit Sensor -->
-                                            <Border x:Name="borderDownLimit" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledDownLimitSensor" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionDownLimitSensor}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Misumi MSX674N (DI 4)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <!-- Misumi Part on Jig Sensor -->
-                                            <Border x:Name="borderPartPresent" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledPartPresentSensor" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionPartPresentSensor}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Misumi MSX674N (DI 5)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <!-- Tower Light Green -->
-                                            <Border x:Name="borderTowerGreen" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledTowerGreen" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionTowerGreen}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Qlight Tower (DO 0)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <!-- Tower Light Red -->
-                                            <Border x:Name="borderTowerRed" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledTowerRed" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionTowerRed}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="Qlight Tower (DO 1)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-
-                                            <!-- Backlight Output -->
-                                            <Border x:Name="borderBacklight" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Margin="2" Padding="6,4">
-                                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="4,0">
-                                                    <Ellipse x:Name="ledBacklight" Width="14" Height="14" Fill="#3F3F46" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{DynamicResource strMotionBacklight}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                                        <TextBlock Text="White Backlight (DO 4)" FontSize="10" Foreground="#888888"/>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Border>
-                                        </UniformGrid>
-                                    </Grid>
-                                </GroupBox>
-                            </Grid>
-                        </Grid>
-
-                        <!-- Column 1: Right Side (Status Matrix on Top, Motion Log on Bottom) -->
-                        <Grid Grid.Column="1" Margin="3,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <!-- Row 0: Status Matrix & Readouts -->
-                                <RowDefinition Height="*"/>
-                                <!-- Row 1: Motion Log -->
-                            </Grid.RowDefinitions>
-
-                            <!-- Top: Status Matrix & Coordinates -->
-                            <GroupBox Grid.Row="0" Header="Status Matrix" Margin="0,0,0,4">
-                                <StackPanel Margin="2">
-                                    <!-- 2x6 Status Tile Matrix -->
-                                    <UniformGrid Columns="2">
-                                        <Border x:Name="tileAlm" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="ALM" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileWarn" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="WARN" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileEmg" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="EMG" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileHome" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="HOME" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileLmPos" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="LM +" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileSvOn" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="SvOn" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileLmNeg" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="LM -" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileInp" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="INP" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileLight" Style="{StaticResource StatusTileBorder}" Background="#8B0000">
-                                            <TextBlock Text="Light" FontSize="14" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileBusy" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="Busy" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tileForce" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="Force" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <Border x:Name="tilePart" Style="{StaticResource StatusTileBorder}">
-                                            <TextBlock Text="Part" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                    </UniformGrid>
-
-                                    <!-- Readout Details (2-Column compact layout) -->
-                                    <Border Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="8,6" Margin="0,6,0,0">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0" Margin="0,0,6,0">
-                                                <Grid Margin="0,2">
-                                                    <TextBlock Text="Mode:" Foreground="#888888" FontSize="13"/>
-                                                    <TextBlock x:Name="txtModeStatus" Text="MANUAL" FontWeight="Bold" Foreground="#00FF7F" FontSize="14" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                                <Grid Margin="0,2">
-                                                    <TextBlock Text="Pos:" Foreground="#888888" FontSize="13"/>
-                                                    <TextBlock x:Name="txtActualPos" Text="0.000 mm" FontWeight="Bold" Foreground="#00BFFF" FontSize="14" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </StackPanel>
-                                            <StackPanel Grid.Column="1" Margin="6,0,0,0">
-                                                <Grid Margin="0,2">
-                                                    <TextBlock Text="Vel:" Foreground="#888888" FontSize="13"/>
-                                                    <TextBlock x:Name="txtActualVel" Text="0.0 mm/s" FontWeight="Bold" Foreground="#FFD700" FontSize="14" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                                <Grid Margin="0,2">
-                                                    <TextBlock Text="Master:" Foreground="#888888" FontSize="13"/>
-                                                    <TextBlock x:Name="txtMasterStatus" Text="OP (6)" FontWeight="Bold" Foreground="#00FF7F" FontSize="14" HorizontalAlignment="Right"/>
-                                                </Grid>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </StackPanel>
-                            </GroupBox>
-
-                            <!-- Bottom: Motion Log -->
-                            <GroupBox Grid.Row="1" Header="{DynamicResource strMotionActivityLogs}" Margin="0,2,0,0">
-                                <Grid Margin="2">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,4">
-                                        <Button x:Name="btnClearLog" Padding="10,3" FontSize="12" FontWeight="Bold" Click="BtnClearLog_Click">
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Kind="DeleteSweepOutline" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="{DynamicResource strMotionClearLog}" FontSize="12" FontWeight="Bold"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button x:Name="btnCopyLog" Padding="10,3" FontSize="12" FontWeight="Bold" Click="BtnCopyLog_Click">
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="Copy" FontSize="12" FontWeight="Bold"/>
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
-
-                                    <TextBox x:Name="txtMotionLogs" Grid.Row="1" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#121212" Foreground="#00FF7F" FontFamily="Consolas" FontSize="12" TextWrapping="NoWrap" AcceptsReturn="True"/>
-                                </Grid>
-                            </GroupBox>
-                        </Grid>
-                    </Grid>
-
-                                        <!-- Bottom Action Bar (8 nút dàn đều 1 hàng ngang chuẩn đẹp) -->
-                    <Border Grid.Row="1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="3">
-                        <UniformGrid Rows="1">
-                            <!-- 1. AUTO -->
-                            <Button x:Name="btnAutoMode" Click="BtnAutoMode_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Play" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="AUTO" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 2. MANUAL -->
-                            <Button x:Name="btnManualMode" Background="#2E8B57" Click="BtnManualMode_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="GamepadVariant" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="MANUAL" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 3. STOP (NỔI BẬT ĐỎ RỰC) -->
-                            <Button x:Name="btnStop" Background="#A80000" Click="BtnStop_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Stop" Width="16" Height="16" Margin="0,0,4,0" Foreground="White" VerticalAlignment="Center"/>
-                                    <TextBlock Text="STOP" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 4. HOME -->
-                            <Button x:Name="btnHome" Click="BtnHome_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Home" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="HOME" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 5. RESET -->
-                            <Button x:Name="btnReset" Click="BtnReset_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Refresh" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="RESET" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 6. SERVO ON -->
-                            <Button x:Name="btnServoToggle" Click="BtnServoToggle_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial x:Name="iconServo" Kind="Power" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock x:Name="txtServoBtn" Text="Servo ON" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 7. TRIGGER CAM -->
-                            <Button x:Name="btnTriggerCam" Click="BtnTriggerCam_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Camera" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="TriggerCam" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-
-                            <!-- 8. TURN LIGHT -->
-                            <Button x:Name="btnTurnLight" Click="BtnLightToggle_Click">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Lightbulb" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Turn Light" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
-                        </UniformGrid>
+        <Grid.RowDefinitions>
+            <!-- Top Control Bar: Axis Selector, Status, Servo Toggle, Stop -->
+            <RowDefinition Height="Auto"/>
+            <!-- Setting & Parameters Tabs -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- ================= TOP CONTROL BAR ================= -->
+        <Border Grid.Row="0" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="8,5" Margin="0,0,0,6">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <!-- Axis Selector & Simulation Checkbox -->
+                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="AxisArrow" Width="18" Height="18" Foreground="#007ACC" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="Axis:" Foreground="#888888" FontSize="13" Margin="0,0,4,0"/>
+                    <ComboBox x:Name="cboAxisSelect" Width="200" SelectedIndex="0" FontSize="13" FontWeight="Bold" SelectionChanged="CboAxisSelect_SelectionChanged">
+                        <ComboBoxItem Content="{DynamicResource strMotionPressAxis}"/>
+                    </ComboBox>
+                    <CheckBox x:Name="chkSimulate" Content="Simulate" FontSize="13" FontWeight="Bold" Foreground="#FFCC00" Margin="12,0,0,0" VerticalAlignment="Center" Checked="ChkSimulate_Changed" Unchecked="ChkSimulate_Changed"/>
+                </StackPanel>
+                <!-- Real-time Position & Master State -->
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border Background="#1E2A38" BorderBrush="#007ACC" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Pos: " Foreground="#888888" FontSize="13"/>
+                            <TextBlock x:Name="txtActualPos" Text="0.000 mm" FontWeight="Bold" Foreground="#00BFFF" FontSize="13"/>
+                        </StackPanel>
                     </Border>
-
-                </Grid>
-            </TabItem>
-
+                    <Border Background="#1E2A38" BorderBrush="#FFD700" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Vel: " Foreground="#888888" FontSize="13"/>
+                            <TextBlock x:Name="txtActualVel" Text="0.0 mm/s" FontWeight="Bold" Foreground="#FFD700" FontSize="13"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#1E2A38" BorderBrush="#2E8B57" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="4,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Master: " Foreground="#888888" FontSize="13"/>
+                            <TextBlock x:Name="txtMasterStatus" Text="OP (6)" FontWeight="Bold" Foreground="#00FF7F" FontSize="13"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+                <!-- Quick Servo ON/OFF & Emergency Stop -->
+                <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
+                    <Button x:Name="btnServoToggle" Content="Servo ON" Background="#2E8B57" Padding="12,5" Margin="0,0,6,0" Click="BtnServoToggle_Click"/>
+                    <Button x:Name="btnStop" Content="STOP" Background="#A80000" Padding="14,5" Foreground="White" Click="BtnStop_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <!-- ================= MOTION CONFIGURATION TABS ================= -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0">
             <!-- ================= TAB: I/O MONITOR (Digital Inputs & Outputs Real-time) ================= -->
             <TabItem Header="I/O MONITOR" Style="{StaticResource MotionNavTabItemStyle}">
                 <Grid Margin="6">

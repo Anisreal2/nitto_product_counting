@@ -719,6 +719,9 @@
     <Compile Include="ViewComponents\ToolBlockEditorView.xaml.cs">
       <DependentUpon>ToolBlockEditorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewComponents\MotionMainDashboardView.xaml.cs">
+      <DependentUpon>MotionMainDashboardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AppSettingModel.cs" />
     <Compile Include="Jobs\FunctionJob.cs" />
     <Compile Include="Jobs\AlignJob.cs" />
@@ -822,6 +825,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewComponents\ToolBlockEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewComponents\MotionMainDashboardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
