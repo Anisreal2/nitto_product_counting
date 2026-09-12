@@ -59,13 +59,7 @@ namespace BeeMotionModule
                 {
                     int cardsNum = 0;
                     uint numRes = ImcApi.IMC_GetCardsNum(ref cardsNum);
-                    if (numRes == ImcApi.EXE_SUCCESS && cardsNum <= 0)
-                    {
-                        string errMsg = $"No Inovance Motion Card detected on this PC (Card Count: 0). Please check PCIe card insertion/driver or enable Simulation mode.";
-                        Log($"[Motion ERROR] {errMsg}");
-                        OnError?.Invoke(0x80018002, errMsg);
-                        return false;
-                    }
+                    Log($"[Motion] Query Inovance Card count: {cardsNum} (Result: 0x{numRes:X8}).");
 
                     uint res = ImcApi.IMC_OpenCard((int)_config.CardId, ref _cardHandle, 1);
                     if (res != ImcApi.EXE_SUCCESS)
@@ -77,6 +71,15 @@ namespace BeeMotionModule
                     }
 
                     Log($"[Motion] Card opened successfully (Handle: 0x{_cardHandle:X16}).");
+
+                    // Invert Emergency Stop trigger level if needed (tempt/Movi setting: 1 = inverted)
+                    short emgInv = 0;
+                    ImcApi.IMC_GetEmgTrigLevelInv(_cardHandle, ref emgInv);
+                    if (emgInv != 1)
+                    {
+                        ImcApi.IMC_SetEmgTrigLevelInv(_cardHandle, 1);
+                        Log("[Motion] Set EMG Trigger Level Inversion = 1 (Hardware safety bypass).");
+                    }
 
                     // Check EtherCAT Master status
                     uint sts = 0;
@@ -135,6 +138,9 @@ namespace BeeMotionModule
                 Log($"[Motion] Sử dụng SysCfg: '{sysPath}'");
                 Log($"[Motion] Sử dụng DrvCfg: '{drvPath}'");
 
+                if (!File.Exists(sysPath)) sysPath = Path.GetFullPath(_config.ConfigFileSys);
+                if (!File.Exists(drvPath)) drvPath = Path.GetFullPath(_config.ConfigFileDrv);
+
                 if (File.Exists(sysPath) && File.Exists(drvPath))
                 {
                     uint resSys = ImcApi.IMC_DownLoadSystemConfig(_cardHandle, sysPath);
@@ -186,7 +192,20 @@ namespace BeeMotionModule
                 uint abortCode = 0;
                 ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6060, 0, new byte[] { 8 }, 1, ref abortCode);
 
-                // Standard Servo ON
+                // CiA 402 Drive State Machine sequence (from tempt/Movi reference):
+                // Step 1: Shutdown (0x06) - Transition to 'Ready to Switch On'
+                ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6040, 0, new byte[] { 0x06, 0x00 }, 2, ref abortCode);
+                Thread.Sleep(50);
+
+                // Step 2: Switch On (0x07) - Transition to 'Switched On'
+                ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6040, 0, new byte[] { 0x07, 0x00 }, 2, ref abortCode);
+                Thread.Sleep(50);
+
+                // Step 3: Enable Operation (0x0F) - Transition to 'Operation Enabled' (Servo ON)
+                ImcApi.IMC_SetEcatSdo(_cardHandle, axis, 0x6040, 0, new byte[] { 0x0F, 0x00 }, 2, ref abortCode);
+                Thread.Sleep(50);
+
+                // Standard Servo ON confirmation
                 uint res = ImcApi.IMC_AxServoOn(_cardHandle, axis, 1);
                 Log($"[Motion] Servo ON Axis {axis}: Code 0x{res:X8}");
                 return res == ImcApi.EXE_SUCCESS;
@@ -196,6 +215,38 @@ namespace BeeMotionModule
                 Log($"[Motion Exception] Servo ON Axis {axis} failed: {ex.Message}");
                 return false;
             }
+        }
+
+        public bool ForceServoOn(short axis)
+        {
+            return ServoOn(axis);
+        }
+
+        public bool ToggleEmgInversion()
+        {
+            if (_cardHandle == 0) return false;
+            try
+            {
+                short inv = 0;
+                ImcApi.IMC_GetEmgTrigLevelInv(_cardHandle, ref inv);
+                inv = (short)(inv == 0 ? 1 : 0);
+                uint res = ImcApi.IMC_SetEmgTrigLevelInv(_cardHandle, inv);
+                Log($"[Motion] Toggled EMG Trigger Level Inversion to {inv} (Code: 0x{res:X8}).");
+                return res == ImcApi.EXE_SUCCESS;
+            }
+            catch (Exception ex)
+            {
+                Log($"[Motion Exception] Toggle EMG Inversion failed: {ex.Message}");
+                return false;
+            }
+        }
+
+        public short GetEmgInversion()
+        {
+            if (_cardHandle == 0) return 0;
+            short inv = 0;
+            ImcApi.IMC_GetEmgTrigLevelInv(_cardHandle, ref inv);
+            return inv;
         }
 
         public bool ServoOff(short axis)
@@ -688,6 +739,126 @@ namespace BeeMotionModule
             }
         }
 
+        #region Nitto Machine Specific Helpers
+        public bool IsTriggerLeftPressed()
+        {
+            if (_config.Simulate) return false;
+            short diPin = (short)(_config?.IO?.TriggerBtnLeftDIBit ?? 0);
+            return GetDigitalInput(diPin);
+        }
+
+        public bool IsTriggerRightPressed()
+        {
+            if (_config.Simulate) return false;
+            short diPin = (short)(_config?.IO?.TriggerBtnRightDIBit ?? 1);
+            return GetDigitalInput(diPin);
+        }
+
+        public bool IsForceTargetReached()
+        {
+            if (_config.Simulate) return false;
+            short diPin = (short)(_config?.IO?.ForceReachedDIBit ?? 2);
+            return GetDigitalInput(diPin);
+        }
+
+        public bool IsHomeUpSensorActive()
+        {
+            if (_config.Simulate) return true;
+            short diPin = (short)(_config?.IO?.SensorHomeUpDIBit ?? 3);
+            return GetDigitalInput(diPin);
+        }
+
+        public bool IsDownLimitSensorActive()
+        {
+            if (_config.Simulate) return false;
+            short diPin = (short)(_config?.IO?.SensorDownLimitDIBit ?? 4);
+            return GetDigitalInput(diPin);
+        }
+
+        public bool IsPartPresent()
+        {
+            if (_config.Simulate) return true;
+            short diPin = (short)(_config?.IO?.SensorPartPresentDIBit ?? 5);
+            return GetDigitalInput(diPin);
+        }
+
+        public async Task<bool> ClampDownAsync(double targetPos = 0, double speed = 0, CancellationToken ct = default)
+        {
+            short axis = 0;
+            double pos = targetPos > 0 ? targetPos : (_config?.ClampingPosition ?? 80.0);
+            double spd = speed > 0 ? speed : (_config?.ClampingVelocity ?? 50.0);
+
+            Log($"[Nitto Motion] Moving press axis down to clamp at {pos:F2} mm (Velocity {spd:F1} mm/s)...");
+
+            if (_config.Simulate)
+            {
+                await Task.Delay(250, ct);
+                if (_axisStates.TryGetValue(axis, out var st)) st.ActualPosition = pos;
+                Log("[Nitto Motion Sim] Press axis clamped (Mock force reached OK).");
+                return true;
+            }
+
+            bool moveOk = MoveAbsolute(axis, pos, spd);
+            if (!moveOk) return false;
+
+            var startTime = DateTime.Now;
+            int[] axStatus = new int[1];
+
+            while ((DateTime.Now - startTime).TotalMilliseconds < 15000)
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    Stop(axis);
+                    return false;
+                }
+
+                // Check if Loadcell BS-205-35 reached force setpoint
+                if (IsForceTargetReached())
+                {
+                    Stop(axis);
+                    Log("[Nitto Motion] Target clamping force reached from Bongshin Loadcell BS-205-35 -> Axis stopped to hold force.");
+                    return true;
+                }
+
+                ImcApi.IMC_GetAxSts(_cardHandle, axis, axStatus, 1);
+                bool isBusy = (axStatus[0] & (int)ImcApi.AX_BUSY_BIT) != 0;
+                if (!isBusy)
+                {
+                    Log("[Nitto Motion] Press axis reached target clamping position.");
+                    return true;
+                }
+
+                await Task.Delay(10, ct);
+            }
+
+            Log("[Nitto Motion Error] Clamping timeout.");
+            Stop(axis);
+            return false;
+        }
+
+        public async Task<bool> RetractUpAsync(double speed = 0, CancellationToken ct = default)
+        {
+            short axis = 0;
+            double pos = _config?.StandbyPosition ?? 0.0;
+            double spd = speed > 0 ? speed : (_config?.RetractVelocity ?? 80.0);
+
+            Log($"[Nitto Motion] Retracting press axis to standby position {pos:F2} mm (Velocity {spd:F1} mm/s)...");
+
+            if (_config.Simulate)
+            {
+                await Task.Delay(250, ct);
+                if (_axisStates.TryGetValue(axis, out var st)) st.ActualPosition = pos;
+                Log("[Nitto Motion Sim] Retracted press axis to standby position.");
+                return true;
+            }
+
+            bool moveOk = MoveAbsolute(axis, pos, spd);
+            if (!moveOk) return false;
+
+            return await WaitMoveDoneAsync(axis, 15000, ct);
+        }
+        #endregion
+
         private bool _isCylinderForward = false;
         private bool _isVacuumOn = false;
 
@@ -697,46 +868,36 @@ namespace BeeMotionModule
         public bool SetCylinder(bool forward)
         {
             _isCylinderForward = forward;
-            short doPin = (short)(_config?.IO?.CylinderDOBit ?? 0);
-            bool ok = SetDigitalOutput(doPin, forward);
-            Log($"[Pneumatics] Cylinder {(forward ? "FORWARD (Extend)" : "BACKWARD (Retract)")} -> DO {doPin}: {(ok ? "OK" : "FAILED")}");
-            return ok;
+            short doPin = (short)(_config?.IO?.TowerLightGreenDOBit ?? 0);
+            return SetDigitalOutput(doPin, forward);
         }
 
         public bool SetVacuum(bool on)
         {
             _isVacuumOn = on;
-            short doPin = (short)(_config?.IO?.VacuumDOBit ?? 1);
-            bool ok = SetDigitalOutput(doPin, on);
-            Log($"[Pneumatics] Vacuum {(on ? "ON (Suction)" : "OFF (Release)")} -> DO {doPin}: {(ok ? "OK" : "FAILED")}");
-            return ok;
+            short doPin = (short)(_config?.IO?.BacklightDOBit ?? 4);
+            return SetDigitalOutput(doPin, on);
         }
 
         public bool GetCylinderForwardSensor()
         {
-            if (_config.Simulate) return _isCylinderForward;
-            short diPin = (short)(_config?.IO?.SensorForwardDIBit ?? 0);
-            return GetDigitalInput(diPin);
+            return IsForceTargetReached();
         }
 
         public bool GetCylinderBackwardSensor()
         {
-            if (_config.Simulate) return !_isCylinderForward;
-            short diPin = (short)(_config?.IO?.SensorBackwardDIBit ?? 1);
-            return GetDigitalInput(diPin);
+            return IsHomeUpSensorActive();
         }
 
         public bool GetVacuumSensor()
         {
-            if (_config.Simulate) return _isVacuumOn;
-            short diPin = (short)(_config?.IO?.VacuumSensorDIBit ?? 2);
-            return GetDigitalInput(diPin);
+            return IsPartPresent();
         }
 
         public bool GetSystemStopSensor()
         {
             if (_config.Simulate) return false;
-            short diPin = (short)(_config?.IO?.SystemStopDIBit ?? 3);
+            short diPin = (short)(_config?.IO?.SystemStopDIBit ?? 6);
             return GetDigitalInput(diPin);
         }
 

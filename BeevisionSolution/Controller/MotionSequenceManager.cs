@@ -12,22 +12,27 @@ namespace BeevisionSolution.Controller
 {
     public enum SequenceState
     {
-        Idle,
-        CheckingReady,
-        TrayIn,
-        MovingToCapture,
-        TriggeringVision,
-        ProcessingVision,
-        CompensatingAndAction,
-        MovingToEnd,
-        TrayOut,
-        FinishingCycle,
-        Error,
-        Stopped
+        Idle,                   // Vị trí chờ mở kẹp (0mm)
+        CheckingReady,          // Kiểm tra servo & an toàn
+        WaitingTrigger,         // Chờ nhấn 2 nút trigger IDEC
+        ClampingDown,           // Hạ cơ cấu tỳ kẹp phẳng tệp sản phẩm (Leadshine EL7)
+        TriggeringVision,       // Bật Backlight, duy trì lực tỳ ổn định
+        ProcessingVision,       // VisionPro đếm 100pcs và kiểm tra ngược mặt
+        UnclampingUp,           // Nâng cơ cấu tỳ về vị trí mở kẹp
+        FinishingCycle,         // Cập nhật kết quả, bật đèn tháp OK/NG
+        Error,                  // Báo lỗi
+        Stopped,                // Dừng
+        // Backward compatibility
+        TrayIn = ClampingDown,
+        MovingToCapture = ClampingDown,
+        CompensatingAndAction = ProcessingVision,
+        MovingToEnd = UnclampingUp,
+        TrayOut = UnclampingUp
     }
 
     /// <summary>
-    /// Coordinates the automated production cycle: Motion -> Camera Capture -> Vision Processing -> Offset Compensation / Sorting -> Next Cycle.
+    /// Coordinates the automated production cycle for Nitto Product Counting & Reverse Inspection:
+    /// Standby -> Two-Hand Trigger -> Clamp Down (Force Control) -> Vision Counting -> Retract Up -> Report.
     /// </summary>
     public class MotionSequenceManager
     {
@@ -44,7 +49,6 @@ namespace BeevisionSolution.Controller
         // Test Program & Mock Simulation Properties
         public bool IsTestProgramMode { get; set; } = false;
         public string MockVisionResult { get; set; } = "OK"; // "OK", "NG1", "NG2", "NG3"
-        public string MockRobotCommand { get; set; } = "Start"; // "Start", "Continue", "INTRAY"
         public int WatchdogTimeoutMs { get; set; } = 30000;
         public short BrakeDOPin { get; set; } = 1;
         public event Action<SequenceState> OnStateChanged;
@@ -82,12 +86,12 @@ namespace BeevisionSolution.Controller
 
         public bool Initialize(MotionConfig config)
         {
-            Log("[Sequence] Initializing Motion Control subsystem...");
+            Log("[Sequence] Initializing Nitto Motion Control subsystem...");
             bool ok = Motion.Init(config);
             if (ok)
             {
                 SetState(SequenceState.Idle);
-                Log("[Sequence] Motion Control system is ready.");
+                Log("[Sequence] Nitto Motion Control system is ready.");
             }
             else
             {
@@ -155,7 +159,7 @@ namespace BeevisionSolution.Controller
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
 
-            Log($"[Sequence] Starting automated cycle (Mode: {(continuous ? "Continuous" : "Single Cycle")}, TestMode: {IsTestProgramMode})...");
+            Log($"[Sequence] Starting Nitto production cycle (Mode: {(continuous ? "Continuous / Auto" : "Single Cycle")}, TestMode: {IsTestProgramMode})...");
 
             try
             {
@@ -197,7 +201,6 @@ namespace BeevisionSolution.Controller
             return true;
         }
 
-        // Overload for backward compatibility with single trigger
         public Task<bool> StartCycleAsync(bool continuous, Func<Task<bool>> onVisionProcessTrigger)
         {
             return StartCycleAsync(continuous, onVisionProcessTrigger != null ? new Func<int, Task<bool>>(jobId => onVisionProcessTrigger()) : null);
@@ -206,6 +209,12 @@ namespace BeevisionSolution.Controller
         public short StartBtn1DIPin { get; set; } = 4; // DI 4: Left Start button
         public short StartBtn2DIPin { get; set; } = 5; // DI 5: Right Start button
         public short LoadcellDIPin { get; set; } = 6;  // DI 6: Loadcell sensor
+
+        public async Task<bool> SimulateTriggerAsync()
+        {
+            Log("[Sequence] Simulating 2-hand trigger -> Starting inspection cycle...");
+            return await StartCycleAsync(false);
+        }
 
         private async Task<bool> ExecuteSingleCycleAsync(Func<int, Task<bool>> onVisionJobTrigger, CancellationToken ct)
         {
@@ -217,7 +226,7 @@ namespace BeevisionSolution.Controller
             SetState(SequenceState.CheckingReady);
             if (!Motion.IsMasterOp && !cfg.Simulate)
             {
-                Log("[Cycle Error] EtherCAT Master is not in OP state (State 6).");
+                Log("[Sequence Error] EtherCAT Master is not in OP state (State 6). Please check network cable and driver.");
                 SetState(SequenceState.Error);
                 return false;
             }
@@ -231,92 +240,89 @@ namespace BeevisionSolution.Controller
                     SetState(SequenceState.Error);
                     return false;
                 }
+                await Task.Delay(150, ct);
             }
 
-
-            // STEP 2: Wait for simultaneous two-hand start button press
-            Log($"[Cycle] Waiting for operator to press both Start buttons (DI {StartBtn1DIPin} & DI {StartBtn2DIPin})...");
-            
-            while (!ct.IsCancellationRequested)
+            // STEP 2: Waiting for Two-Hand Trigger buttons (if in Auto / Continuous Mode and not simulation)
+            if (IsContinuousMode && !IsTestProgramMode && !cfg.Simulate)
             {
-                bool btn1 = Motion.GetDigitalInput(StartBtn1DIPin);
-                bool btn2 = Motion.GetDigitalInput(StartBtn2DIPin);
+                SetState(SequenceState.WaitingTrigger);
+                Log($"[Sequence] Waiting for operator to press both safety trigger buttons simultaneously (DI {StartBtn1DIPin} & DI {StartBtn2DIPin})...");
 
-                // Both buttons detected
-                if (btn1 && btn2)
+                bool triggered = false;
+                while (!ct.IsCancellationRequested && IsRunning)
                 {
-                    await Task.Delay(30, ct); // Debounce 30ms
-                    if (Motion.GetDigitalInput(StartBtn1DIPin) && Motion.GetDigitalInput(StartBtn2DIPin))
+                    bool left = Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin);
+                    bool right = Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin);
+
+                    if (left && right)
                     {
-                        Log("[Cycle] >>> Start trigger confirmed! Sequence initiated...");
-                        break; // Exit wait loop immediately -> Operator can release buttons now!
+                        await Task.Delay(30, ct); // Debounce 30ms
+                        bool leftDebounce = Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin);
+                        bool rightDebounce = Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin);
+
+                        if (leftDebounce && rightDebounce)
+                        {
+                            Log("[Sequence Trigger] Both safety trigger buttons pressed and confirmed -> Starting clamping cycle!");
+                            triggered = true;
+                            break;
+                        }
                     }
+
+                    await Task.Delay(10, ct);
                 }
-                await Task.Delay(10, ct);
+
+                if (!triggered) return false;
             }
 
-            // STEP 3: Move Servo forward (+) and scan dual stop conditions (Loadcell or Target Position)
-            SetState(SequenceState.MovingToCapture);
-
-            // Retrieve parameters from taught point in Teaching Points list
+            // STEP 3: Clamp Down (Hạ cơ cấu tỳ kẹp phẳng tệp sản phẩm, kiểm soát lực qua Loadcell Bongshin hoặc vị trí Teaching Point)
+            SetState(SequenceState.ClampingDown);
             var teachPt = cfg?.TeachingPoints?.Find(p => p.TriggerVision || p.StepType == "CheckVision");
-            double targetPos = teachPt != null ? teachPt.Position : (cfg != null && cfg.CapturePosition > 0 ? cfg.CapturePosition : 100.0);
-            double moveSpeed = (teachPt != null && teachPt.Speed > 0) ? teachPt.Speed : (cfg?.Axes?.Count > 0 ? cfg.Axes[0].DefaultProfile.TargetVelocity : 50.0);
-            int dwellTime = (teachPt != null && teachPt.DwellTimeMs > 0) ? teachPt.DwellTimeMs : 100;
+            double clampPos = teachPt != null && teachPt.Position > 0 ? teachPt.Position : (cfg?.ClampingPosition ?? (cfg != null && cfg.CapturePosition > 0 ? cfg.CapturePosition : 80.0));
+            double clampSpeed = teachPt != null && teachPt.Speed > 0 ? teachPt.Speed : (cfg?.ClampingVelocity ?? 50.0);
+            int dwellTime = teachPt != null && teachPt.DwellTimeMs > 0 ? teachPt.DwellTimeMs : (cfg?.ForceDwellTimeMs > 0 ? cfg.ForceDwellTimeMs : 150);
             int visionJobId = teachPt != null ? teachPt.JobId : 0;
 
-            Log($"[Cycle] Moving Servo towards target: {targetPos:F3} mm | Speed: {moveSpeed:F1} mm/s...");
-            Motion.MoveAbsolute(axis, targetPos, moveSpeed);
-
-            bool stoppedByLoadcell = false;
-            bool stoppedByPosition = false;
-
-            // High-speed scan loop (5ms) checking either stop condition
-            while (!ct.IsCancellationRequested)
+            Log($"[Sequence] Clamping down to {clampPos:F2} mm (Speed {clampSpeed:F1} mm/s, monitoring Bongshin loadcell force)...");
+            bool clampOk = await Motion.ClampDownAsync(clampPos, clampSpeed, ct);
+            if (!clampOk)
             {
-                // Condition A: Loadcell sensor input triggered (HIGH)
-                if (Motion.GetDigitalInput(LoadcellDIPin))
-                {
-                    stoppedByLoadcell = true;
-                    break;
-                }
-
-                // Condition B: Pre-configured target position reached
-                var st = Motion.GetAxisState(axis);
-                if (st.ActualPosition >= targetPos - 0.05 || st.IsInPosition)
-                {
-                    stoppedByPosition = true;
-                    break;
-                }
-
-                if (st.IsError) break;
-
-                await Task.Delay(5, ct);
+                Log("[Sequence Error] Clamping down command failed or timed out.");
+                SetState(SequenceState.Error);
+                return false;
             }
 
-            // Stop Servo immediately upon meeting either condition
-            Motion.Stop(axis);
-            var stopSt = Motion.GetAxisState(axis);
+            // STEP 4: Force Dwell & Turn ON Backlight
+            SetState(SequenceState.TriggeringVision);
+            await Task.Delay(dwellTime, ct);
 
-            if (stoppedByLoadcell)
+            // Turn ON Backlight for inspection
+            if (cfg?.IO != null)
             {
-                Log($"[Cycle] >>> Servo stopped by Loadcell trigger (DI {LoadcellDIPin} = HIGH) at position: {stopSt.ActualPosition:F3} mm");
-            }
-            else if (stoppedByPosition)
-            {
-                Log($"[Cycle] >>> Servo stopped at target position: {stopSt.ActualPosition:F3} mm");
+                Motion.SetDigitalOutput((short)cfg.IO.BacklightDOBit, true);
             }
 
-            await Task.Delay(dwellTime, ct); // Dwell delay for mechanical stabilization
-
-            // STEP 4: Trigger VisionPro Inspection (Light control is managed by the Vision Job itself)
+            // STEP 5: Vision Processing (Đếm số lượng 100 pcs & Kiểm tra ngược mặt)
             SetState(SequenceState.ProcessingVision);
-            Log($"[Cycle] Triggering Vision Job ID {visionJobId}...");
+            Log($"[Sequence Vision] Triggering camera & Cognex VisionPro processing (Job ID {visionJobId})...");
 
             bool visionOk = true;
             try
             {
-                visionOk = await JobController.RunJobByIdAsync(visionJobId);
+                if (IsTestProgramMode)
+                {
+                    await Task.Delay(200, ct);
+                    visionOk = string.Equals(MockVisionResult, "OK", StringComparison.OrdinalIgnoreCase);
+                    Log($"[Sequence Test Program] Mock Vision Result = {MockVisionResult} (Success: {visionOk})");
+                }
+                else if (onVisionJobTrigger != null)
+                {
+                    visionOk = await onVisionJobTrigger(visionJobId);
+                }
+                else
+                {
+                    visionOk = await JobController.RunJobByIdAsync(visionJobId);
+                }
             }
             catch (Exception ex)
             {
@@ -324,46 +330,64 @@ namespace BeevisionSolution.Controller
                 visionOk = false;
             }
 
-            if (visionOk)
+            Log($"[Sequence Vision] Result: {(visionOk ? "PASS (OK - Count 100 & Correct Orientation)" : "FAIL (NG - Quantity Mismatch or Inverted)")}");
+
+            // STEP 6: Unclamp & Retract Up (Nâng trục tỳ mở kẹp về vị trí chờ)
+            SetState(SequenceState.UnclampingUp);
+            // Turn OFF Backlight
+            if (cfg?.IO != null)
             {
-                Log("[Cycle Vision] Inspection Result: PASS (OK)");
-            }
-            else
-            {
-                Log("[Cycle Vision WARNING] Inspection Result: FAIL (NG) - Defective or inverted product detected!");
+                Motion.SetDigitalOutput((short)cfg.IO.BacklightDOBit, false);
             }
 
-            // STEP 5: Return Servo to initial starting position (0.000 mm)
-            SetState(SequenceState.MovingToEnd);
-            Log("[Cycle] Returning Servo to starting position (0.000 mm)...");
-
-            Motion.MoveAbsolute(axis, 0.0, moveSpeed);
-            bool returnOk = await Motion.WaitMoveDoneAsync(axis, 15000, ct);
-            if (returnOk)
+            double retractSpeed = cfg?.RetractVelocity ?? 80.0;
+            Log($"[Sequence] Retracting press axis to standby position (Speed {retractSpeed:F1} mm/s)...");
+            bool retractOk = await Motion.RetractUpAsync(retractSpeed, ct);
+            if (!retractOk)
             {
-                Log("[Cycle] Servo returned to 0.000 mm successfully. Cycle completed!");
-            }
-            else
-            {
-                Log("[Cycle Error] Timeout while returning Servo to home position!");
-                SetState(SequenceState.Error);
-                return false;
+                Log("[Sequence Warning] Retract press axis warning or timeout.");
             }
 
-            // STEP 6: Anti-tie-down protection: Ensure operator releases both buttons before allowing next cycle
-            while (Motion.GetDigitalInput(StartBtn1DIPin) || Motion.GetDigitalInput(StartBtn2DIPin))
+            // STEP 7: Anti-tie-down protection: Ensure operator releases both buttons before allowing next cycle
+            while (!ct.IsCancellationRequested &&
+                   ((Motion.IsTriggerLeftPressed() || Motion.GetDigitalInput(StartBtn1DIPin)) ||
+                    (Motion.IsTriggerRightPressed() || Motion.GetDigitalInput(StartBtn2DIPin))))
             {
-                await Task.Delay(50, ct);
+                await Task.Delay(30, ct);
             }
 
+            // STEP 8: Report & Tower Light Indication
             SetState(SequenceState.FinishingCycle);
+            if (cfg?.IO != null)
+            {
+                if (visionOk)
+                {
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerLightGreenDOBit, true);
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerLightRedDOBit, false);
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerBuzzerDOBit, false);
+                }
+                else
+                {
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerLightGreenDOBit, false);
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerLightRedDOBit, true);
+                    Motion.SetDigitalOutput((short)cfg.IO.TowerBuzzerDOBit, true);
+
+                    // Auto turn off buzzer after 1 second
+                    _ = Task.Run(async () =>
+                    {
+                        await Task.Delay(1000);
+                        Motion.SetDigitalOutput((short)cfg.IO.TowerBuzzerDOBit, false);
+                    });
+                }
+            }
+
             return visionOk;
         }
 
         public async Task<bool> MoveToPointAsync(TeachingPoint pt, CancellationToken ct = default)
         {
             if (pt == null || Motion == null) return false;
-            Log($"[Teaching] Move To Test point '{pt.Name}' ({pt.Position:F2} mm)...");
+            Log($"[Teaching] Moving to point '{pt.Name}' ({pt.Position:F2} mm)...");
             bool ok = Motion.MoveAbsolute(pt.AxisIndex, pt.Position, pt.Speed, pt.Acceleration, pt.Acceleration);
             if (ok)
             {

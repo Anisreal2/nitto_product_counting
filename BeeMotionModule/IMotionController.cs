@@ -25,6 +25,9 @@ namespace BeeMotionModule
         
         bool ServoOn(short axis);
         bool ServoOff(short axis);
+        bool ForceServoOn(short axis);
+        bool ToggleEmgInversion();
+        short GetEmgInversion();
         bool ClearAlarm(short axis);
         bool SetZero(short axis);
         
@@ -44,7 +47,17 @@ namespace BeeMotionModule
         bool GetDigitalInput(short diPin);
         bool GetDigitalOutput(short doPin);
 
-        // Pneumatics & IO convenience helpers
+        // Nitto Machine Specific Helpers
+        bool IsTriggerLeftPressed();
+        bool IsTriggerRightPressed();
+        bool IsForceTargetReached();
+        bool IsHomeUpSensorActive();
+        bool IsDownLimitSensorActive();
+        bool IsPartPresent();
+        Task<bool> ClampDownAsync(double targetPos = 0, double speed = 0, CancellationToken ct = default);
+        Task<bool> RetractUpAsync(double speed = 0, CancellationToken ct = default);
+
+        // Backward compatibility helpers
         bool IsCylinderForward { get; }
         bool IsVacuumOn { get; }
         bool SetCylinder(bool forward);

@@ -444,4 +444,23 @@
     <system:String x:Key="strMotionAdvancedSettings">Advanced Machine Parameters</system:String>
     <system:String x:Key="strMotionIOBitMapping">IO Bit Address Mapping</system:String>
     <system:String x:Key="strMotionSaveAdvanced">💾 Save Advanced Config</system:String>
+
+    <!-- Nitto Machine Specific Motion Strings -->
+    <system:String x:Key="strMotionPressAxis">Press Axis (Leadshine EL7)</system:String>
+    <system:String x:Key="strMotionTwoHandSafety">Two-Hand Safety Trigger &amp; Force Control</system:String>
+    <system:String x:Key="strMotionSensorsTower">Sensors &amp; Tower Signals</system:String>
+    <system:String x:Key="strMotionClampDown">⬇ Clamp Down</system:String>
+    <system:String x:Key="strMotionRetractUp">⬆ Retract Up</system:String>
+    <system:String x:Key="strMotionLeftTrigger">LEFT TRIGGER (IDEC)</system:String>
+    <system:String x:Key="strMotionRightTrigger">RIGHT TRIGGER (IDEC)</system:String>
+    <system:String x:Key="strMotionForceControl">LOADCELL FORCE CONTROL (BONGSHIN CBFSB-10)</system:String>
+    <system:String x:Key="strMotionHomeUpSensor">Home/Up Sensor</system:String>
+    <system:String x:Key="strMotionDownLimitSensor">Down Limit Sensor</system:String>
+    <system:String x:Key="strMotionPartPresentSensor">Part on Jig Sensor</system:String>
+    <system:String x:Key="strMotionTowerGreen">Tower Green (OK)</system:String>
+    <system:String x:Key="strMotionTowerRed">Tower Red (NG)</system:String>
+    <system:String x:Key="strMotionBacklight">Inspection Backlight</system:String>
+    <system:String x:Key="strMotionSimulateTwoHand">⚡ 2-Hand Trigger</system:String>
+    <system:String x:Key="strMotionManualClamping">Manual Clamping Action</system:String>
+    <system:String x:Key="strMotionNittoIOMapping">Nitto IO Bit Address Mapping</system:String>
 </ResourceDictionary>

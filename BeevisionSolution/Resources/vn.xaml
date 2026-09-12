@@ -445,4 +445,23 @@
     <system:String x:Key="strMotionAdvancedSettings">Cài Đặt Thông Số Nâng Cao</system:String>
     <system:String x:Key="strMotionIOBitMapping">Gán Địa Chỉ Bit IO</system:String>
     <system:String x:Key="strMotionSaveAdvanced">💾 Lưu Cấu Hình Nâng Cao</system:String>
+
+    <!-- Nitto Machine Specific Motion Strings -->
+    <system:String x:Key="strMotionPressAxis">Trục Tỳ Ép (Leadshine EL7)</system:String>
+    <system:String x:Key="strMotionTwoHandSafety">Nút Nhấn An Toàn 2 Tay &amp; Kiểm Soát Lực</system:String>
+    <system:String x:Key="strMotionSensorsTower">Cảm Biến Quang &amp; Tín Hiệu Đèn Tháp</system:String>
+    <system:String x:Key="strMotionClampDown">⬇ Tỳ Kẹp Xuống</system:String>
+    <system:String x:Key="strMotionRetractUp">⬆ Nâng Về Chờ</system:String>
+    <system:String x:Key="strMotionLeftTrigger">NÚT BẤM TRÁI (IDEC)</system:String>
+    <system:String x:Key="strMotionRightTrigger">NÚT BẤM PHẢI (IDEC)</system:String>
+    <system:String x:Key="strMotionForceControl">KIỂM SOÁT LỰC LOADCELL (BONGSHIN CBFSB-10)</system:String>
+    <system:String x:Key="strMotionHomeUpSensor">Cảm Biến Vị Trí Trên (Home)</system:String>
+    <system:String x:Key="strMotionDownLimitSensor">Cảm Biến Giới Hạn Dưới</system:String>
+    <system:String x:Key="strMotionPartPresentSensor">Cảm Biến Có Phôi Trên Jig</system:String>
+    <system:String x:Key="strMotionTowerGreen">Đèn Tháp Xanh (OK)</system:String>
+    <system:String x:Key="strMotionTowerRed">Đèn Tháp Đỏ (NG)</system:String>
+    <system:String x:Key="strMotionBacklight">Đèn Chiếu Sáng Backlight</system:String>
+    <system:String x:Key="strMotionSimulateTwoHand">⚡ Giả Lập 2 Tay</system:String>
+    <system:String x:Key="strMotionManualClamping">Thao Tác Tỳ Kẹp Thủ Công</system:String>
+    <system:String x:Key="strMotionNittoIOMapping">Gán Địa Chỉ Bit IO Nitto</system:String>
 </ResourceDictionary>
