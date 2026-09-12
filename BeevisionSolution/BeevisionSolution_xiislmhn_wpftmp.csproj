@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DB3219C7-01E4-4619-B50D-A91F2BF6ECCE}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>BeevisionSolution</RootNamespace>
+    <AssemblyName>BeevisionSolution</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Deterministic>false</Deterministic>
+    <PublishUrl>C:\Users\Lincoln\Desktop\Connector\CNV\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BeevisionSolution.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TRIGGERBYBOARD</DefineConstants>
+    <DebugType>embedded</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <FileAlignment>1024</FileAlignment>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>5</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;TRIGGERBYBOARD</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>03B636247E81B88E14703D2680707382A19B1402</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>BeevisionSolution_1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <FileAlignment>1024</FileAlignment>
+    <DebugType>embedded</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controller\CalibManager.cs" />
+    <Compile Include="Controller\DatamanController.cs" />
+    <Compile Include="Controller\JobController.cs" />
+    <Compile Include="Controller\LanguageController.cs" />
+    <Compile Include="Controller\LicenseManager.cs" />
+    <Compile Include="Controller\MotionSequenceManager.cs" />
+    <Compile Include="Controller\Native.cs" />
+    <Compile Include="Controller\SerialPortController.cs" />
+    <Compile Include="Controller\TrainedPointManager.cs" />
+    <Compile Include="Converters\BoolToStatusTextConverter.cs" />
+    <Compile Include="Converters\BoolTovisibilityConverter.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\ResultToColorConverter.cs" />
+    <Compile Include="Converters\RoleToTextConverter.cs" />
+    <Compile Include="Converters\StatusToBackgroundConverter.cs" />
+    <Compile Include="Converters\ZoomToScaleConverter.cs" />
+    <Compile Include="Jobs\CameraHandlers\IRaypleLinescanHandler.cs" />
+    <Compile Include="Jobs\CameraHandlers\WebcamHandler.cs" />
+    <Compile Include="Jobs\IoJobCtrl.cs" />
+    <Compile Include="Jobs\IOJobs.cs" />
+    <Compile Include="Jobs\IpcIOControl.cs" />
+    <Compile Include="Jobs\WatcherJob.cs" />
+    <Compile Include="LocalDB\BeeSql.cs" />
+    <Compile Include="LocalDB\DbProductItem.cs" />
+    <Compile Include="LocalDB\DbViewerItem.cs" />
+    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\AlignHeaderItem.cs" />
+    <Compile Include="Models\CameraParams.cs" />
+    <Compile Include="Models\Grade.cs" />
+    <Compile Include="Jobs\HEJob.cs" />
+    <Compile Include="Models\HistoryDataModel.cs" />
+    <Compile Include="Jobs\LightJob.cs" />
+    <Compile Include="Models\LayoutSetting.cs" />
+    <Compile Include="Models\MeasureDistanceConfig.cs" />
+    <Compile Include="Models\Motion.cs" />
+    <Compile Include="Models\PatternListContainer.cs" />
+    <Compile Include="Models\PatternModel.cs" />
+    <Compile Include="Models\PcsRotation.cs" />
+    <Compile Include="Models\PlcCam.cs" />
+    <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\ReaderContentModel.cs" />
+    <Compile Include="Models\ResultModel.cs" />
+    <Compile Include="Models\SaveImageModel.cs" />
+    <Compile Include="Models\StatusManager.cs" />
+    <Compile Include="Models\TrayModel.cs" />
+    <Compile Include="Models\VisionBarcode.cs" />
+    <Compile Include="Controller\BeeAlgo.cs" />
+    <Compile Include="Utils\AccountManager.cs" />
+    <Compile Include="Utils\BeePwd.cs" />
+    <Compile Include="Utils\BvsLogger.cs" />
+    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\Constant.cs" />
+    <Compile Include="Utils\Converters.cs" />
+    <Compile Include="Utils\Enum.cs" />
+    <Compile Include="Utils\Events.cs" />
+    <Compile Include="Utils\Extensions.cs" />
+    <Compile Include="Utils\LayoutGenerator.cs" />
+    <Compile Include="Utils\LightConverter.cs" />
+    <Compile Include="Utils\Native.cs" />
+    <Compile Include="Utils\OverlayGraphicLineWidthScope.cs" />
+    <Compile Include="Utils\PrivateSetterContractResolver.cs" />
+    <Compile Include="Utils\PropertyChangedAbstract.cs" />
+    <Compile Include="Utils\RelayCommand.cs" />
+    <Compile Include="Utils\SavingImgCtrl.cs" />
+    <Compile Include="Utils\StatusToBadgeColorConverter.cs" />
+    <Compile Include="Utils\VisionJobConverter.cs" />
+    <Compile Include="Utils\WindowsSystemTimeHelper.cs" />
+    <Compile Include="ViewComponents\LoginDialog.xaml.cs">
+      <DependentUpon>LoginDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\LotInformation.xaml.cs">
+      <DependentUpon>LotInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\MeasureDistanceView.xaml.cs">
+      <DependentUpon>MeasureDistanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\ModelsManagerView.xaml.cs">
+      <DependentUpon>ModelsManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\NumPlaceHolderTextbox.xaml.cs">
+      <DependentUpon>NumPlaceHolderTextbox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\PcHealthy.xaml.cs">
+      <DependentUpon>PcHealthy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\ToolBlockEditorView.xaml.cs">
+      <DependentUpon>ToolBlockEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AppSettingModel.cs" />
+    <Compile Include="Jobs\FunctionJob.cs" />
+    <Compile Include="Jobs\AlignJob.cs" />
+    <Compile Include="Jobs\BaseJob.cs" />
+    <Compile Include="Jobs\CameraJob.cs" />
+    <Compile Include="Jobs\CameraHandlers\ICameraHandler.cs" />
+    <Compile Include="Jobs\CameraHandlers\VppCameraHandler.cs" />
+    <!-- Uncomment after adding CaptureCard_Net SDK reference -->
+    <!-- <Compile Include="Jobs\CameraHandlers\IRaypleLinescanHandler.cs" /> -->
+    <!-- Uncomment after adding AForge.Video.DirectShow NuGet package -->
+    <!-- <Compile Include="Jobs\CameraHandlers\WebcamHandler.cs" /> -->
+    <Compile Include="Jobs\IspJob.cs" />
+    <Compile Include="Jobs\JobType.cs" />
+    <Compile Include="Models\AppSettings.cs" />
+    <Compile Include="Models\MidnightTimer.cs" />
+    <Compile Include="Models\OperationMode.cs" />
+    <Compile Include="Models\LiveItem.cs" />
+    <Compile Include="Views\AccountManagerView.xaml.cs">
+      <DependentUpon>AccountManagerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Views\ComunicationView.xaml.cs">
+      <DependentUpon>ComunicationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainGrid.xaml.cs">
+      <DependentUpon>MainGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainWindow2.xaml.cs">
+      <DependentUpon>MainWindow2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OpCallWindow.xaml.cs">
+      <DependentUpon>OpCallWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OptionWindow.xaml.cs">
+      <DependentUpon>OptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MotionControlView.xaml.cs">
+      <DependentUpon>MotionControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewComponents\RecordDisplayWpf.xaml.cs">
+      <DependentUpon>RecordDisplayWpf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PopUpWindow.xaml.cs">
+      <DependentUpon>PopUpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ToolSettingView.xaml.cs">
+      <DependentUpon>ToolSettingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TopPanel.xaml.cs">
+      <DependentUpon>TopPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <Content Include="PcsConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\data.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BeeIOModule\BeeIOModule.csproj">
+      <Project>{3010d839-150e-4b39-8dff-50dc9721e270}</Project>
+      <Name>BeeIOModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BeeLightModule\BeeLightModule.csproj">
+      <Project>{8b42bfec-0c21-47f8-b3ae-3bc30b8412ed}</Project>
+      <Name>BeeLightModule</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BeeMotionModule\BeeMotionModule.csproj">
+      <Project>{4f98e123-a5b6-4e87-9c1d-77a9bc10d123}</Project>
+      <Name>BeeMotionModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\BeeMotionModule\Core\IMC_API_x64.dll">
+      <Link>IMC_API_x64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <!--<ItemGroup>
+    <ProjectReference Include="..\Logger\log4net.csproj">
+      <Project>{181fe707-e161-4722-9f38-6aaab6faa106}</Project>
+      <Name>log4net</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>-->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>XCopy /Y /d "$(SolutionDir)ThirdParty\VisionPro" "$(TargetDir)VisionPro\"
+XCopy /Y /E /d "$(SolutionDir)ThirdParty" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets'))" />
+    <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <Import Project="..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets" Condition="Exists('..\packages\CommunityToolkit.Mvvm.8.4.0\build\CommunityToolkit.Mvvm.targets')" />
+  <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
+  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+  <Import Project="..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets" Condition="Exists('..\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\Microsoft.NETFramework.ReferenceAssemblies.net48.targets')" />
+  <ItemGroup>
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\AForge.2.2.5\lib\AForge.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\AForge.Imaging.2.2.5\lib\AForge.Imaging.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\AForge.Math.2.2.5\lib\AForge.Math.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Basler.Pylon.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\BeeData.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeeIOModule\bin\Debug\BeeIOModule.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeeLightModule\bin\Debug\BeeLightModule.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeeMotionModule\bin\x64\Debug\BeeMotionModule.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\IRaypleDll\CLIDelegate.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Dataman\Cognex.DataMan.CogNamer.PC.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Dataman\Cognex.DataMan.SDK.Discovery.PC.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Dataman\Cognex.DataMan.SDK.PC.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Dataman\Cognex.DataMan.SDK.Utils.PC.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.Rbbt.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.Vision.Core.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.ELCore.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.LineMax.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.SmartLine.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.Vision.Startup.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.ViDiELClassify.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.ViDiELOCR.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\ELdll\Cognex.Vision.ViDiELSegment.Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.Caliper.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.Controls.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.Core.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.CorePlus.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.Display.Controls.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.ImageFile.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.ImageProcessing.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.Interop.Core.dll">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </ReferencePath>
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.PMAlign.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.PMRedLine.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.ToolGroup.Controls.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.ToolGroup.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro.VisionInterop.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro3D.Core.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\VisionPro\Cognex.VisionPro3D.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\CommonServiceLocator.2.0.7\lib\net48\CommonServiceLocator.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\CommunityToolkit.Mvvm.8.4.0\lib\netstandard2.0\CommunityToolkit.Mvvm.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\CountryFlag.2.1.0\lib\CountryFlag.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\CsvHelper.33.1.0\lib\net48\CsvHelper.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Dapper.2.1.66\lib\net461\Dapper.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\DatabaseInterface_MMCV.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\EEIP.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\log4net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.2.4.0\lib\net47\MahApps.Metro.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.BootstrapIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.BootstrapIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.BoxIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.BoxIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.CircumIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.CircumIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Codicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Codicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Coolicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Coolicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Core.5.1.0\lib\net47\MahApps.Metro.IconPacks.Core.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.5.1.0\lib\net47\MahApps.Metro.IconPacks.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Entypo.5.1.0\lib\net47\MahApps.Metro.IconPacks.Entypo.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.EvaIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.EvaIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.FeatherIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.FeatherIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.FileIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.FileIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Fontaudio.5.1.0\lib\net47\MahApps.Metro.IconPacks.Fontaudio.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.FontAwesome.5.1.0\lib\net47\MahApps.Metro.IconPacks.FontAwesome.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Fontisto.5.1.0\lib\net47\MahApps.Metro.IconPacks.Fontisto.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.ForkAwesome.5.1.0\lib\net47\MahApps.Metro.IconPacks.ForkAwesome.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.GameIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.GameIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Ionicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Ionicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.JamIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.JamIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Lucide.5.1.0\lib\net47\MahApps.Metro.IconPacks.Lucide.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Material.5.1.0\lib\net47\MahApps.Metro.IconPacks.Material.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.MaterialDesign.5.1.0\lib\net47\MahApps.Metro.IconPacks.MaterialDesign.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.MaterialLight.5.1.0\lib\net47\MahApps.Metro.IconPacks.MaterialLight.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.MemoryIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.MemoryIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Microns.5.1.0\lib\net47\MahApps.Metro.IconPacks.Microns.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Modern.5.1.0\lib\net47\MahApps.Metro.IconPacks.Modern.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Octicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Octicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.PhosphorIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.PhosphorIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.PicolIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.PicolIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.PixelartIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.PixelartIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.RadixIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.RadixIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.RemixIcon.5.1.0\lib\net47\MahApps.Metro.IconPacks.RemixIcon.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.RPGAwesome.5.1.0\lib\net47\MahApps.Metro.IconPacks.RPGAwesome.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.SimpleIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.SimpleIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Typicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Typicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Unicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Unicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.VaadinIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.VaadinIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.WeatherIcons.5.1.0\lib\net47\MahApps.Metro.IconPacks.WeatherIcons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MahApps.Metro.IconPacks.Zondicons.5.1.0\lib\net47\MahApps.Metro.IconPacks.Zondicons.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MessagePack.Annotations.2.5.192\lib\netstandard2.0\MessagePack.Annotations.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\MessagePack.2.5.192\lib\net472\MessagePack.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Bcl.AsyncInterfaces.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Microsoft.CSharp.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Microsoft.DwayneNeed.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Microsoft.DwayneNeed.Win32.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.Configuration.Abstractions.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.Configuration.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.Configuration.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.Configuration.FileExtensions.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.Configuration.FileExtensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.Configuration.Ini.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.Configuration.Ini.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.FileProviders.Abstractions.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.FileProviders.Abstractions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.FileProviders.Physical.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.FileProviders.Physical.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.FileSystemGlobbing.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.FileSystemGlobbing.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Extensions.Primitives.10.0.0-preview.2.25163.2\lib\net462\Microsoft.Extensions.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NET.StringTools.17.6.3\lib\net472\Microsoft.NET.StringTools.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Microsoft.VisualBasic.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.135\lib\net462\Microsoft.Xaml.Behaviors.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\mscorlib.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\IRaypleDll\MVFGSDK_Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\IRaypleDll\MVSDK_Net.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\netDxf.2023.11.10\lib\net48\netDxf.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\Newtonsoft.Json.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\NLog.5.4.0\lib\net46\NLog.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\OxyPlot.Core.2.2.0\lib\net462\OxyPlot.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\OxyPlot.Wpf.2.2.0\lib\net462\OxyPlot.Wpf.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\OxyPlot.Wpf.Shared.2.2.0\lib\net462\OxyPlot.Wpf.Shared.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\PresentationCore.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\PresentationFramework.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\RBush.Signed.4.0.0\lib\net47\RBush.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\ReachFramework.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\sml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Collections.Immutable.6.0.0\lib\net461\System.Collections.Immutable.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Configuration.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Core.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Data.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\lib\net46\System.Data.SQLite.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Data.SQLite.EF6.1.0.119.0\lib\net46\System.Data.SQLite.EF6.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Data.SQLite.Linq.1.0.119.0\lib\net46\System.Data.SQLite.Linq.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Diagnostics.EventLog.10.0.0-preview.2.25163.2\lib\net462\System.Diagnostics.EventLog.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Drawing.Common.10.0.0-preview.2.25163.9\lib\net462\System.Drawing.Common.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Drawing.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.IO.Compression.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.IO.Compression.FileSystem.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Memory.4.6.2\lib\net462\System.Memory.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Net.Http.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Numerics.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Printing.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Runtime.CompilerServices.Unsafe.6.1.1\lib\net462\System.Runtime.CompilerServices.Unsafe.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Runtime.Serialization.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Security.Cryptography.Xml.8.0.2\lib\net462\System.Security.Cryptography.Xml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Security.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.ServiceModel.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.ServiceProcess.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.ServiceProcess.ServiceController.10.0.0-preview.2.25163.2\lib\net462\System.ServiceProcess.ServiceController.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Threading.AccessControl.10.0.0-preview.2.25163.2\lib\net462\System.Threading.AccessControl.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\System.Threading.Tasks.Extensions.4.6.2\lib\net462\System.Threading.Tasks.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Transactions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Web.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Web.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Windows.Forms.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Xaml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Xml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\System.Xml.Linq.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\IRaypleDll\ThridLibray.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\ThirdParty\WibuCmNET.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\WindowsBase.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\WindowsFormsIntegration.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\Microsoft.Win32.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\netstandard.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.AppContext.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Collections.Concurrent.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Collections.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Collections.NonGeneric.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Collections.Specialized.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ComponentModel.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ComponentModel.EventBasedAsync.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ComponentModel.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ComponentModel.TypeConverter.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Console.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Data.Common.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.Contracts.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.FileVersionInfo.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.Process.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.StackTrace.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.TextWriterTraceListener.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.Tools.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Diagnostics.TraceSource.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Drawing.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Dynamic.Runtime.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Globalization.Calendars.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Globalization.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Globalization.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.Compression.ZipFile.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.FileSystem.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.FileSystem.DriveInfo.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.FileSystem.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.FileSystem.Watcher.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.IsolatedStorage.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.MemoryMappedFiles.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.Pipes.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.IO.UnmanagedMemoryStream.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Linq.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Linq.Expressions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Linq.Parallel.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Linq.Queryable.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Http.Rtc.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.NameResolution.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.NetworkInformation.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Ping.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Requests.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Security.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.Sockets.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.WebHeaderCollection.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.WebSockets.Client.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Net.WebSockets.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ObjectModel.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.Emit.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.Emit.ILGeneration.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.Emit.Lightweight.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Reflection.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Resources.Reader.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Resources.ResourceManager.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Resources.Writer.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.CompilerServices.VisualC.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Handles.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.InteropServices.WindowsRuntime.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Numerics.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Formatters.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Json.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Runtime.Serialization.Xml.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Claims.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Cryptography.Algorithms.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Cryptography.Csp.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Cryptography.Encoding.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Cryptography.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Cryptography.X509Certificates.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.Principal.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Security.SecureString.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ServiceModel.Duplex.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ServiceModel.Http.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ServiceModel.NetTcp.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ServiceModel.Primitives.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ServiceModel.Security.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Text.Encoding.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Text.Encoding.Extensions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Text.RegularExpressions.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.Overlapped.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.Tasks.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.Tasks.Parallel.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.Thread.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.ThreadPool.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Threading.Timer.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.ValueTuple.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.ReaderWriter.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.XDocument.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.XmlDocument.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.XmlSerializer.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.XPath.dll" />
+    <ReferencePath Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\packages\Microsoft.NETFramework.ReferenceAssemblies.net48.1.0.2\build\.NETFramework\v4.8\Facades\System.Xml.XPath.XDocument.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\App.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\LoginDialog.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\LotInformation.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\MeasureDistanceView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\ModelsManagerView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\NumPlaceHolderTextbox.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\PcHealthy.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\ToolBlockEditorView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\AccountManagerView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\ComunicationView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\ImageView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\MainGrid.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\MainWindow2.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\OpCallWindow.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\OptionWindow.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\MotionControlView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\ViewComponents\RecordDisplayWpf.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\PopUpWindow.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\ToolSettingView.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\Views\TopPanel.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\BeevisionSolution_Content.g.cs" />
+    <Compile Include="D:\Project\0.2026\Nitto\6. Đêm Số lượng + check ngược sản phẩm\AppPCControl\nitto_product_counting\BeevisionSolution\obj\x64\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>

@@ -11,8 +11,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AForge.Math.Metrics;
 using BeeMotionModule.Models;
 using BeevisionSolution.Controller;
+using BeevisionSolution.Jobs;
 using BeevisionSolution.Utils;
 
 namespace BeevisionSolution.Views
@@ -34,6 +36,10 @@ namespace BeevisionSolution.Views
         private short _currentAxis = 0;
         private readonly Queue<string> _logLines = new Queue<string>();
         private const int MaxLogLines = 200;
+
+        public ObservableCollection<IoPinDisplayItem> DiItems { get; set; } = new ObservableCollection<IoPinDisplayItem>();
+        public ObservableCollection<IoPinDisplayItem> DoItems { get; set; } = new ObservableCollection<IoPinDisplayItem>();
+
 
         private static readonly SolidColorBrush TileOffBrush = new SolidColorBrush(Color.FromRgb(0x25, 0x25, 0x26));
         private static readonly SolidColorBrush TileGreenBrush = new SolidColorBrush(Color.FromRgb(0x2E, 0x8B, 0x57));
@@ -60,6 +66,10 @@ namespace BeevisionSolution.Views
 
         private void MotionControlView_Loaded(object sender, RoutedEventArgs e)
         {
+            InitIoList();
+            icDigitalInputs.ItemsSource = DiItems;
+            icDigitalOutputs.ItemsSource = DoItems;
+
             var seq = MotionSequenceManager.Instance;
             if (seq.Motion != null)
             {
@@ -260,34 +270,48 @@ namespace BeevisionSolution.Views
             bool cylFwd = motion.GetCylinderForwardSensor();
             bool vacSen = motion.GetVacuumSensor();
 
-            // Status tiles
-            if (tileCylinder != null) tileCylinder.Background = cylFwd ? TileGreenBrush : TileOffBrush;
-            if (tileVacuum != null) tileVacuum.Background = vacSen ? TileBlueBrush : TileOffBrush;
-            if (tileLight != null) tileLight.Background = _isLightOn ? TileGreenBrush : TileOffBrush;
+            // 1. Kiểm tra xem có Card PCIe IO rời hay không
+            var pcieIo = IoJobCtrl.GetIOcardCtrl();
+            if (pcieIo != null && pcieIo.IsInit)
+            {
+                // Cập nhật trạng thái DI từ Card PCIe
+                for (int i = 0; i < DiItems.Count; i++)
+                {
+                    int pin = DiItems[i].Pin;
+                    if (pin >= 1 && pin <= pcieIo.InputChannels)
+                    {
+                        DiItems[i].State = pcieIo.GetInputState(pin);
+                    }
+                }
 
-            // Dashboard Pneumatics text
-            if (txtCylSensorStatus != null)
-            {
-                txtCylSensorStatus.Text = cylFwd ? "Sensor: FORWARD (EXTENDED)" : "Sensor: RETRACTED";
-                txtCylSensorStatus.Foreground = cylFwd ? TileGreenBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
+                // Cập nhật trạng thái DO từ Card PCIe
+                for (int i = 0; i < DoItems.Count; i++)
+                {
+                    int pin = DoItems[i].Pin;
+                    if (pin >= 1 && pin <= pcieIo.OutputChannels)
+                    {
+                        DoItems[i].State = pcieIo.GetOutputState(pin);
+                    }
+                }
             }
-            if (txtVacSensorStatus != null)
+            else
             {
-                txtVacSensorStatus.Text = vacSen ? "Sensor: VACUUM HOLD OK" : "Sensor: NO SUCTION";
-                txtVacSensorStatus.Foreground = vacSen ? TileBlueBrush : new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
-            }
-            if (btnQuickCylinder != null)
-            {
-                btnQuickCylinder.Content = motion.IsCylinderForward ? "Toggle RETRACT" : "Toggle FWD";
-            }
-            if (btnQuickVacuum != null)
-            {
-                btnQuickVacuum.Content = motion.IsVacuumOn ? "Release VACUUM" : "Hold VACUUM";
+                // Fallback đọc từ Card Inovance nếu Card PCIe chưa bật
+                for (int i = 0; i < DiItems.Count; i++)
+                {
+                    DiItems[i].State = motion.GetDigitalInput((short)DiItems[i].Pin);
+                }
+                for (int i = 0; i < DoItems.Count; i++)
+                {
+                    DoItems[i].State = motion.GetDigitalOutput((short)DoItems[i].Pin);
+                }
             }
         }
-        #endregion
+    
 
-        #region Bottom Action Bar Handlers (Like MotionVision)
+            #endregion
+
+            #region Bottom Action Bar Handlers (Like MotionVision)
         private void BtnAutoMode_Click(object sender, RoutedEventArgs e)
         {
             _isAutoMode = true;
@@ -329,6 +353,7 @@ namespace BeevisionSolution.Views
 
         private void BtnReset_Click(object sender, RoutedEventArgs e)
         {
+            Motion_OnLogMessage($"[Manual] Press RESET -> Clear Alarm and stop Axis {_currentAxis}");
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion != null)
             {
@@ -340,21 +365,38 @@ namespace BeevisionSolution.Views
             Motion_OnLogMessage("[System] Reset command executed.");
         }
 
-        private void BtnServoToggle_Click(object sender, RoutedEventArgs e)
+
+        private async void BtnServoToggle_Click(object sender, RoutedEventArgs e)
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
 
             var sts = motion.GetAxisState(_currentAxis);
+            if (sts == null) return;
+
             if (sts.IsServoOn)
             {
+                // Khi tắt Servo: Tắt Servo rồi đóng lại phanh cơ (tắt DO)
                 motion.ServoOff(_currentAxis);
+                var pcieIo = IoJobCtrl.GetIOcardCtrl();
+                if (pcieIo != null && pcieIo.IsInit)
+                {
+                    pcieIo.SetPinOutput(MotionSequenceManager.Instance.BrakeDOPin, false);
+                }
+                Motion_OnLogMessage($"[Manual] Axis {_currentAxis}: Servo OFF & Brake Locked.");
             }
             else
             {
-                motion.ServoOn(_currentAxis);
+                // Khi bật Servo: Phải đi qua chuỗi Nhả phanh PCIe -> Tắt Emergency -> Servo ON
+                Motion_OnLogMessage($"[Manual] Axis {_currentAxis}: Enabling Servo (Release Brake -> Clear Emg -> Servo ON)...");
+                bool ok = await MotionSequenceManager.Instance.EnableServoSequenceAsync(_currentAxis);
+                if (!ok)
+                {
+                    Motion_OnLogMessage($"[Manual Alarm] Axis {_currentAxis}: Enable Servo Failed!");
+                }
             }
         }
+
 
         private async void BtnTriggerCam_Click(object sender, RoutedEventArgs e)
         {
@@ -402,10 +444,13 @@ namespace BeevisionSolution.Views
                     string str = item.Content.ToString().Replace("mm", "").Trim();
                     double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out stepDist);
                 }
+                Motion_OnLogMessage($"[Manual Move] Press JOG {(direction > 0 ? "+ (UP)" : "- (Down)")} {stepDist} mm | Speed: {speed} mm/s (Axis {_currentAxis})");
                 motion.MoveRelative(_currentAxis, direction * stepDist, speed);
             }
             else
             {
+                double stepDist = 1.0;
+                Motion_OnLogMessage($"[Manual] Press JOG {(direction > 0 ? "+ (UP)" : "- (Down)")} {stepDist} mm | Speed: {speed} mm/s (Axis {_currentAxis})");
                 motion.MoveJog(_currentAxis, direction * speed);
             }
         }
@@ -414,6 +459,7 @@ namespace BeevisionSolution.Views
         {
             var motion = MotionSequenceManager.Instance.Motion;
             if (motion == null) return;
+            Motion_OnLogMessage($"[Manual] Threw JOG -> Stop Axis {_currentAxis}");
             motion.Stop(_currentAxis);
         }
 
@@ -426,6 +472,7 @@ namespace BeevisionSolution.Views
             {
                 double.TryParse(txtJogSpeed.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double speed);
                 if (speed <= 0) speed = 50;
+                Motion_OnLogMessage($"[Manual] Press ABS MOVE -> Move to Abs Pos: {targetPos:F3} mm | Speed: {speed} mm/s (Axis {_currentAxis})");
                 motion.MoveAbsolute(_currentAxis, targetPos, speed);
             }
         }
@@ -439,7 +486,21 @@ namespace BeevisionSolution.Views
             {
                 double.TryParse(txtJogSpeed.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double speed);
                 if (speed <= 0) speed = 50;
+                Motion_OnLogMessage($"[Manual] Press REL MOVE -> Move relative: {dist:F3} mm | Speed: {speed} mm/s (Axis {_currentAxis})");
                 motion.MoveRelative(_currentAxis, dist, speed);
+            }
+        }
+        private void BtnStop_Click(object sender, RoutedEventArgs e)
+        {
+            Motion_OnLogMessage($"[Manual] Press Stop -> STOP ALL");
+            MotionSequenceManager.Instance.StopCycle();
+            var motion = MotionSequenceManager.Instance.Motion;
+            if (motion != null)
+            {
+                for (short i = 0; i < (motion.Config?.TotalAxes ?? 1); i++)
+                {
+                    motion.Stop(i);
+                }
             }
         }
 
@@ -655,6 +716,7 @@ namespace BeevisionSolution.Views
                     txtHomeHighSpeed.Text = axisCfg.Homing.HighVelocity.ToString(CultureInfo.InvariantCulture);
                     txtHomeLowSpeed.Text = axisCfg.Homing.LowVelocity.ToString(CultureInfo.InvariantCulture);
                     txtHomeOffset.Text = axisCfg.Homing.OffsetPulses.ToString(CultureInfo.InvariantCulture);
+                    
 
                     // IO bit mapping
                     if (cfg.IO != null)
@@ -766,6 +828,7 @@ namespace BeevisionSolution.Views
         #region Activity Logs
         private void Motion_OnLogMessage(string msg)
         {
+            Common.Info(msg);
             Dispatcher.InvokeAsync(() =>
             {
                 if (txtMotionLogs == null) return;
@@ -809,5 +872,146 @@ namespace BeevisionSolution.Views
             }
         }
         #endregion
+
+        #region I/O Monitor Logic
+        private void InitIoList()
+        {
+            if (DiItems.Count > 0) return;
+
+            var cfg = MotionSequenceManager.Instance.Motion?.Config?.IO;
+
+            // Khởi tạo 16 cổng DI (Digital Inputs)
+            string[] diNames = new string[16]
+            {
+                "Cylinder Forward Sensor ",
+                "Cylinder Backward Sensor ",
+                "Vacuum Pressure Sensor ",
+                "System Stop / Safety Sensor ",
+                "General Digital Input 04",
+                "General Digital Input 05",
+                "General Digital Input 06",
+                "General Digital Input 07",
+                "General Digital Input 08",
+                "General Digital Input 09",
+                "General Digital Input 10",
+                "General Digital Input 11",
+                "General Digital Input 12",
+                "General Digital Input 13",
+                "General Digital Input 14",
+                "General Digital Input 15"
+            };
+
+            for (short i = 0; i < 16; i++)
+            {
+                DiItems.Add(new IoPinDisplayItem { Pin = i, Name = diNames[i], IsOutput = false });
+            }
+
+           
+            string[] doNames = new string[16]
+            {
+                "Cylinder Solenoid ",
+                "Vacuum Solenoid ",
+                "General Digital Output 02",
+                "General Digital Output 03",
+                "General Digital Output 04",
+                "General Digital Output 05",
+                "General Digital Output 06",
+                "General Digital Output 07",
+                "General Digital Output 08",
+                "General Digital Output 09",
+                "General Digital Output 10",
+                "General Digital Output 11",
+                "General Digital Output 12",
+                "General Digital Output 13",
+                "General Digital Output 14",
+                "General Digital Output 15"
+            };
+
+            for (short i = 0; i < 16; i++)
+            {
+                DoItems.Add(new IoPinDisplayItem { Pin = i, Name = doNames[i], IsOutput = true });
+            }
+        }
+
+        private void BtnToggleDO_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is IoPinDisplayItem item)
+            {
+                var pcieIo = IoJobCtrl.GetIOcardCtrl();
+                if (pcieIo != null && pcieIo.IsInit)
+                {
+                    bool newState = !item.State;
+                    if (item.Pin >= 1 && item.Pin <= pcieIo.OutputChannels)
+                    {
+                        pcieIo.SetPinOutput(item.Pin, newState);
+                        item.State = newState;
+                    }
+                    return;
+                }
+
+                // Fallback sang motion
+                var motion = MotionSequenceManager.Instance.Motion;
+                if (motion != null)
+                {
+                    bool newState = !item.State;
+                    motion.SetDigitalOutput(item.Pin, newState);
+                    item.State = newState;
+                }
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Lấy tọa độ hiện tại của trục servo gán trực tiếp vào dòng được bấm trong bảng Teaching Points
+        /// </summary>
+        private void BtnGetPosRow_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is TeachingPoint pt)
+            {
+                var sts = MotionSequenceManager.Instance.Motion?.GetAxisState(_currentAxis);
+                if (sts != null)
+                {
+                    pt.Position = Math.Round(sts.ActualPosition, 3);
+                    pt.AxisIndex = _currentAxis;
+                    dgTeachingPoints.Items.Refresh();
+                    Motion_OnLogMessage($"[Teaching] Đã cập nhật tọa độ cho điểm '{pt.Name}': {pt.Position:F3} mm");
+                }
+            }
+        }
     }
+
+    public class IoPinDisplayItem : System.ComponentModel.INotifyPropertyChanged
+    {
+        public short Pin { get; set; }
+        public string PinLabel => (IsOutput ? "DO " : "DI ") + Pin.ToString("D2");
+        public string Name { get; set; }
+        public bool IsOutput { get; set; }
+
+        private bool _state;
+        public bool State
+        {
+            get => _state;
+            set
+            {
+                if (_state != value)
+                {
+                    _state = value;
+                    OnPropertyChanged(nameof(State));
+                    OnPropertyChanged(nameof(StateBrush));
+                    OnPropertyChanged(nameof(StateText));
+                }
+            }
+        }
+
+        public Brush StateBrush => State
+            ? (IsOutput ? new SolidColorBrush(Color.FromRgb(0xFF, 0x98, 0x00)) : new SolidColorBrush(Color.FromRgb(0x10, 0x7C, 0x41)))
+            : new SolidColorBrush(Color.FromRgb(0x3F, 0x3F, 0x46));
+
+        public string StateText => State ? "HIGH (1)" : "LOW (0)";
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string prop) => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(prop));
+    }
+
 }

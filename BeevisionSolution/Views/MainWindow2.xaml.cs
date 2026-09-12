@@ -65,7 +65,7 @@ namespace BeevisionSolution.Views
         private PlcCam plcCam;
         private bool _skipCloseConfirmation = false;
         private IpcIOControl ioCard;
-
+        private bool _isMotionLogSubscribed = false;
         public MainWindow2()
         {
             InitializeComponent();
@@ -146,11 +146,12 @@ namespace BeevisionSolution.Views
                 await WatcherInit();
             else
                 Info("[Watcher/IO] WatcherInit skipped - EnableWatcherAndIOInit is false in app.json");
-            await PlcInit();
+            
             if (Settings.EnableWatcherAndIOInit)
                 InitIOController();
             else
                 Info("[Watcher/IO] InitIOController skipped - EnableWatcherAndIOInit is false in app.json");
+            await PlcInit();
             lockedFlag = false;
             Topmost = false;
 
@@ -168,6 +169,8 @@ namespace BeevisionSolution.Views
             Common.InitAutoZipBackup();
             OnSettingLoadedDone?.Invoke(this);
         }
+
+
         private async Task<bool> ShowLoginDialog()
         {
             ImageView.CurrentInstance?.CollapsedAllLiveDisplay();
@@ -443,16 +446,61 @@ namespace BeevisionSolution.Views
             }
         }
 
+       
         private async Task PlcInit()
         {
             await Task.Delay(1);
             var motionCfg = Common.GetObjectFromFile<MotionConfig>(Common.MotionConfigFile) ?? new MotionConfig();
             if (motionCfg != null && motionCfg.EnableMotionControl)
             {
-                Info("[Motion] Khởi tạo Inovance EtherCAT Motion Control từ file cấu hình...");
-                MotionSequenceManager.Instance.Initialize(motionCfg);
+                motionCfg.ConfigDirectory = Common.ConfigFolder;
+
+                // 1. Đăng ký nhận toàn bộ log Motion vào log tổng thể
+                if (!_isMotionLogSubscribed)
+                {
+                    MotionSequenceManager.Instance.OnLog += (msg) => Info(msg);
+                    _isMotionLogSubscribed = true;
+                }
+
+                Info("[Motion] Initializing Inovance EtherCAT Motion Controller...");
+                bool ok = MotionSequenceManager.Instance.Initialize(motionCfg);
+
+                // 2. Khi Card & Bus đã khởi tạo xong -> Tự động Clear Alarm và Bật Servo ON
+                if (ok)
+                {
+                    var motion = MotionSequenceManager.Instance.Motion;
+                    int totalAxes = motionCfg.TotalAxes > 0 ? motionCfg.TotalAxes : (motionCfg.Axes?.Count ?? 1);
+
+                    for (short i = 0; i < totalAxes; i++)
+                    {
+                        // Gọi chuỗi: Mở phanh PCIe DO 2 -> Clear Emergency -> Servo ON
+                        bool svOk = await MotionSequenceManager.Instance.EnableServoSequenceAsync(i);
+                        Info("[Motion] Axis {0}: Reset Error & Servo ON -> {1}", i, svOk ? "Done" : "Failed");
+                    }
+                    
+                    // Tự động về gốc
+                    for(short i = 0;i < totalAxes;i++)
+                    {
+                        Info($"[Motion] Auto Homing Axis{0}", i);
+                        bool homeOk = await motion.HomeAsync(i);
+                        if(homeOk)
+                        {
+                            Info($"[Motion] Axis{0}: Auto Home Done.");
+                        }
+                        else
+                        {
+                            Bug($"[Motion Alarm]: Axis{0}Failed - Home error or Timeout", i);
+                        }    
+                    }    
+                    Info("[Motion] Manual Move Ready.");
+                }
+                else
+                {
+                    Bug("[Motion Error] Failed to Init Controller. Please check Ethercat Cable and Card.");
+                }
             }
         }
+
         private void CheckAutoRunning()
         {
         }

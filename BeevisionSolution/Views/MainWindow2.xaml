@@ -34,7 +34,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <local:ImageView x:Name="imageView" BorderThickness="0" Grid.Column="0"  />
-            <!-- Right Panel -->
+            <!--Right Panel -->
 
         </Grid>
         

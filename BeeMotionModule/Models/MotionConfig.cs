@@ -41,7 +41,9 @@ namespace BeeMotionModule.Models
         public uint CardId { get; set; } = 0;
         public string ConfigFileSys { get; set; } = "SystemCfg.xml";
         public string ConfigFileDrv { get; set; } = "DriveCfg.xml";
+        public string ConfigDirectory { get; set; } = string.Empty;
         public int TotalAxes { get; set; } = 1;
+       // public string ConfigDirectory { get; set; } = string.Empty;
         public List<AxisConfig> Axes { get; set; } = new List<AxisConfig>
         {
             new AxisConfig { AxisIndex = 0, AxisName = "Main Conveyor/Axis" }

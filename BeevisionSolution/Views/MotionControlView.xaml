@@ -131,35 +131,48 @@
     <Grid Margin="4">
         <!-- ================= MAIN TAB INTERFACE ================= -->
         <TabControl Background="Transparent" BorderThickness="0">
-            
+
             <!-- ================= TAB 1: MAIN (Overview, Status Matrix, Motion Log, Bottom Action Bar) ================= -->
             <TabItem Header="MAIN" Style="{StaticResource MotionNavTabItemStyle}">
                 <Grid Margin="0,4,0,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>   <!-- 3-Column Body (Overview | Status Matrix | Motion Log) -->
-                        <RowDefinition Height="56"/>  <!-- Bottom Action Bar -->
+                        <RowDefinition Height="*"/>
+                        <!-- 3-Column Body (Overview | Status Matrix | Motion Log) -->
+                        <RowDefinition Height="56"/>
+                        <!-- Bottom Action Bar -->
                     </Grid.RowDefinitions>
 
                     <!-- Middle 2-Column Body (Overview on Left, Status Matrix & Log on Right) -->
                     <Grid Grid.Row="0" Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>   <!-- Column 0: Sequence Pipeline & Actuators -->
-                            <ColumnDefinition Width="400"/> <!-- Column 1: Status Matrix (Top) & Motion Log (Bottom) -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- Column 0: Sequence Pipeline & Actuators -->
+                            <ColumnDefinition Width="400"/>
+                            <!-- Column 1: Status Matrix (Top) & Motion Log (Bottom) -->
                         </Grid.ColumnDefinitions>
 
                         <!-- Column 0: Sequence Pipeline & Actuators Dashboard -->
                         <Grid Grid.Column="0" Margin="0,0,4,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="157*"/>
+                                <ColumnDefinition Width="527*"/>
+                                <ColumnDefinition Width="0*"/>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/> <!-- Top: Sequence Pipeline -->
-                                <RowDefinition Height="*"/>     <!-- Bottom: Pneumatics & Robot Handshake Dashboard -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Top: Sequence Pipeline -->
+                                <RowDefinition Height="*"/>
+                                <!-- Bottom: Pneumatics & Robot Handshake Dashboard -->
                             </Grid.RowDefinitions>
 
                             <!-- 1. Sequence Pipeline -->
-                            <GroupBox Grid.Row="0" Header="Sequence Process Pipeline" Margin="0,0,0,3">
+                            <GroupBox Grid.Row="0" Header="Sequence Process Pipeline" Margin="0,0,0,3" Grid.ColumnSpan="2">
                                 <Grid Margin="4">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/> <!-- Top Controls & Cycle Stats -->
-                                        <RowDefinition Height="Auto"/> <!-- Process Step Cards Timeline -->
+                                        <RowDefinition Height="Auto"/>
+                                        <!-- Top Controls & Cycle Stats -->
+                                        <RowDefinition Height="Auto"/>
+                                        <!-- Process Step Cards Timeline -->
                                     </Grid.RowDefinitions>
 
                                     <!-- Top Controls & Cycle Stats -->
@@ -170,7 +183,7 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            
+
                                             <!-- Axis Selector & Simulation -->
                                             <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
                                                 <iconPacks:PackIconMaterial Kind="AxisArrow" Width="18" Height="18" Foreground="#007ACC" Margin="0,0,6,0" VerticalAlignment="Center"/>
@@ -297,10 +310,12 @@
                             </GroupBox>
 
                             <!-- 2. Pneumatics Actuators & Robot / PLC Handshake Dashboard -->
-                            <Grid Grid.Row="1">
+                            <Grid Margin="0,247,0,0" Grid.RowSpan="2" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/> <!-- Pneumatics & Vacuum -->
-                                    <ColumnDefinition Width="*"/> <!-- Robot & PLC Handshake -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Pneumatics & Vacuum -->
+                                    <ColumnDefinition Width="*"/>
+                                    <!-- Robot & PLC Handshake -->
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Left: Pneumatics & Vacuum Actuators -->
@@ -397,8 +412,10 @@
                         <!-- Column 1: Right Side (Status Matrix on Top, Motion Log on Bottom) -->
                         <Grid Grid.Column="1" Margin="3,0,0,0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/> <!-- Row 0: Status Matrix & Readouts -->
-                                <RowDefinition Height="*"/>    <!-- Row 1: Motion Log -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Row 0: Status Matrix & Readouts -->
+                                <RowDefinition Height="*"/>
+                                <!-- Row 1: Motion Log -->
                             </Grid.RowDefinitions>
 
                             <!-- Top: Status Matrix & Coordinates -->
@@ -505,53 +522,150 @@
                         </Grid>
                     </Grid>
 
-                    <!-- Bottom Action Bar (Large prominent buttons) -->
-                    <Border Grid.Row="1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="4">
-                        <UniformGrid Columns="7">
-                            <Button x:Name="btnAutoMode" Height="48" Click="BtnAutoMode_Click">
+                                        <!-- Bottom Action Bar (8 nút dàn đều 1 hàng ngang chuẩn đẹp) -->
+                    <Border Grid.Row="1" Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="3">
+                        <UniformGrid Rows="1">
+                            <!-- 1. AUTO -->
+                            <Button x:Name="btnAutoMode" Click="BtnAutoMode_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Play" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="AUTO" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="Play" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="AUTO" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnManualMode" Height="48" Background="#2E8B57" Click="BtnManualMode_Click">
+
+                            <!-- 2. MANUAL -->
+                            <Button x:Name="btnManualMode" Background="#2E8B57" Click="BtnManualMode_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="GamepadVariant" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="MANUAL" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="GamepadVariant" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="MANUAL" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnHome" Height="48" Click="BtnHome_Click">
+
+                            <!-- 3. STOP (NỔI BẬT ĐỎ RỰC) -->
+                            <Button x:Name="btnStop" Background="#A80000" Click="BtnStop_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Home" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="HOME" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="Stop" Width="16" Height="16" Margin="0,0,4,0" Foreground="White" VerticalAlignment="Center"/>
+                                    <TextBlock Text="STOP" FontSize="13" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnReset" Height="48" Click="BtnReset_Click">
+
+                            <!-- 4. HOME -->
+                            <Button x:Name="btnHome" Click="BtnHome_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Refresh" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="RESET" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="Home" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="HOME" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnServoToggle" Height="48" Click="BtnServoToggle_Click">
+
+                            <!-- 5. RESET -->
+                            <Button x:Name="btnReset" Click="BtnReset_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial x:Name="iconServo" Kind="Power" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock x:Name="txtServoBtn" Text="Servo ON" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="Refresh" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="RESET" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnTriggerCam" Height="48" Click="BtnTriggerCam_Click">
+
+                            <!-- 6. SERVO ON -->
+                            <Button x:Name="btnServoToggle" Click="BtnServoToggle_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Camera" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="TriggerCam" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial x:Name="iconServo" Kind="Power" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="txtServoBtn" Text="Servo ON" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="btnTurnLight" Height="48" Click="BtnLightToggle_Click">
+
+                            <!-- 7. TRIGGER CAM -->
+                            <Button x:Name="btnTriggerCam" Click="BtnTriggerCam_Click">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <iconPacks:PackIconMaterial Kind="Lightbulb" Width="20" Height="20" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Turn Light" FontSize="15" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="Camera" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="TriggerCam" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!-- 8. TURN LIGHT -->
+                            <Button x:Name="btnTurnLight" Click="BtnLightToggle_Click">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <iconPacks:PackIconMaterial Kind="Lightbulb" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Turn Light" FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                         </UniformGrid>
                     </Border>
+
+                </Grid>
+            </TabItem>
+
+            <!-- ================= TAB: I/O MONITOR (Digital Inputs & Outputs Real-time) ================= -->
+            <TabItem Header="I/O MONITOR" Style="{StaticResource MotionNavTabItemStyle}">
+                <Grid Margin="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <!-- Left: Digital Inputs DI -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Right: Digital Outputs DO -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Cột 1: DIGITAL INPUTS (DI 0..15) -->
+                    <GroupBox Grid.Column="0" Header="DIGITAL INPUTS (SENSOR &amp; SAFETY)" Margin="0,0,4,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="icDigitalInputs" Margin="4">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="10,6" Margin="0,0,0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="65"/>
+                                                    <!-- Pin: DI 00 -->
+                                                    <ColumnDefinition Width="35"/>
+                                                    <!-- LED tròn -->
+                                                    <ColumnDefinition Width="*"/>
+                                                    <!-- Tên tín hiệu -->
+                                                    <ColumnDefinition Width="80"/>
+                                                    <!-- Trạng thái text -->
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding PinLabel}" FontWeight="Bold" FontSize="14" Foreground="#007ACC" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="1" Width="18" Height="18" CornerRadius="9" Background="{Binding StateBrush}" BorderBrush="#555555" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Name}" FontSize="13" Foreground="#DCDCDC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding StateText}" FontWeight="Bold" FontSize="13" Foreground="{Binding StateBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </GroupBox>
+
+                    <!-- Cột 2: DIGITAL OUTPUTS (DO 0..15) -->
+                    <GroupBox Grid.Column="1" Header="DIGITAL OUTPUTS (VALVES &amp; ACTUATORS)" Margin="4,0,0,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="icDigitalOutputs" Margin="4">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252526" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="10,4" Margin="0,0,0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="65"/>
+                                                    <!-- Pin: DO 00 -->
+                                                    <ColumnDefinition Width="35"/>
+                                                    <!-- LED tròn -->
+                                                    <ColumnDefinition Width="*"/>
+                                                    <!-- Tên tín hiệu -->
+                                                    <ColumnDefinition Width="70"/>
+                                                    <!-- Trạng thái text -->
+                                                    <ColumnDefinition Width="85"/>
+                                                    <!-- Nút Toggle thủ công -->
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding PinLabel}" FontWeight="Bold" FontSize="14" Foreground="#FF9800" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="1" Width="18" Height="18" CornerRadius="9" Background="{Binding StateBrush}" BorderBrush="#555555" BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding Name}" FontSize="13" Foreground="#DCDCDC" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding StateText}" FontWeight="Bold" FontSize="13" Foreground="{Binding StateBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <Button Grid.Column="4" Content="TOGGLE"  Height="28" FontSize="12" Click="BtnToggleDO_Click"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </GroupBox>
                 </Grid>
             </TabItem>
 
@@ -559,8 +673,10 @@
             <TabItem Header="SETTING" Style="{StaticResource MotionNavTabItemStyle}">
                 <Grid Margin="0,4,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>   <!-- Left: Teaching Points Table -->
-                        <ColumnDefinition Width="380"/> <!-- Right: Manual Jog & Peripherals -->
+                        <ColumnDefinition Width="*"/>
+                        <!-- Left: Teaching Points Table -->
+                        <ColumnDefinition Width="380"/>
+                        <!-- Right: Manual Jog & Peripherals -->
                     </Grid.ColumnDefinitions>
 
                     <!-- Left: Teaching Points Table -->
@@ -584,6 +700,13 @@
                                     <DataGridCheckBoxColumn Header="Vision" Binding="{Binding TriggerVision}" Width="50"/>
                                     <DataGridTextColumn Header="Job ID" Binding="{Binding JobId}" Width="55"/>
                                     <DataGridTextColumn Header="On NG" Binding="{Binding ActionOnNg}" Width="85"/>
+                                    <DataGridTemplateColumn Header="Get Pos" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Get Pos" Background="#007ACC" Foreground="White" FontWeight="Bold" Padding="4,1" Margin="2" Click="BtnGetPosRow_Click"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
 
